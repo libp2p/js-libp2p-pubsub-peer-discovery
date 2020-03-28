@@ -1,0 +1,56 @@
+{
+  "name": "libp2p-pubsub-peer-discovery",
+  "version": "0.0.0",
+  "description": "A libp2p module that uses pubsub for mdns like peer discovery",
+  "main": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/libp2p/js-libp2p.git"
+  },
+  "keywords": [
+    "libp2p",
+    "peer",
+    "discovery",
+    "pubsub"
+  ],
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p/issues"
+  },
+  "homepage": "https://libp2p.io",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "build": "aegir build",
+    "test": "aegir test",
+    "test:node": "aegir test -t node",
+    "test:browser": "aegir test -t browser",
+    "release": "aegir release",
+    "release-minor": "aegir release --type minor",
+    "release-major": "aegir release --type major",
+    "coverage": "nyc --reporter=text --reporter=lcov npm test"
+  },
+  "devDependencies": {
+    "aegir": "^21.4.5",
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1",
+    "libp2p-interfaces": "^0.2.7",
+    "multiaddr": "^7.4.3",
+    "p-defer": "^3.0.0",
+    "peer-id": "^0.13.11",
+    "peer-info": "^0.17.5"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "emittery": "^0.6.0",
+    "libp2p-crypto": "^0.17.5",
+    "protons": "^1.0.2"
+  }
+}
