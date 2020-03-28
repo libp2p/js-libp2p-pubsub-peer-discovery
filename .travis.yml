@@ -21,8 +21,6 @@ jobs:
   include:
     - stage: check
       script:
-        - npx aegir build --bundlesize
-        # Remove pull libs once ping is async
         - npx aegir dep-check
         - npm run lint
 
