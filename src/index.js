@@ -78,8 +78,8 @@ class PubsubPeerDiscovery extends Emittery {
       id,
       queryResponse: {
         queryID: id,
-        publicKey: this.peerInfo.id.publicKey.bytes,
-        addrs: this.libp2p.peerInfo.multiaddrs.map(ma => ma.buffer)
+        publicKey: this.libp2p.peerInfo.id.pubKey.bytes,
+        addrs: this.libp2p.peerInfo.multiaddrs.toArray().map(ma => ma.buffer)
       }
     }
     const encodedQuery = PB.Query.encode(query)
@@ -107,6 +107,8 @@ class PubsubPeerDiscovery extends Emittery {
     try {
       const query = PB.Query.decode(data)
       const peerId = await PeerId.createFromPubKey(query.queryResponse.publicKey)
+      // Ignore if we received our own response
+      if (peerId.equals(this.libp2p.peerInfo.id)) return
       const peerInfo = new PeerInfo(peerId)
       query.queryResponse.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
       this.emit('peer', peerInfo)
