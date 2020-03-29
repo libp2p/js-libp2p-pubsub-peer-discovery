@@ -140,3 +140,4 @@ class PubsubPeerDiscovery extends Emittery {
 
 module.exports = PubsubPeerDiscovery
 module.exports.TOPIC = TOPIC
+module.exports.tag = 'PubsubPeerDiscovery'
