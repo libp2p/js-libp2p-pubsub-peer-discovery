@@ -51,6 +51,8 @@ class PubsubPeerDiscovery extends Emittery {
    * after `this.delay` milliseconds
    */
   start () {
+    if (this._timeout) return
+
     // Subscribe to pubsub
     this.libp2p.pubsub.subscribe(TOPIC, (msg) => this._onMessage(msg))
     // Perform a delayed publish to give pubsub time to do its thing
@@ -112,6 +114,7 @@ class PubsubPeerDiscovery extends Emittery {
       const peerInfo = new PeerInfo(peerId)
       query.queryResponse.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
       this.emit('peer', peerInfo)
+      log('discovered peer', peerInfo.id)
       return true
     } catch (err) {
       log.error(err)
@@ -132,6 +135,7 @@ class PubsubPeerDiscovery extends Emittery {
       const peerInfo = new PeerInfo(peerId)
       queryResponse.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
       this.emit('peer', peerInfo)
+      log('discovered peer', peerInfo.id)
     } catch (err) {
       log.error(err)
     }
