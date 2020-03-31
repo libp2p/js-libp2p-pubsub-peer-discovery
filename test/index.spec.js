@@ -97,7 +97,7 @@ describe('Pubsub Peer Discovery', () => {
     expect(PB.QueryResponse.decode(encodedResponse)).to.eql(queryResponse)
   })
 
-  it('should be able to add and remove peer listeners', async () => {
+  it('should be able to add and remove peer listeners', () => {
     const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const handler = () => {}
     discovery.on('peer', handler)
