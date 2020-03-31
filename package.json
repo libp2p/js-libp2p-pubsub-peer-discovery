@@ -42,16 +42,16 @@
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
     "libp2p-interfaces": "^0.2.7",
-    "multiaddr": "^7.4.3",
     "p-defer": "^3.0.0",
-    "peer-id": "^0.13.11",
-    "peer-info": "^0.17.5",
     "sinon": "^9.0.1"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "emittery": "^0.6.0",
     "libp2p-crypto": "^0.17.5",
+    "multiaddr": "^7.4.3",
+    "peer-id": "^0.13.11",
+    "peer-info": "^0.17.5",
     "protons": "^1.0.2"
   }
 }
