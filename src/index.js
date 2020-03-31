@@ -28,18 +28,12 @@ const TOPIC = '_peer-discovery._p2p._pubsub'
   * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
   */
 class PubsubPeerDiscovery extends Emittery {
-  // TODO: The default delay may be too high here.
-  // By the time the service is started, libp2p will be listening on all transports (including relays)
-  // and pubsub will be started. The delay is to give pubsub time to prime. Ideally, we might do an
-  // initial check to wait for other subscribers before making our startup Query. However, in the
-  // unlikely event that we are the first peer, we would be waiting unncessarily, as the next peer would
-  // query and result in our discovery of them
   /**
    *
    * @param {Libp2p} param0.libp2p Our libp2p node
-   * @param {Number} param0.delay How long to wait (ms) after startup before publishing our Query
+   * @param {Number} param0.delay How long to wait (ms) after startup before publishing our Query. Default: 1000ms
    */
-  constructor ({ libp2p, delay = 5000 }) {
+  constructor ({ libp2p, delay = 1000 }) {
     super()
     this.libp2p = libp2p
     this.delay = delay
@@ -64,7 +58,6 @@ class PubsubPeerDiscovery extends Emittery {
 
   /**
    * Unsubscribes from the discovery topic
-   * @async
    */
   stop () {
     clearTimeout(this._timeout)
@@ -74,6 +67,7 @@ class PubsubPeerDiscovery extends Emittery {
 
   /**
    * Performs a Query via Pubsub publish
+   * @private
    */
   _query () {
     const id = randomBytes(32)
@@ -91,6 +85,7 @@ class PubsubPeerDiscovery extends Emittery {
 
   /**
    * Handles incoming pubsub messages for our discovery topic
+   * @private
    * @async
    * @param {Message} message
    */
