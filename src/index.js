@@ -31,7 +31,7 @@ class PubsubPeerDiscovery extends Emittery {
   /**
    *
    * @param {Libp2p} param0.libp2p Our libp2p node
-   * @param {Number} param0.delay How long to wait (ms) after startup before publishing our Query. Default: 1000ms
+   * @param {Number} [param0.delay] How long to wait (ms) after startup before publishing our Query. Default: 1000ms
    */
   constructor ({ libp2p, delay = 1000 }) {
     super()

@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/libp2p/js-libp2p.git"
+    "url": "https://github.com/libp2p/js-libp2p-pubsub-peer-discovery.git"
   },
   "keywords": [
     "libp2p",
@@ -18,7 +18,7 @@
     "pubsub"
   ],
   "bugs": {
-    "url": "https://github.com/libp2p/js-libp2p/issues"
+    "url": "https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues"
   },
   "homepage": "https://libp2p.io",
   "license": "MIT",
