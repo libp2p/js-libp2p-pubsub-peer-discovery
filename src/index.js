@@ -44,6 +44,7 @@ class PubsubPeerDiscovery extends Emittery {
     this.libp2p = libp2p
     this.delay = delay
     this._timeout = null
+    this.removeListener = this.off.bind(this)
   }
 
   /**

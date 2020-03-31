@@ -96,4 +96,19 @@ describe('Pubsub Peer Discovery', () => {
     const encodedResponse = PB.QueryResponse.encode(queryResponse)
     expect(PB.QueryResponse.decode(encodedResponse)).to.eql(queryResponse)
   })
+
+  it('should be able to add and remove peer listeners', async () => {
+    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    const handler = () => {}
+    discovery.on('peer', handler)
+    expect(discovery.listenerCount('peer')).to.equal(1)
+    discovery.off('peer', handler)
+    expect(discovery.listenerCount('peer')).to.equal(0)
+
+    // Verify libp2p usage
+    discovery.on('peer', handler)
+    expect(discovery.listenerCount('peer')).to.equal(1)
+    discovery.removeListener('peer', handler)
+    expect(discovery.listenerCount('peer')).to.equal(0)
+  })
 })
