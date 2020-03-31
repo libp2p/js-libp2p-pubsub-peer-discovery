@@ -10,7 +10,6 @@ const defer = require('p-defer')
 const PeerID = require('peer-id')
 const PeerInfo = require('peer-info')
 const { randomBytes } = require('libp2p-crypto')
-const multiaddr = require('multiaddr')
 
 const PubsubPeerDiscovery = require('../src')
 const PB = require('../src/query')
