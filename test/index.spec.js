@@ -19,6 +19,8 @@ describe('Pubsub Peer Discovery', () => {
   let mockLibp2p
   before(async () => {
     const peerInfo = await PeerInfo.create()
+    peerInfo.multiaddrs.add('/ip4/127.0.0.1/tcp/9000/ws')
+
     mockLibp2p = {
       peerInfo,
       pubsub: {
@@ -43,8 +45,9 @@ describe('Pubsub Peer Discovery', () => {
     const { queryResponse } = PB.Query.decode(encodedQuery)
     const peerId = await PeerID.createFromPubKey(queryResponse.publicKey)
     expect(peerId.equals(mockLibp2p.peerInfo.id)).to.equal(true)
-    mockLibp2p.peerInfo.multiaddrs.forEach(addr => {
-      expect(queryResponse.addrs.has(addr)).to.equal(true)
+    expect(queryResponse.addrs).to.have.length(1)
+    queryResponse.addrs.forEach((addr) => {
+      expect(mockLibp2p.peerInfo.multiaddrs.has(addr)).to.equal(true)
     })
     expect(topic).to.equal(PubsubPeerDiscovery.TOPIC)
 
@@ -75,7 +78,7 @@ describe('Pubsub Peer Discovery', () => {
     discovery.on('peer', (p) => {
       deferred.resolve(p)
     })
-    await discovery._handleQuery(encodedQuery)
+    await discovery._onMessage({ data: encodedQuery })
 
     const discoveredPeer = await deferred.promise
     expect(discoveredPeer.id.equals(expectedPeerInfo.id)).to.equal(true)
@@ -85,16 +88,30 @@ describe('Pubsub Peer Discovery', () => {
   })
 
   it('should be able to encode/decode a response', async () => {
+    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const id = randomBytes(32)
     const peerId = await PeerID.create({ bits: 512 })
+    const expectedPeerInfo = new PeerInfo(peerId)
+    expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8082/ws')
+    expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8083/ws')
+
     const queryResponse = {
       queryID: id,
       publicKey: peerId.pubKey.bytes,
-      addrs: [multiaddr('/ip4/0.0.0.0/tcp/8082/ws').buffer, multiaddr('/ip4/0.0.0.0/tcp/8083/ws').buffer]
+      addrs: expectedPeerInfo.multiaddrs.toArray().map(ma => ma.buffer)
     }
 
+    const deferred = defer()
     const encodedResponse = PB.QueryResponse.encode(queryResponse)
-    expect(PB.QueryResponse.decode(encodedResponse)).to.eql(queryResponse)
+    discovery.on('peer', (p) => deferred.resolve(p))
+
+    discovery._onMessage({ data: encodedResponse })
+    const discoveredPeer = await deferred.promise
+
+    expect(discoveredPeer.id.equals(expectedPeerInfo.id)).to.equal(true)
+    expectedPeerInfo.multiaddrs.forEach(addr => {
+      expect(discoveredPeer.multiaddrs.has(addr)).to.equal(true)
+    })
   })
 
   it('should be able to add and remove peer listeners', () => {
