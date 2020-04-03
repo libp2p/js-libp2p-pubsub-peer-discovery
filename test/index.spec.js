@@ -127,4 +127,29 @@ describe('Pubsub Peer Discovery', () => {
     discovery.removeListener('peer', handler)
     expect(discovery.listenerCount('peer')).to.equal(0)
   })
+
+  it('should allow for customized topics', async () => {
+    // Listen to the global topic and the namespace of `myApp`
+    const topics = [`myApp.${PubsubPeerDiscovery.TOPIC}`, PubsubPeerDiscovery.TOPIC]
+    const discovery = new PubsubPeerDiscovery({
+      libp2p: mockLibp2p,
+      topics
+    })
+    sinon.spy(mockLibp2p.pubsub, 'subscribe')
+    sinon.spy(mockLibp2p.pubsub, 'unsubscribe')
+
+    await discovery.start()
+    expect(mockLibp2p.pubsub.subscribe.callCount).to.equal(2)
+    topics.forEach((topic, index) => {
+      // The first arg of the matching call number should be the matching topic we sent
+      expect(mockLibp2p.pubsub.subscribe.args[index][0]).to.equal(topic)
+    })
+
+    await discovery.stop()
+    expect(mockLibp2p.pubsub.unsubscribe.callCount).to.equal(2)
+    topics.forEach((topic, index) => {
+      // The first arg of the matching call number should be the matching topic we sent
+      expect(mockLibp2p.pubsub.unsubscribe.args[index][0]).to.equal(topic)
+    })
+  })
 })

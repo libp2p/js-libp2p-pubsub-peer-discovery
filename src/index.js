@@ -29,15 +29,21 @@ const TOPIC = '_peer-discovery._p2p._pubsub'
   */
 class PubsubPeerDiscovery extends Emittery {
   /**
-   *
+   * @constructor
    * @param {Libp2p} param0.libp2p Our libp2p node
-   * @param {Number} [param0.delay] How long to wait (ms) after startup before publishing our Query. Default: 1000ms
+   * @param {number} [param0.delay] How long to wait (ms) after startup before publishing our Query. Default: 1000ms
+   * @param {Array<string>} [param0.topics] What topics to subscribe to. If set, the default will NOT be used. Default: PubsubPeerDiscovery.TOPIC
    */
-  constructor ({ libp2p, delay = 1000 }) {
+  constructor ({ libp2p, delay = 1000, topics }) {
     super()
     this.libp2p = libp2p
     this.delay = delay
     this._timeout = null
+    if (topics && topics.length > 0) {
+      this.topics = topics
+    } else {
+      this.topics = [TOPIC]
+    }
     this.removeListener = this.off.bind(this)
   }
 
@@ -49,7 +55,10 @@ class PubsubPeerDiscovery extends Emittery {
     if (this._timeout) return
 
     // Subscribe to pubsub
-    this.libp2p.pubsub.subscribe(TOPIC, (msg) => this._onMessage(msg))
+    for (const topic of this.topics) {
+      this.libp2p.pubsub.subscribe(topic, (msg) => this._onMessage(msg))
+    }
+
     // Perform a delayed publish to give pubsub time to do its thing
     this._timeout = setTimeout(() => {
       this._query()
@@ -62,7 +71,9 @@ class PubsubPeerDiscovery extends Emittery {
   stop () {
     clearTimeout(this._timeout)
     this._timeout = null
-    this.libp2p.pubsub.unsubscribe(TOPIC)
+    for (const topic of this.topics) {
+      this.libp2p.pubsub.unsubscribe(topic)
+    }
   }
 
   /**
@@ -138,6 +149,7 @@ class PubsubPeerDiscovery extends Emittery {
   }
 }
 
+PubsubPeerDiscovery.TOPIC = TOPIC
+PubsubPeerDiscovery.tag = 'PubsubPeerDiscovery'
+
 module.exports = PubsubPeerDiscovery
-module.exports.TOPIC = TOPIC
-module.exports.tag = 'PubsubPeerDiscovery'
