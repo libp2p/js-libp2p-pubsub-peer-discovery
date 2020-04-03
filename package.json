@@ -49,7 +49,6 @@
   "dependencies": {
     "debug": "^4.1.1",
     "emittery": "^0.6.0",
-    "libp2p-crypto": "^0.17.5",
     "multiaddr": "^7.4.3",
     "peer-id": "^0.13.11",
     "peer-info": "^0.17.5",

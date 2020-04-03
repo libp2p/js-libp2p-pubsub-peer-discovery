@@ -5,7 +5,7 @@
 [![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
 [![](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
 
-> A js-libp2p module that uses pubsub for mdns like peer discovery
+> A js-libp2p module that uses pubsub for interval broadcast peer discovery
 
 ## Lead Maintainer
 
@@ -13,16 +13,12 @@
 
 ## Design
 
-This module takes a similar approach to [MulticastDNS (MDNS)](https://github.com/libp2p/specs/blob/master/discovery/mdns.md) queries, except it leverages pubsub to "query" peers on the pubsub topic. A `Query` is performed by publishing a unique Query ID, along with your peers information (Peer ID, PublicKey, Multiaddrs). Each peer that receives the Query will submit a `QueryResponse`, consisting of their peer information and the Query ID being responded to.
-
 ### Flow
-- When the discovery module is started by libp2p it subscribes to the discovery pubsub topic
-- Once subscribed, the peer will "query" the network by publishing a `Query`
-- The `Query` will also include your peers `QueryResponse`, so that other nodes can learn about you without needing to poll
-- Whenever another pubsub discovery peer joins the pubsub mesh, it will post its `Query`
+- When the discovery module is started by libp2p it subscribes to the discovery pubsub topic(s)
+- It will immediately broadcast your peer data via pubsub and repeat the broadcast on the configured `interval`
 
 ### Security Considerations
-It is worth noting that this module does not include any message signing for queries. The reason for this is that libp2p-pubsub supports message signing and enables it by default, which means the message you received has been verified to be from the originator, so we can trust that the peer information we have received is indeed from the peer who owns it. This doesn't mean the peer can't falsify its own records, but this module isn't currently concerned with that scenario.
+It is worth noting that this module does not include any message signing for broadcasts. The reason for this is that libp2p-pubsub supports message signing and enables it by default, which means the message you received has been verified to be from the originator, so we can trust that the peer information we have received is indeed from the peer who owns it. This doesn't mean the peer can't falsify its own records, but this module isn't currently concerned with that scenario.
 
 ## Usage
 
@@ -73,7 +69,7 @@ const node = await Libp2p.create({
   config: {
     peerDiscovery: {
       [PubsubPeerDiscovery.tag]: {
-        delay: 1000, // defaults to 1000ms
+        interval: 5000, // defaults to 5000ms
         topics: topics, // defaults to [PubsubPeerDiscovery.TOPIC]
         listenOnly: false // default to false
       }
@@ -87,7 +83,7 @@ const node = await Libp2p.create({
 
 | Name | Type | Description |
 |------|------|-------------|
-| delay | `number` | How long (in `ms`) after subscribing your node should wait before querying. Default (`1000ms`)|
+| interval | `number` | How often (in `ms`), after initial broadcast, your node should broadcast your peer data. Default (`5000ms`)|
 | topics | `Array<string>` | An Array of topic strings. If set, the default topic will not be used and must be included explicitly here |
 | listenOnly | `boolean` | If true it will not query or respond to queries. Dont set this unless you have a specific reason to. Default (`false`) |
 
