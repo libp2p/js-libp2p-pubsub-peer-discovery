@@ -34,11 +34,18 @@ class PubsubPeerDiscovery extends Emittery {
    * @param {number} [param0.delay] How long to wait (ms) after startup before publishing our Query. Default: 1000ms
    * @param {Array<string>} [param0.topics] What topics to subscribe to. If set, the default will NOT be used. Default: PubsubPeerDiscovery.TOPIC
    */
-  constructor ({ libp2p, delay = 1000, topics }) {
+  constructor ({
+    libp2p,
+    delay = 1000,
+    topics,
+    listenOnly = false
+  }) {
     super()
     this.libp2p = libp2p
     this.delay = delay
     this._timeout = null
+    this._listenOnly = listenOnly
+
     if (topics && topics.length > 0) {
       this.topics = topics
     } else {
@@ -58,6 +65,9 @@ class PubsubPeerDiscovery extends Emittery {
     for (const topic of this.topics) {
       this.libp2p.pubsub.subscribe(topic, (msg) => this._onMessage(msg))
     }
+
+    // Don't query if we are only listening
+    if (this._listenOnly) return
 
     // Perform a delayed publish to give pubsub time to do its thing
     this._timeout = setTimeout(() => {
@@ -91,7 +101,9 @@ class PubsubPeerDiscovery extends Emittery {
       }
     }
     const encodedQuery = PB.Query.encode(query)
-    this.libp2p.pubsub.publish(TOPIC, encodedQuery)
+    for (const topic of this.topics) {
+      this.libp2p.pubsub.publish(topic, encodedQuery)
+    }
   }
 
   /**
@@ -101,20 +113,20 @@ class PubsubPeerDiscovery extends Emittery {
    * @param {Message} message
    */
   async _onMessage (message) {
-    if (await this._handleQuery(message.data)) return
+    if (await this._handleQuery(message)) return
 
-    this._handleQueryResponse(message.data)
+    this._handleQueryResponse(message)
   }
 
   /**
    * Attempts to decode a QueryResponse from the given data. Any errors will be logged and ignored.
    * @private
    * @async
-   * @param {Buffer} data The Pubsub message data to decode
+   * @param {Message} message The Pubsub message to decode
    */
-  async _handleQuery (data) {
+  async _handleQuery (message) {
     try {
-      const query = PB.Query.decode(data)
+      const query = PB.Query.decode(message.data)
       const peerId = await PeerId.createFromPubKey(query.queryResponse.publicKey)
       // Ignore if we received our own response
       if (peerId.equals(this.libp2p.peerInfo.id)) return
@@ -122,6 +134,7 @@ class PubsubPeerDiscovery extends Emittery {
       query.queryResponse.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
       this.emit('peer', peerInfo)
       log('discovered peer', peerInfo.id)
+      this._respondToQuery(query.id, message.topicIDs)
       return true
     } catch (err) {
       log.error(err)
@@ -130,14 +143,32 @@ class PubsubPeerDiscovery extends Emittery {
   }
 
   /**
+   * Responds to a Query
+   * @param {Buffer} id
+   * @param {Array<topics>} topics
+   */
+  _respondToQuery (id, topics) {
+    const queryResponse = {
+      queryID: id,
+      publicKey: this.libp2p.peerInfo.id.pubKey.bytes,
+      addrs: this.libp2p.peerInfo.multiaddrs.toArray().map(ma => ma.buffer)
+    }
+
+    const er = PB.QueryResponse.encode(queryResponse)
+    for (const topic of topics) {
+      this.libp2p.pubsub.publish(topic, er)
+    }
+  }
+
+  /**
    * Attempts to decode a QueryResponse from the given data. Any errors will be logged and ignored.
    * @private
    * @async
-   * @param {Buffer} data The Pubsub message data to decode
+   * @param {Message} message The Pubsub message to decode
    */
-  async _handleQueryResponse (data) {
+  async _handleQueryResponse (message) {
     try {
-      const queryResponse = PB.QueryResponse.decode(data)
+      const queryResponse = PB.QueryResponse.decode(message.data)
       const peerId = await PeerId.createFromPubKey(queryResponse.publicKey)
       const peerInfo = new PeerInfo(peerId)
       queryResponse.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))

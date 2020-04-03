@@ -77,12 +77,24 @@ describe('Pubsub Peer Discovery', () => {
     discovery.on('peer', (p) => {
       deferred.resolve(p)
     })
-    await discovery._onMessage({ data: encodedQuery })
+    sinon.spy(mockLibp2p.pubsub, 'publish')
+
+    await discovery._onMessage({ data: encodedQuery, topicIDs: [PubsubPeerDiscovery.TOPIC] })
 
     const discoveredPeer = await deferred.promise
     expect(discoveredPeer.id.equals(expectedPeerInfo.id)).to.equal(true)
     expectedPeerInfo.multiaddrs.forEach(addr => {
       expect(discoveredPeer.multiaddrs.has(addr)).to.equal(true)
+    })
+
+    // Verify we responded with our info in the same topic
+    expect(mockLibp2p.pubsub.publish.callCount).to.equal(1)
+    const [topic, data] = mockLibp2p.pubsub.publish.getCall(0).args
+    expect(topic).to.eql(PubsubPeerDiscovery.TOPIC)
+    const decodedResponse = PB.QueryResponse.decode(data)
+    expect(decodedResponse.publicKey).to.eql(mockLibp2p.peerInfo.id.pubKey.bytes)
+    decodedResponse.addrs.forEach(addr => {
+      expect(mockLibp2p.peerInfo.multiaddrs.has(addr)).to.equal(true)
     })
   })
 
