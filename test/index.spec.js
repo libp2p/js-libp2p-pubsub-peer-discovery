@@ -98,6 +98,14 @@ describe('Pubsub Peer Discovery', () => {
     })
   })
 
+  it('should not respond to queries if only listening', () => {
+    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, listenOnly: true })
+
+    sinon.spy(mockLibp2p.pubsub, 'publish')
+    discovery._respondToQuery(Buffer.from('a'), [PubsubPeerDiscovery.TOPIC])
+    expect(mockLibp2p.pubsub.publish.callCount).to.equal(0)
+  })
+
   it('should be able to encode/decode a response', async () => {
     const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const id = randomBytes(32)

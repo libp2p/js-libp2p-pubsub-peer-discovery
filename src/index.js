@@ -33,6 +33,7 @@ class PubsubPeerDiscovery extends Emittery {
    * @param {Libp2p} param0.libp2p Our libp2p node
    * @param {number} [param0.delay] How long to wait (ms) after startup before publishing our Query. Default: 1000ms
    * @param {Array<string>} [param0.topics] What topics to subscribe to. If set, the default will NOT be used. Default: PubsubPeerDiscovery.TOPIC
+   * @param {boolean} [param0.listenOnly] If true, we will not Query nor respond to them. Default: false
    */
   constructor ({
     libp2p,
@@ -145,9 +146,10 @@ class PubsubPeerDiscovery extends Emittery {
   /**
    * Responds to a Query
    * @param {Buffer} id
-   * @param {Array<topics>} topics
+   * @param {Array<string>} topics
    */
   _respondToQuery (id, topics) {
+    if (this._listenOnly) return
     const queryResponse = {
       queryID: id,
       publicKey: this.libp2p.peerInfo.id.pubKey.bytes,
