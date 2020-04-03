@@ -30,6 +30,67 @@ It is worth noting that this module does not include any message signing for que
 
 This module *MUST* be used on a libp2p node that is running [Pubsub](https://github.com/libp2p/js-libp2p-pubsub). If Pubsub does not exist, or is not running, this module will not work.
 
+### Usage in js-libp2p
+
+See the [js-libp2p configuration docs](https://github.com/libp2p/js-libp2p/blob/master/doc/CONFIGURATION.md#customizing-peer-discovery) for how to include this module as a peer discovery module in js-libp2p.
+
+If you are only interested in listening to the global pubsub topic the minimal configuration for using this with libp2p is:
+```js
+const Libp2p = require('libp2p')
+const Websockets = require('libp2p-websockets')
+const MPLEX = require('libp2p-mplex')
+const SECIO = require('libp2p-secio')
+const GossipSub = require('libp2p-gossipsub')
+const PubsubPeerDiscovery = require('libp2p-pubsub-peer-discovery')
+
+const node = await Libp2p.create({
+  modules: {
+    transport: [Websockets], // Any libp2p transport(s) can be used
+    streamMuxer: [MPLEX],
+    connEncryption: [SECIO],
+    pubsub: GossipSub, // Can also be `libp2p-floodsub` if desired
+    peerDiscovery: [PubsubPeerDiscovery]
+  }
+})
+```
+
+### Customizing Pubsub Peer Discovery
+
+There are a few options you can use to customize `Pubsub Peer Discovery`. You can see the detailed [options](#options) below.
+
+```js
+// ... Other imports from above
+const PubsubPeerDiscovery = require('libp2p-pubsub-peer-discovery')
+
+// Custom topics
+const topics = [
+  `myApp.${PubsubPeerDiscovery.TOPIC}`, // It's recommended but not required to extend the global space
+  PubsubPeerDiscovery.TOPIC // Include if you want to participate in the global space
+]
+
+const node = await Libp2p.create({
+  modules: { /* See 'Usage in js-libp2p' for this block */ },
+  config: {
+    peerDiscovery: {
+      [PubsubPeerDiscovery.tag]: {
+        delay: 1000, // defaults to 1000ms
+        topics: topics, // defaults to [PubsubPeerDiscovery.TOPIC]
+        listenOnly: false // default to false
+      }
+    }
+  }
+})
+```
+
+
+#### Options
+
+| Name | Type | Description |
+|------|------|-------------|
+| delay | `number` | How long (in `ms`) after subscribing your node should wait before querying. Default (`1000ms`)|
+| topics | `Array<string>` | An Array of topic strings. If set, the default topic will not be used and must be included explicitly here |
+| listenOnly | `boolean` | If true it will not query or respond to queries. Dont set this unless you have a specific reason to. Default (`false`) |
+
 ## Contribute
 
 Feel free to join in. All welcome. Open an [issue](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues)!
