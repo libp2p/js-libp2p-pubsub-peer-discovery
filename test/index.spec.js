@@ -6,6 +6,7 @@ chai.use(require('dirty-chai'))
 const { expect } = chai
 const sinon = require('sinon')
 const defer = require('p-defer')
+const pWaitFor = require('p-wait-for')
 
 const PeerID = require('peer-id')
 const PeerInfo = require('peer-info')
@@ -15,6 +16,8 @@ const PB = require('../src/query')
 
 describe('Pubsub Peer Discovery', () => {
   let mockLibp2p
+  let discovery
+
   before(async () => {
     const peerInfo = await PeerInfo.create()
     peerInfo.multiaddrs.add('/ip4/127.0.0.1/tcp/9000/ws')
@@ -29,12 +32,13 @@ describe('Pubsub Peer Discovery', () => {
     }
   })
 
-  afterEach(() => {
+  afterEach(async () => {
+    discovery && await discovery.stop()
     sinon.restore()
   })
 
   it('should not discover self', async () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     sinon.spy(mockLibp2p.pubsub, 'publish')
     discovery._broadcast()
     expect(mockLibp2p.pubsub.publish.callCount).to.equal(1)
@@ -56,7 +60,7 @@ describe('Pubsub Peer Discovery', () => {
   })
 
   it('should be able to encode/decode a query', async () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const peerId = await PeerID.create({ bits: 512 })
     const expectedPeerInfo = new PeerInfo(peerId)
     expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8080/ws')
@@ -83,15 +87,23 @@ describe('Pubsub Peer Discovery', () => {
   })
 
   it('should not broadcast if only listening', async () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, listenOnly: true })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, listenOnly: true })
 
     sinon.spy(mockLibp2p.pubsub, 'publish')
     await discovery.start()
     expect(mockLibp2p.pubsub.publish.callCount).to.equal(0)
   })
 
+  it('should broadcast after start and on interval', async () => {
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, interval: 100 })
+    sinon.spy(mockLibp2p.pubsub, 'publish')
+    await discovery.start()
+
+    await pWaitFor(() => mockLibp2p.pubsub.publish.callCount >= 2)
+  })
+
   it('should be able to add and remove peer listeners', () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const handler = () => {}
     discovery.on('peer', handler)
     expect(discovery.listenerCount('peer')).to.equal(1)
@@ -108,7 +120,7 @@ describe('Pubsub Peer Discovery', () => {
   it('should allow for customized topics', async () => {
     // Listen to the global topic and the namespace of `myApp`
     const topics = [`myApp.${PubsubPeerDiscovery.TOPIC}`, PubsubPeerDiscovery.TOPIC]
-    const discovery = new PubsubPeerDiscovery({
+    discovery = new PubsubPeerDiscovery({
       libp2p: mockLibp2p,
       topics
     })
