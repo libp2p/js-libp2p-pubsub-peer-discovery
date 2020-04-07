@@ -7,7 +7,7 @@ const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
 const multiaddr = require('multiaddr')
 
-const PB = require('./query')
+const PB = require('./peer.proto')
 
 const log = debug('libp2p:discovery:pubsub')
 log.error = debug('libp2p:discovery:pubsub:error')
@@ -30,9 +30,9 @@ class PubsubPeerDiscovery extends Emittery {
   /**
    * @constructor
    * @param {Libp2p} param0.libp2p Our libp2p node
-   * @param {number} [param0.interval] How often (ms) we should broadcast our info. Default: 5000ms
-   * @param {Array<string>} [param0.topics] What topics to subscribe to. If set, the default will NOT be used. Default: PubsubPeerDiscovery.TOPIC
-   * @param {boolean} [param0.listenOnly] If true, we will not Query nor respond to them. Default: false
+   * @param {number} [param0.interval = 5000] How often (ms) we should broadcast our infos
+   * @param {Array<string>} [param0.topics = PubsubPeerDiscovery.TOPIC] What topics to subscribe to. If set, the default will NOT be used.
+   * @param {boolean} [param0.listenOnly = false] If true, we will not broadcast our peer data
    */
   constructor ({
     libp2p,
@@ -55,8 +55,8 @@ class PubsubPeerDiscovery extends Emittery {
   }
 
   /**
-   * Subscribes to the discovery topic on `libp2p.pubsub` and peforms a query
-   * after `this.delay` milliseconds
+   * Subscribes to the discovery topic on `libp2p.pubsub` and performs a broadcast
+   * immediately, and every `this.interval`
    */
   start () {
     if (this._intervalId) return
@@ -66,7 +66,7 @@ class PubsubPeerDiscovery extends Emittery {
       this.libp2p.pubsub.subscribe(topic, (msg) => this._onMessage(msg))
     }
 
-    // Don't query if we are only listening
+    // Don't broadcast if we are only listening
     if (this._listenOnly) return
 
     // Broadcast immediately, and then run on interval

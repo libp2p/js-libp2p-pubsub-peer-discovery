@@ -12,7 +12,7 @@ const PeerID = require('peer-id')
 const PeerInfo = require('peer-info')
 
 const PubsubPeerDiscovery = require('../src')
-const PB = require('../src/query')
+const PB = require('../src/peer.proto')
 
 describe('Pubsub Peer Discovery', () => {
   let mockLibp2p
@@ -59,7 +59,7 @@ describe('Pubsub Peer Discovery', () => {
     expect(spy.callCount).to.equal(0)
   })
 
-  it('should be able to encode/decode a query', async () => {
+  it('should be able to encode/decode peer data', async () => {
     discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const peerId = await PeerID.create({ bits: 512 })
     const expectedPeerInfo = new PeerInfo(peerId)

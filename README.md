@@ -85,7 +85,7 @@ const node = await Libp2p.create({
 |------|------|-------------|
 | interval | `number` | How often (in `ms`), after initial broadcast, your node should broadcast your peer data. Default (`5000ms`)|
 | topics | `Array<string>` | An Array of topic strings. If set, the default topic will not be used and must be included explicitly here |
-| listenOnly | `boolean` | If true it will not query or respond to queries. Dont set this unless you have a specific reason to. Default (`false`) |
+| listenOnly | `boolean` | If true it will not broadcast peer data. Dont set this unless you have a specific reason to. Default (`false`) |
 
 ## Contribute
 
