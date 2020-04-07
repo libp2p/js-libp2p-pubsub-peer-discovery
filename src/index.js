@@ -46,7 +46,7 @@ class PubsubPeerDiscovery extends Emittery {
     this._intervalId = null
     this._listenOnly = listenOnly
 
-    if (topics && topics.length > 0) {
+    if (topics && topics.length) {
       this.topics = topics
     } else {
       this.topics = [TOPIC]
