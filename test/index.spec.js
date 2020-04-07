@@ -32,8 +32,8 @@ describe('Pubsub Peer Discovery', () => {
     }
   })
 
-  afterEach(async () => {
-    discovery && await discovery.stop()
+  afterEach(() => {
+    discovery && discovery.stop()
     sinon.restore()
   })
 
@@ -59,7 +59,7 @@ describe('Pubsub Peer Discovery', () => {
     expect(spy.callCount).to.equal(0)
   })
 
-  it('should be able to encode/decode peer data', async () => {
+  it('should be able to encode/decode a message', async () => {
     discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const peerId = await PeerID.create({ bits: 512 })
     const expectedPeerInfo = new PeerInfo(peerId)
@@ -86,11 +86,11 @@ describe('Pubsub Peer Discovery', () => {
     })
   })
 
-  it('should not broadcast if only listening', async () => {
+  it('should not broadcast if only listening', () => {
     discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, listenOnly: true })
 
     sinon.spy(mockLibp2p.pubsub, 'publish')
-    await discovery.start()
+    discovery.start()
     expect(mockLibp2p.pubsub.publish.callCount).to.equal(0)
   })
 
