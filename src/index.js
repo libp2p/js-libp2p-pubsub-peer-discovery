@@ -122,6 +122,7 @@ class PubsubPeerDiscovery extends Emittery {
 
       const peerInfo = new PeerInfo(peerId)
       peer.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
+      log('discovered peer %j', peerId)
       this.emit('peer', peerInfo)
     } catch (err) {
       log.error(err)
