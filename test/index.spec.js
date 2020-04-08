@@ -6,16 +6,18 @@ chai.use(require('dirty-chai'))
 const { expect } = chai
 const sinon = require('sinon')
 const defer = require('p-defer')
+const pWaitFor = require('p-wait-for')
 
 const PeerID = require('peer-id')
 const PeerInfo = require('peer-info')
-const { randomBytes } = require('libp2p-crypto')
 
 const PubsubPeerDiscovery = require('../src')
-const PB = require('../src/query')
+const PB = require('../src/peer.proto')
 
 describe('Pubsub Peer Discovery', () => {
   let mockLibp2p
+  let discovery
+
   before(async () => {
     const peerInfo = await PeerInfo.create()
     peerInfo.multiaddrs.add('/ip4/127.0.0.1/tcp/9000/ws')
@@ -31,90 +33,77 @@ describe('Pubsub Peer Discovery', () => {
   })
 
   afterEach(() => {
+    discovery && discovery.stop()
     sinon.restore()
   })
 
   it('should not discover self', async () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     sinon.spy(mockLibp2p.pubsub, 'publish')
-    discovery._query()
+    discovery._broadcast()
     expect(mockLibp2p.pubsub.publish.callCount).to.equal(1)
 
-    const [topic, encodedQuery] = mockLibp2p.pubsub.publish.getCall(0).args
-    const { queryResponse } = PB.Query.decode(encodedQuery)
-    const peerId = await PeerID.createFromPubKey(queryResponse.publicKey)
+    const [topic, encodedPeer] = mockLibp2p.pubsub.publish.getCall(0).args
+    const peer = PB.Peer.decode(encodedPeer)
+    const peerId = await PeerID.createFromPubKey(peer.publicKey)
     expect(peerId.equals(mockLibp2p.peerInfo.id)).to.equal(true)
-    expect(queryResponse.addrs).to.have.length(1)
-    queryResponse.addrs.forEach((addr) => {
+    expect(peer.addrs).to.have.length(1)
+    peer.addrs.forEach((addr) => {
       expect(mockLibp2p.peerInfo.multiaddrs.has(addr)).to.equal(true)
     })
     expect(topic).to.equal(PubsubPeerDiscovery.TOPIC)
 
     const spy = sinon.spy()
     discovery.on('peer', spy)
-    await discovery._handleQuery(encodedQuery)
+    await discovery._onMessage({ data: encodedPeer })
     expect(spy.callCount).to.equal(0)
   })
 
-  it('should be able to encode/decode a query', async () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
-    const id = randomBytes(32)
+  it('should be able to encode/decode a message', async () => {
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const peerId = await PeerID.create({ bits: 512 })
     const expectedPeerInfo = new PeerInfo(peerId)
     expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8080/ws')
     expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8081/ws')
-    const query = {
-      id,
-      queryResponse: {
-        queryID: id,
-        publicKey: peerId.pubKey.bytes,
-        addrs: expectedPeerInfo.multiaddrs.toArray().map(ma => ma.buffer)
-      }
-    }
-
-    const deferred = defer()
-    const encodedQuery = PB.Query.encode(query)
-    discovery.on('peer', (p) => {
-      deferred.resolve(p)
-    })
-    await discovery._onMessage({ data: encodedQuery })
-
-    const discoveredPeer = await deferred.promise
-    expect(discoveredPeer.id.equals(expectedPeerInfo.id)).to.equal(true)
-    expectedPeerInfo.multiaddrs.forEach(addr => {
-      expect(discoveredPeer.multiaddrs.has(addr)).to.equal(true)
-    })
-  })
-
-  it('should be able to encode/decode a response', async () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
-    const id = randomBytes(32)
-    const peerId = await PeerID.create({ bits: 512 })
-    const expectedPeerInfo = new PeerInfo(peerId)
-    expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8082/ws')
-    expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8083/ws')
-
-    const queryResponse = {
-      queryID: id,
+    const peer = {
       publicKey: peerId.pubKey.bytes,
       addrs: expectedPeerInfo.multiaddrs.toArray().map(ma => ma.buffer)
     }
 
     const deferred = defer()
-    const encodedResponse = PB.QueryResponse.encode(queryResponse)
-    discovery.on('peer', (p) => deferred.resolve(p))
+    const encodedPeer = PB.Peer.encode(peer)
+    discovery.on('peer', (p) => {
+      deferred.resolve(p)
+    })
+    sinon.spy(mockLibp2p.pubsub, 'publish')
 
-    discovery._onMessage({ data: encodedResponse })
+    await discovery._onMessage({ data: encodedPeer, topicIDs: [PubsubPeerDiscovery.TOPIC] })
+
     const discoveredPeer = await deferred.promise
-
     expect(discoveredPeer.id.equals(expectedPeerInfo.id)).to.equal(true)
     expectedPeerInfo.multiaddrs.forEach(addr => {
       expect(discoveredPeer.multiaddrs.has(addr)).to.equal(true)
     })
   })
 
+  it('should not broadcast if only listening', () => {
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, listenOnly: true })
+
+    sinon.spy(mockLibp2p.pubsub, 'publish')
+    discovery.start()
+    expect(mockLibp2p.pubsub.publish.callCount).to.equal(0)
+  })
+
+  it('should broadcast after start and on interval', async () => {
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, interval: 100 })
+    sinon.spy(mockLibp2p.pubsub, 'publish')
+    await discovery.start()
+
+    await pWaitFor(() => mockLibp2p.pubsub.publish.callCount >= 2)
+  })
+
   it('should be able to add and remove peer listeners', () => {
-    const discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     const handler = () => {}
     discovery.on('peer', handler)
     expect(discovery.listenerCount('peer')).to.equal(1)
@@ -126,5 +115,30 @@ describe('Pubsub Peer Discovery', () => {
     expect(discovery.listenerCount('peer')).to.equal(1)
     discovery.removeListener('peer', handler)
     expect(discovery.listenerCount('peer')).to.equal(0)
+  })
+
+  it('should allow for customized topics', async () => {
+    // Listen to the global topic and the namespace of `myApp`
+    const topics = [`myApp.${PubsubPeerDiscovery.TOPIC}`, PubsubPeerDiscovery.TOPIC]
+    discovery = new PubsubPeerDiscovery({
+      libp2p: mockLibp2p,
+      topics
+    })
+    sinon.spy(mockLibp2p.pubsub, 'subscribe')
+    sinon.spy(mockLibp2p.pubsub, 'unsubscribe')
+
+    await discovery.start()
+    expect(mockLibp2p.pubsub.subscribe.callCount).to.equal(2)
+    topics.forEach((topic, index) => {
+      // The first arg of the matching call number should be the matching topic we sent
+      expect(mockLibp2p.pubsub.subscribe.args[index][0]).to.equal(topic)
+    })
+
+    await discovery.stop()
+    expect(mockLibp2p.pubsub.unsubscribe.callCount).to.equal(2)
+    topics.forEach((topic, index) => {
+      // The first arg of the matching call number should be the matching topic we sent
+      expect(mockLibp2p.pubsub.unsubscribe.args[index][0]).to.equal(topic)
+    })
   })
 })
