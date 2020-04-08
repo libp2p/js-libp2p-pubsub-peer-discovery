@@ -30,13 +30,13 @@ class PubsubPeerDiscovery extends Emittery {
   /**
    * @constructor
    * @param {Libp2p} param0.libp2p Our libp2p node
-   * @param {number} [param0.interval = 5000] How often (ms) we should broadcast our infos
+   * @param {number} [param0.interval = 10000] How often (ms) we should broadcast our infos
    * @param {Array<string>} [param0.topics = PubsubPeerDiscovery.TOPIC] What topics to subscribe to. If set, the default will NOT be used.
    * @param {boolean} [param0.listenOnly = false] If true, we will not broadcast our peer data
    */
   constructor ({
     libp2p,
-    interval = 5000,
+    interval = 10000,
     topics,
     listenOnly = false
   }) {
@@ -46,11 +46,13 @@ class PubsubPeerDiscovery extends Emittery {
     this._intervalId = null
     this._listenOnly = listenOnly
 
-    if (topics && topics.length) {
+    // Ensure we have topics
+    if (Array.isArray(topics) && topics.length) {
       this.topics = topics
     } else {
       this.topics = [TOPIC]
     }
+
     this.removeListener = this.off.bind(this)
   }
 
@@ -122,7 +124,7 @@ class PubsubPeerDiscovery extends Emittery {
 
       const peerInfo = new PeerInfo(peerId)
       peer.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
-      log('discovered peer %j', peerId)
+      log('discovered peer %j on %j', peerId, message.topicIDs)
       this.emit('peer', peerInfo)
     } catch (err) {
       log.error(err)

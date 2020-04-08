@@ -60,18 +60,18 @@ const PubsubPeerDiscovery = require('libp2p-pubsub-peer-discovery')
 
 // Custom topics
 const topics = [
-  `myApp.${PubsubPeerDiscovery.TOPIC}`, // It's recommended but not required to extend the global space
-  PubsubPeerDiscovery.TOPIC // Include if you want to participate in the global space
+  `myApp._peer-discovery._p2p._pubsub`, // It's recommended but not required to extend the global space
+  '_peer-discovery._p2p._pubsub' // Include if you want to participate in the global space
 ]
 
 const node = await Libp2p.create({
   modules: { /* See 'Usage in js-libp2p' for this block */ },
   config: {
     peerDiscovery: {
-      [PubsubPeerDiscovery.tag]: {
-        interval: 5000, // defaults to 5000ms
-        topics: topics, // defaults to [PubsubPeerDiscovery.TOPIC]
-        listenOnly: false // default to false
+      'PubsubPeerDiscovery': { // 'PubsubPeerDiscovery' is also available from the static property PubsubPeerDiscovery.tag
+        interval: 10000,
+        topics: topics, // defaults to ['_peer-discovery._p2p._pubsub']
+        listenOnly: false
       }
     }
   }
@@ -83,9 +83,13 @@ const node = await Libp2p.create({
 
 | Name | Type | Description |
 |------|------|-------------|
-| interval | `number` | How often (in `ms`), after initial broadcast, your node should broadcast your peer data. Default (`5000ms`)|
+| interval | `number` | How often (in `ms`), after initial broadcast, your node should broadcast your peer data. Default (`10000ms`)|
 | topics | `Array<string>` | An Array of topic strings. If set, the default topic will not be used and must be included explicitly here |
 | listenOnly | `boolean` | If true it will not broadcast peer data. Dont set this unless you have a specific reason to. Default (`false`) |
+
+#### Default Topic
+
+The default pubsub topic the module subscribes to is `_peer-discovery._p2p._pubsub`, which is also set on `PubsubPeerDiscovery.TOPIC`.
 
 ## Contribute
 
