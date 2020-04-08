@@ -72,7 +72,7 @@ class PubsubPeerDiscovery extends Emittery {
     // Broadcast immediately, and then run on interval
     this._broadcast()
 
-    // Perform a delayed publish to give pubsub time to do its thing
+    // Periodically publish our own information
     this._intervalId = setInterval(() => {
       this._broadcast()
     }, this.interval)
