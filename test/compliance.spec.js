@@ -5,17 +5,17 @@ const tests = require('libp2p-interfaces/src/peer-discovery/tests')
 const PubsubPeerDiscovery = require('../src')
 
 const PeerID = require('peer-id')
-const PeerInfo = require('peer-info')
 
 describe('compliance tests', () => {
+  let intervalId
   tests({
     async setup () {
       const peerId = await PeerID.create({ bits: 512 })
-      const peerInfo = new PeerInfo(peerId)
       await new Promise(resolve => setTimeout(resolve, 10))
-      return new PubsubPeerDiscovery({
+
+      const pubsubDiscovery = new PubsubPeerDiscovery({
         libp2p: {
-          peerInfo,
+          peerId,
           pubsub: {
             subscribe: () => {},
             unsubscribe: () => {},
@@ -23,9 +23,16 @@ describe('compliance tests', () => {
           }
         }
       })
+
+      intervalId = setInterval(() => {
+        pubsubDiscovery._onNewPeer(peerId, ['/ip4/166.10.1.2/tcp/80'])
+      }, 1000)
+
+      return pubsubDiscovery
     },
     async teardown () {
       await new Promise(resolve => setTimeout(resolve, 10))
+      clearInterval(intervalId)
     }
   })
 })

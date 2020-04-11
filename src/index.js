@@ -4,7 +4,6 @@ const Emittery = require('emittery')
 const debug = require('debug')
 
 const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
 const multiaddr = require('multiaddr')
 
 const PB = require('./peer.proto')
@@ -31,6 +30,7 @@ class PubsubPeerDiscovery extends Emittery {
    * @constructor
    * @param {Libp2p} param0.libp2p Our libp2p node
    * @param {number} [param0.interval = 10000] How often (ms) we should broadcast our infos
+   * @param {Array<Multiaddr>} param0.multiaddrs Multiaddrs used by the node to listen.
    * @param {Array<string>} [param0.topics = PubsubPeerDiscovery.TOPIC] What topics to subscribe to. If set, the default will NOT be used.
    * @param {boolean} [param0.listenOnly = false] If true, we will not broadcast our peer data
    */
@@ -38,10 +38,12 @@ class PubsubPeerDiscovery extends Emittery {
     libp2p,
     interval = 10000,
     topics,
+    multiaddrs = [],
     listenOnly = false
   }) {
     super()
     this.libp2p = libp2p
+    this.multiaddrs = multiaddrs
     this.interval = interval
     this._intervalId = null
     this._listenOnly = listenOnly
@@ -54,6 +56,7 @@ class PubsubPeerDiscovery extends Emittery {
     }
 
     this.removeListener = this.off.bind(this)
+    this.removeAllListeners = this.clearListeners.bind(this)
   }
 
   /**
@@ -97,8 +100,8 @@ class PubsubPeerDiscovery extends Emittery {
    */
   _broadcast () {
     const peer = {
-      publicKey: this.libp2p.peerInfo.id.pubKey.bytes,
-      addrs: this.libp2p.peerInfo.multiaddrs.toArray().map(ma => ma.buffer)
+      publicKey: this.libp2p.peerId.pubKey.bytes,
+      addrs: this.multiaddrs.map(ma => ma.buffer)
     }
 
     const encodedPeer = PB.Peer.encode(peer)
@@ -120,15 +123,22 @@ class PubsubPeerDiscovery extends Emittery {
       const peerId = await PeerId.createFromPubKey(peer.publicKey)
 
       // Ignore if we received our own response
-      if (peerId.equals(this.libp2p.peerInfo.id)) return
+      if (peerId.equals(this.libp2p.peerId)) return
 
-      const peerInfo = new PeerInfo(peerId)
-      peer.addrs.forEach(buffer => peerInfo.multiaddrs.add(multiaddr(buffer)))
       log('discovered peer %j on %j', peerId, message.topicIDs)
-      this.emit('peer', peerInfo)
+      this._onNewPeer(peerId, peer.addrs)
     } catch (err) {
       log.error(err)
     }
+  }
+
+  _onNewPeer (peerId, addrs) {
+    if (!this._intervalId) return
+
+    this.emit('peer', {
+      id: peerId,
+      multiaddrs: addrs.map(b => multiaddr(b))
+    })
   }
 }
 
