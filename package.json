@@ -1,6 +1,6 @@
 {
   "name": "libp2p-pubsub-peer-discovery",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A libp2p module that uses pubsub for mdns like peer discovery",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
@@ -56,6 +56,7 @@
     "protons": "^1.0.2"
   },
   "contributors": [
-    "Jacob Heun <jacobheun@gmail.com>"
+    "Jacob Heun <jacobheun@gmail.com>",
+    "Vasco Santos <vasco.santos@moxy.studio>"
   ]
 }
