@@ -3,27 +3,32 @@
 
 const chai = require('chai')
 chai.use(require('dirty-chai'))
+chai.use(require('chai-bytes'))
 const { expect } = chai
 const sinon = require('sinon')
 const defer = require('p-defer')
 const pWaitFor = require('p-wait-for')
 
+const multiaddr = require('multiaddr')
 const PeerID = require('peer-id')
-const PeerInfo = require('peer-info')
 
 const PubsubPeerDiscovery = require('../src')
 const PB = require('../src/peer.proto')
+
+const listeningMultiaddrs = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
 describe('Pubsub Peer Discovery', () => {
   let mockLibp2p
   let discovery
 
   before(async () => {
-    const peerInfo = await PeerInfo.create()
-    peerInfo.multiaddrs.add('/ip4/127.0.0.1/tcp/9000/ws')
+    const peerId = await PeerID.create()
 
     mockLibp2p = {
-      peerInfo,
+      peerId,
+      transportManager: {
+        getAddrs: () => [listeningMultiaddrs]
+      },
       pubsub: {
         subscribe: () => {},
         publish: () => {},
@@ -46,10 +51,10 @@ describe('Pubsub Peer Discovery', () => {
     const [topic, encodedPeer] = mockLibp2p.pubsub.publish.getCall(0).args
     const peer = PB.Peer.decode(encodedPeer)
     const peerId = await PeerID.createFromPubKey(peer.publicKey)
-    expect(peerId.equals(mockLibp2p.peerInfo.id)).to.equal(true)
+    expect(peerId.equals(mockLibp2p.peerId)).to.equal(true)
     expect(peer.addrs).to.have.length(1)
     peer.addrs.forEach((addr) => {
-      expect(mockLibp2p.peerInfo.multiaddrs.has(addr)).to.equal(true)
+      expect(addr).to.equalBytes(listeningMultiaddrs.buffer)
     })
     expect(topic).to.equal(PubsubPeerDiscovery.TOPIC)
 
@@ -61,13 +66,19 @@ describe('Pubsub Peer Discovery', () => {
 
   it('should be able to encode/decode a message', async () => {
     discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
+    discovery.start()
+
     const peerId = await PeerID.create({ bits: 512 })
-    const expectedPeerInfo = new PeerInfo(peerId)
-    expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8080/ws')
-    expectedPeerInfo.multiaddrs.add('/ip4/0.0.0.0/tcp/8081/ws')
+    const expectedPeerData = {
+      id: peerId,
+      multiaddrs: [
+        '/ip4/0.0.0.0/tcp/8080/ws',
+        '/ip4/0.0.0.0/tcp/8081/ws'
+      ]
+    }
     const peer = {
       publicKey: peerId.pubKey.bytes,
-      addrs: expectedPeerInfo.multiaddrs.toArray().map(ma => ma.buffer)
+      addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).buffer)
     }
 
     const deferred = defer()
@@ -80,9 +91,10 @@ describe('Pubsub Peer Discovery', () => {
     await discovery._onMessage({ data: encodedPeer, topicIDs: [PubsubPeerDiscovery.TOPIC] })
 
     const discoveredPeer = await deferred.promise
-    expect(discoveredPeer.id.equals(expectedPeerInfo.id)).to.equal(true)
-    expectedPeerInfo.multiaddrs.forEach(addr => {
-      expect(discoveredPeer.multiaddrs.has(addr)).to.equal(true)
+    expect(discoveredPeer.id.equals(expectedPeerData.id)).to.equal(true)
+
+    discoveredPeer.multiaddrs.forEach(addr => {
+      expect(expectedPeerData.multiaddrs.includes(addr.toString())).to.equal(true)
     })
   })
 

@@ -41,8 +41,9 @@
   "devDependencies": {
     "aegir": "^21.4.5",
     "chai": "^4.2.0",
+    "chai-bytes": "^0.1.2",
     "dirty-chai": "^2.0.1",
-    "libp2p-interfaces": "^0.2.7",
+    "libp2p-interfaces": "^0.3.0",
     "p-defer": "^3.0.0",
     "p-wait-for": "^3.1.0",
     "sinon": "^9.0.1"
@@ -52,7 +53,6 @@
     "emittery": "^0.6.0",
     "multiaddr": "^7.4.3",
     "peer-id": "^0.13.11",
-    "peer-info": "^0.17.5",
     "protons": "^1.0.2"
   },
   "contributors": [
