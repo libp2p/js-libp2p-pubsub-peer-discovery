@@ -15,6 +15,9 @@ describe('compliance tests', () => {
 
       const pubsubDiscovery = new PubsubPeerDiscovery({
         libp2p: {
+          transportManager: {
+            getAddrs: () => []
+          },
           peerId,
           pubsub: {
             subscribe: () => {},

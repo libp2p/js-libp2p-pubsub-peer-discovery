@@ -30,7 +30,6 @@ class PubsubPeerDiscovery extends Emittery {
    * @constructor
    * @param {Libp2p} param0.libp2p Our libp2p node
    * @param {number} [param0.interval = 10000] How often (ms) we should broadcast our infos
-   * @param {Array<Multiaddr>} param0.multiaddrs Multiaddrs used by the node to listen.
    * @param {Array<string>} [param0.topics = PubsubPeerDiscovery.TOPIC] What topics to subscribe to. If set, the default will NOT be used.
    * @param {boolean} [param0.listenOnly = false] If true, we will not broadcast our peer data
    */
@@ -38,12 +37,10 @@ class PubsubPeerDiscovery extends Emittery {
     libp2p,
     interval = 10000,
     topics,
-    multiaddrs = [],
     listenOnly = false
   }) {
     super()
     this.libp2p = libp2p
-    this.multiaddrs = multiaddrs
     this.interval = interval
     this._intervalId = null
     this._listenOnly = listenOnly
@@ -101,7 +98,7 @@ class PubsubPeerDiscovery extends Emittery {
   _broadcast () {
     const peer = {
       publicKey: this.libp2p.peerId.pubKey.bytes,
-      addrs: this.multiaddrs.map(ma => ma.buffer)
+      addrs: this.libp2p.transportManager.getAddrs().map(ma => ma.buffer)
     }
 
     const encodedPeer = PB.Peer.encode(peer)
@@ -132,6 +129,12 @@ class PubsubPeerDiscovery extends Emittery {
     }
   }
 
+  /**
+   * Emit discovered peers.
+   * @private
+   * @param {PeerId} peerId
+   * @param {Array<Buffer>} addrs
+   */
   _onNewPeer (peerId, addrs) {
     if (!this._intervalId) return
 

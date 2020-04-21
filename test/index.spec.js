@@ -26,6 +26,9 @@ describe('Pubsub Peer Discovery', () => {
 
     mockLibp2p = {
       peerId,
+      transportManager: {
+        getAddrs: () => [listeningMultiaddrs]
+      },
       pubsub: {
         subscribe: () => {},
         publish: () => {},
@@ -40,7 +43,7 @@ describe('Pubsub Peer Discovery', () => {
   })
 
   it('should not discover self', async () => {
-    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, multiaddrs: [listeningMultiaddrs] })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     sinon.spy(mockLibp2p.pubsub, 'publish')
     discovery._broadcast()
     expect(mockLibp2p.pubsub.publish.callCount).to.equal(1)
@@ -62,7 +65,7 @@ describe('Pubsub Peer Discovery', () => {
   })
 
   it('should be able to encode/decode a message', async () => {
-    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p, multiaddrs: [listeningMultiaddrs] })
+    discovery = new PubsubPeerDiscovery({ libp2p: mockLibp2p })
     discovery.start()
 
     const peerId = await PeerID.create({ bits: 512 })
