@@ -26,9 +26,7 @@ describe('Pubsub Peer Discovery', () => {
 
     mockLibp2p = {
       peerId,
-      transportManager: {
-        getAddrs: () => [listeningMultiaddrs]
-      },
+      multiaddrs: [listeningMultiaddrs],
       pubsub: {
         subscribe: () => {},
         publish: () => {},
