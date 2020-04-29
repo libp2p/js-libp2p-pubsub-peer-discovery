@@ -98,7 +98,7 @@ class PubsubPeerDiscovery extends Emittery {
   _broadcast () {
     const peer = {
       publicKey: this.libp2p.peerId.pubKey.bytes,
-      addrs: this.libp2p.transportManager.getAddrs().map(ma => ma.buffer)
+      addrs: this.libp2p.multiaddrs.map(ma => ma.buffer)
     }
 
     const encodedPeer = PB.Peer.encode(peer)
