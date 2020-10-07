@@ -1,3 +1,18 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v2.0.1...v3.0.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* add support for multiaddrs 8.0.0 ([#8](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/8)) ([af65502](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/af65502))
+
+
+### BREAKING CHANGES
+
+* emitted peer multiaddrs changed to Uint8Arrays
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v2.0.0...v2.0.1) (2020-04-29)
 
