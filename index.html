@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>libp2p-pubsub-peer-discovery 2.0.1 | Documentation</title>
+  <title>libp2p-pubsub-peer-discovery 3.0.0 | Documentation</title>
   <meta name='description' content='A libp2p module that uses pubsub for mdns like peer discovery'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>libp2p-pubsub-peer-discovery</h3>
-          <div class='mb1'><code>2.0.1</code></div>
+          <div class='mb1'><code>3.0.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -26,16 +26,6 @@
             type='text' />
           <div id='toc'>
             <ul class='list-reset h5 py1-ul'>
-              
-                
-                <li><a
-                  href='#intro'
-                  class="h5 bold black caps">
-                  Intro
-                  
-                </a>
-                
-                </li>
               
                 
                 <li><a
@@ -115,34 +105,6 @@
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='intro' class='mt0'>
-    Intro
-  </h2>
-
-  
-    <p>Installable via  <code>npm install --save libp2p-pubsub-peer-discovery</code>, it can also be used directly in the browser.</p>
-<h2>Download</h2>
-<p>The source is available for download from <a href="https://github.com/libp2p/js-libp2p-pubsub-peer-discovery.git">GitHub</a>. Alternatively, you can install using npm:</p>
-<pre class='hljs'>$ npm install --save libp2p-pubsub-peer-discovery</pre>
-<p>You can then <code>require()</code> libp2p-pubsub-peer-discovery as normal:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> libp2PPubsubPeerDiscovery = <span class="hljs-built_in">require</span>(<span class="hljs-string">'libp2p-pubsub-peer-discovery'</span>)</pre>
-<h2>In the Browser</h2>
-<p><code>libp2p-pubsub-peer-discovery</code> should work in any ECMAScript 2018 environment out of the box.</p>
-<p>Usage:</p>
-<pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
-<p>The portable versions of <code>libp2p-pubsub-peer-discovery</code>, including <code>index.js</code> and <code>index.min.js</code>, are included in the <code>/dist</code> folder. <code>libp2p-pubsub-peer-discovery</code> can also be found on <a href="https://unpkg.com">unpkg.com</a> under</p>
-<ul>
-<li><a href="https://unpkg.com/libp2p-pubsub-peer-discovery/dist/index.min.js">https://unpkg.com/libp2p-pubsub-peer-discovery/dist/index.min.js</a></li>
-<li><a href="https://unpkg.com/libp2p-pubsub-peer-discovery/dist/index.js">https://unpkg.com/libp2p-pubsub-peer-discovery/dist/index.js</a></li>
-</ul>
-
-  
-</section></div>
-          
-        
-          
           <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -153,7 +115,7 @@
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/c314f1eca594758a6422cf603a53dd543f60b6dd/src/index.js#L28-L146'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L28-L150'>
       <span>src/index.js</span>
       </a>
     
@@ -257,13 +219,13 @@
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>data</span> <code class='quiet'>(<a href="https://nodejs.org/api/buffer.html">Buffer</a>)</code>
+          <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
           
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>seqno</span> <code class='quiet'>(<a href="https://nodejs.org/api/buffer.html">Buffer</a>)</code>
+          <span class='code bold'>seqno</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
           
           
         </div>
@@ -275,13 +237,13 @@
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>signature</span> <code class='quiet'>(<a href="https://nodejs.org/api/buffer.html">Buffer</a>)</code>
+          <span class='code bold'>signature</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
           
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>Buffer</span> <code class='quiet'>(key)</code>
+          <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
           
           
         </div>
@@ -317,7 +279,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/c314f1eca594758a6422cf603a53dd543f60b6dd/src/index.js#L63-L81'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L64-L82'>
       <span>src/index.js</span>
       </a>
     
@@ -376,7 +338,7 @@ immediately, and every <code>this.interval</code></p>
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/c314f1eca594758a6422cf603a53dd543f60b6dd/src/index.js#L86-L92'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L87-L93'>
       <span>src/index.js</span>
       </a>
     
@@ -442,7 +404,7 @@ immediately, and every <code>this.interval</code></p>
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/c314f1eca594758a6422cf603a53dd543f60b6dd/src/index.js#L28-L146'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L28-L150'>
       <span>src/index.js</span>
       </a>
     
@@ -451,7 +413,7 @@ immediately, and every <code>this.interval</code></p>
 
   <p>A Peer Discovery Service that leverages libp2p Pubsub to find peers.</p>
 
-    <div class='pre p1 fill-light mt0'>new PubsubPeerDiscovery($0: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+    <div class='pre p1 fill-light mt0'>new PubsubPeerDiscovery($0: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
     <p>
@@ -533,6 +495,15 @@ immediately, and every <code>this.interval</code></p>
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    Configuration options
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -566,7 +537,7 @@ immediately, and every <code>this.interval</code></p>
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/c314f1eca594758a6422cf603a53dd543f60b6dd/src/index.js#L63-L81'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L64-L82'>
       <span>src/index.js</span>
       </a>
     
@@ -625,7 +596,7 @@ immediately, and every <code>this.interval</code></p>
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/c314f1eca594758a6422cf603a53dd543f60b6dd/src/index.js#L86-L92'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L87-L93'>
       <span>src/index.js</span>
       </a>
     
