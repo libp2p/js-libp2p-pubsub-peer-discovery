@@ -39,21 +39,21 @@
     "coverage": "nyc --reporter=text --reporter=lcov npm test"
   },
   "devDependencies": {
-    "aegir": "^21.4.5",
+    "aegir": "^27.0.0",
     "chai": "^4.2.0",
     "chai-bytes": "^0.1.2",
     "dirty-chai": "^2.0.1",
-    "libp2p-interfaces": "^0.3.0",
+    "libp2p-interfaces": "^0.6.0",
     "p-defer": "^3.0.0",
     "p-wait-for": "^3.1.0",
-    "sinon": "^9.0.1"
+    "sinon": "^9.2.0"
   },
   "dependencies": {
-    "debug": "^4.1.1",
-    "emittery": "^0.6.0",
+    "debug": "^4.2.0",
+    "emittery": "^0.7.1",
     "multiaddr": "^8.0.0",
-    "peer-id": "^0.13.11",
-    "protons": "^1.0.2"
+    "peer-id": "^0.14.2",
+    "protons": "^2.0.0"
   },
   "contributors": [
     "Jacob Heun <jacobheun@gmail.com>",
