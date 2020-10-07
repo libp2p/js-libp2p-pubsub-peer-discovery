@@ -52,7 +52,7 @@ describe('Pubsub Peer Discovery', () => {
     expect(peerId.equals(mockLibp2p.peerId)).to.equal(true)
     expect(peer.addrs).to.have.length(1)
     peer.addrs.forEach((addr) => {
-      expect(addr).to.equalBytes(listeningMultiaddrs.buffer)
+      expect(addr).to.equalBytes(listeningMultiaddrs.bytes)
     })
     expect(topic).to.equal(PubsubPeerDiscovery.TOPIC)
 
@@ -76,7 +76,7 @@ describe('Pubsub Peer Discovery', () => {
     }
     const peer = {
       publicKey: peerId.pubKey.bytes,
-      addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).buffer)
+      addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).bytes)
     }
 
     const deferred = defer()

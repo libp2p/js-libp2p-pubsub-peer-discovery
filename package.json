@@ -51,7 +51,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "emittery": "^0.6.0",
-    "multiaddr": "^7.4.3",
+    "multiaddr": "^8.0.0",
     "peer-id": "^0.13.11",
     "protons": "^1.0.2"
   },
