@@ -35,7 +35,7 @@ If you are only interested in listening to the global pubsub topic the minimal c
 const Libp2p = require('libp2p')
 const Websockets = require('libp2p-websockets')
 const MPLEX = require('libp2p-mplex')
-const SECIO = require('libp2p-secio')
+const { NOISE } = require('libp2p-noise')
 const GossipSub = require('libp2p-gossipsub')
 const PubsubPeerDiscovery = require('libp2p-pubsub-peer-discovery')
 
@@ -43,7 +43,7 @@ const node = await Libp2p.create({
   modules: {
     transport: [Websockets], // Any libp2p transport(s) can be used
     streamMuxer: [MPLEX],
-    connEncryption: [SECIO],
+    connEncryption: [NOISE],
     pubsub: GossipSub, // Can also be `libp2p-floodsub` if desired
     peerDiscovery: [PubsubPeerDiscovery]
   }
