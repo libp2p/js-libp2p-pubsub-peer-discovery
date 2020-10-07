@@ -15,23 +15,24 @@ const TOPIC = '_peer-discovery._p2p._pubsub'
 /**
  * @typedef Message
  * @property {string} from
- * @property {Buffer} data
- * @property {Buffer} seqno
+ * @property {Uint8Array} data
+ * @property {Uint8Array} seqno
  * @property {Array<string>} topicIDs
- * @property {Buffer} signature
- * @property {key} Buffer
+ * @property {Uint8Array} signature
+ * @property {Uint8Array} key
  */
 
 /**
-  * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
-  */
+ * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
+ */
 class PubsubPeerDiscovery extends Emittery {
   /**
-   * @constructor
-   * @param {Libp2p} param0.libp2p Our libp2p node
-   * @param {number} [param0.interval = 10000] How often (ms) we should broadcast our infos
-   * @param {Array<string>} [param0.topics = PubsubPeerDiscovery.TOPIC] What topics to subscribe to. If set, the default will NOT be used.
-   * @param {boolean} [param0.listenOnly = false] If true, we will not broadcast our peer data
+   * @class
+   * @param {object} options - Configuration options
+   * @param {*} options.libp2p - Our libp2p node
+   * @param {number} [options.interval = 10000] - How often (ms) we should broadcast our infos
+   * @param {Array<string>} [options.topics = PubsubPeerDiscovery.TOPIC] - What topics to subscribe to. If set, the default will NOT be used.
+   * @param {boolean} [options.listenOnly = false] - If true, we will not broadcast our peer data
    */
   constructor ({
     libp2p,
@@ -93,6 +94,7 @@ class PubsubPeerDiscovery extends Emittery {
 
   /**
    * Performs a broadcast via Pubsub publish
+   *
    * @private
    */
   _broadcast () {
@@ -110,9 +112,10 @@ class PubsubPeerDiscovery extends Emittery {
 
   /**
    * Handles incoming pubsub messages for our discovery topic
+   *
    * @private
    * @async
-   * @param {Message} message A pubsub message
+   * @param {Message} message - A pubsub message
    */
   async _onMessage (message) {
     try {
@@ -131,6 +134,7 @@ class PubsubPeerDiscovery extends Emittery {
 
   /**
    * Emit discovered peers.
+   *
    * @private
    * @param {PeerId} peerId
    * @param {Array<Buffer>} addrs
