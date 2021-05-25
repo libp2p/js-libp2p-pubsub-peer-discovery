@@ -24,12 +24,14 @@
   "homepage": "https://libp2p.io",
   "license": "MIT",
   "engines": {
-    "node": ">=10.0.0",
+    "node": ">=14.0.0",
     "npm": ">=6.0.0"
   },
   "scripts": {
     "lint": "aegir lint",
-    "build": "aegir build",
+    "build": "npm run build:proto && npm run build:proto-types && aegir build --no-types",
+    "build:proto": "pbjs -t static-module -w commonjs -r libp2p-pubsub-discovery --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/proto.js ./src/proto.proto",
+    "build:proto-types": "pbts -o src/proto.d.ts src/proto.js",
     "test": "aegir test",
     "test:node": "aegir test -t node",
     "test:browser": "aegir test -t browser",
@@ -39,21 +41,23 @@
     "coverage": "nyc --reporter=text --reporter=lcov npm test"
   },
   "devDependencies": {
-    "aegir": "^27.0.0",
-    "chai": "^4.2.0",
+    "aegir": "^33.2.0",
+    "chai": "^4.3.4",
     "chai-bytes": "^0.1.2",
     "dirty-chai": "^2.0.1",
-    "libp2p-interfaces": "^0.6.0",
+    "libp2p-interfaces": "^0.10.4",
     "p-defer": "^3.0.0",
     "p-wait-for": "^3.1.0",
-    "sinon": "^9.2.0"
+    "sinon": "^10.0.0",
+    "util": "^0.12.3"
   },
   "dependencies": {
-    "debug": "^4.2.0",
+    "debug": "^4.3.1",
     "emittery": "^0.7.1",
-    "multiaddr": "^8.0.0",
-    "peer-id": "^0.14.2",
-    "protons": "^2.0.0"
+    "multiaddr": "^9.0.1",
+    "peer-id": "^0.14.8",
+    "protobufjs": "^6.11.2",
+    "protons": "^2.0.1"
   },
   "contributors": [
     "Jacob Heun <jacobheun@gmail.com>",

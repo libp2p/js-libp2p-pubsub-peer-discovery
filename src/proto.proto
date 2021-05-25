@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Peer {
+  required bytes publicKey = 0;
+  repeated bytes addrs = 1;
+}
