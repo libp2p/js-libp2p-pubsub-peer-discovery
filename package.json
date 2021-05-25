@@ -56,8 +56,7 @@
     "emittery": "^0.7.1",
     "multiaddr": "^9.0.1",
     "peer-id": "^0.14.8",
-    "protobufjs": "^6.11.2",
-    "protons": "^2.0.1"
+    "protobufjs": "^6.11.2"
   },
   "contributors": [
     "Jacob Heun <jacobheun@gmail.com>",
