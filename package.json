@@ -30,8 +30,8 @@
   "scripts": {
     "lint": "aegir lint",
     "build": "npm run build:proto && npm run build:proto-types && aegir build --no-types",
-    "build:proto": "pbjs -t static-module -w commonjs -r libp2p-pubsub-discovery --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/proto.js ./src/proto.proto",
-    "build:proto-types": "pbts -o src/proto.d.ts src/proto.js",
+    "build:proto": "pbjs -t static-module -w commonjs -r libp2p-pubsub-discovery --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/peer.js ./src/peer.proto",
+    "build:proto-types": "pbts -o src/peer.d.ts src/peer.js",
     "test": "aegir test",
     "test:node": "aegir test -t node",
     "test:browser": "aegir test -t browser",

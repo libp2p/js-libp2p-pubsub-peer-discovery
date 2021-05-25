@@ -13,7 +13,7 @@ const { Multiaddr } = require('multiaddr')
 const PeerID = require('peer-id')
 
 const PubsubPeerDiscovery = require('../src')
-const PB = require('../src/proto.js')
+const PB = require('../src/peer.js')
 
 const listeningMultiaddrs = new Multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 

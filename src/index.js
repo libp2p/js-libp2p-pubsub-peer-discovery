@@ -6,7 +6,7 @@ const debug = require('debug')
 const PeerId = require('peer-id')
 const { Multiaddr } = require('multiaddr')
 
-const PB = require('./proto.js')
+const PB = require('./peer.js')
 
 const log = debug('libp2p:discovery:pubsub')
 log.error = debug('libp2p:discovery:pubsub:error')
