@@ -4,9 +4,9 @@ const Emittery = require('emittery')
 const debug = require('debug')
 
 const PeerId = require('peer-id')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 
-const PB = require('./peer.proto')
+const PB = require('./peer.js')
 
 const log = debug('libp2p:discovery:pubsub')
 log.error = debug('libp2p:discovery:pubsub:error')
@@ -103,7 +103,7 @@ class PubsubPeerDiscovery extends Emittery {
       addrs: this.libp2p.multiaddrs.map(ma => ma.bytes)
     }
 
-    const encodedPeer = PB.Peer.encode(peer)
+    const encodedPeer = PB.Peer.encode(peer).finish()
     for (const topic of this.topics) {
       log('broadcasting our peer data on topic %s', topic)
       this.libp2p.pubsub.publish(topic, encodedPeer)
@@ -144,7 +144,7 @@ class PubsubPeerDiscovery extends Emittery {
 
     this.emit('peer', {
       id: peerId,
-      multiaddrs: addrs.map(b => multiaddr(b))
+      multiaddrs: addrs.map(b => new Multiaddr(b))
     })
   }
 }

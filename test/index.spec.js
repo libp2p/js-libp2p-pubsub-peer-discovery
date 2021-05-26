@@ -9,13 +9,13 @@ const sinon = require('sinon')
 const defer = require('p-defer')
 const pWaitFor = require('p-wait-for')
 
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const PeerID = require('peer-id')
 
 const PubsubPeerDiscovery = require('../src')
-const PB = require('../src/peer.proto')
+const PB = require('../src/peer.js')
 
-const listeningMultiaddrs = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
+const listeningMultiaddrs = new Multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
 describe('Pubsub Peer Discovery', () => {
   let mockLibp2p
@@ -76,11 +76,11 @@ describe('Pubsub Peer Discovery', () => {
     }
     const peer = {
       publicKey: peerId.pubKey.bytes,
-      addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).bytes)
+      addrs: expectedPeerData.multiaddrs.map(ma => new Multiaddr(ma).bytes)
     }
 
     const deferred = defer()
-    const encodedPeer = PB.Peer.encode(peer)
+    const encodedPeer = PB.Peer.encode(peer).finish()
     discovery.on('peer', (p) => {
       deferred.resolve(p)
     })
