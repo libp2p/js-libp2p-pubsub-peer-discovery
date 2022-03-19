@@ -42,20 +42,14 @@
   },
   "devDependencies": {
     "aegir": "^33.2.0",
-    "chai": "^4.3.4",
-    "chai-bytes": "^0.1.2",
-    "dirty-chai": "^2.0.1",
     "libp2p-interfaces": "^0.10.4",
     "p-defer": "^3.0.0",
     "p-wait-for": "^3.1.0",
-    "sinon": "^10.0.0",
-    "util": "^0.12.3"
+    "sinon": "^10.0.0"
   },
   "dependencies": {
-    "debug": "^4.3.1",
-    "emittery": "^0.7.1",
-    "multiaddr": "^9.0.1",
-    "peer-id": "^0.14.8",
+    "@libp2p/logger": "^1.1.2",
+    "@multiformats/multiaddr": "^10.1.7",
     "protobufjs": "^6.11.2"
   },
   "contributors": [
