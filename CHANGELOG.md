@@ -1,3 +1,14 @@
+## [5.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v4.0.0...v5.0.0) (2022-03-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* this module now only has named exports and is ESM only
+
+### Features
+
+* convert to typescript ([#12](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/12)) ([bb13b35](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/bb13b357310fe3e01768c6b5ff0f455145534d9b))
+
 # [4.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v2.0.0...v4.0.0) (2021-05-26)
 
 
@@ -62,6 +73,3 @@
 ### Features
 
 * initial implementation ([#1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/1)) ([d6f7a31](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/d6f7a31))
-
-
-
