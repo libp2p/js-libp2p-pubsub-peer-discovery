@@ -77,18 +77,6 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
       return
     }
 
-    const pubsub = this.components.getPubSub()
-
-    if (pubsub == null) {
-      throw new Error('PubSub not configured')
-    }
-
-    // Subscribe to pubsub
-    for (const topic of this.topics) {
-      pubsub.subscribe(topic)
-      pubsub.addEventListener(topic, this._onMessage)
-    }
-
     // Don't broadcast if we are only listening
     if (this.listenOnly) {
       return
@@ -103,15 +91,21 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     }, this.interval)
   }
 
-  /**
-   * Unsubscribes from the discovery topic
-   */
-  stop () {
-    if (this.intervalId != null) {
-      clearInterval(this.intervalId)
-      this.intervalId = undefined
+  afterStart () {
+    const pubsub = this.components.getPubSub()
+
+    if (pubsub == null) {
+      throw new Error('PubSub not configured')
     }
 
+    // Subscribe to pubsub
+    for (const topic of this.topics) {
+      pubsub.subscribe(topic)
+      pubsub.addEventListener(topic, this._onMessage)
+    }
+  }
+
+  beforeStop () {
     const pubsub = this.components.getPubSub()
 
     if (pubsub == null) {
@@ -121,6 +115,16 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     for (const topic of this.topics) {
       pubsub.unsubscribe(topic)
       pubsub.removeEventListener(topic, this._onMessage)
+    }
+  }
+
+  /**
+   * Unsubscribes from the discovery topic
+   */
+  stop () {
+    if (this.intervalId != null) {
+      clearInterval(this.intervalId)
+      this.intervalId = undefined
     }
   }
 

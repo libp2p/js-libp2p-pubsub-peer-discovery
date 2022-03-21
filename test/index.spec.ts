@@ -38,9 +38,10 @@ describe('PubSub Peer Discovery', () => {
     components.setAddressManager(addressManager)
   })
 
-  afterEach(() => {
+  afterEach(async () => {
     if (discovery != null) {
-      discovery.stop()
+      await discovery.beforeStop()
+      await discovery.stop()
     }
 
     sinon.restore()
@@ -127,6 +128,7 @@ describe('PubSub Peer Discovery', () => {
     discovery = new PubSubPeerDiscovery({ listenOnly: true })
     discovery.init(components)
     await discovery.start()
+    await discovery.afterStart()
 
     expect(mockPubsub.dispatchEvent.callCount).to.equal(0)
   })
@@ -135,6 +137,7 @@ describe('PubSub Peer Discovery', () => {
     discovery = new PubSubPeerDiscovery({ interval: 100 })
     discovery.init(components)
     await discovery.start()
+    await discovery.afterStart()
 
     await pWaitFor(() => mockPubsub.dispatchEvent.callCount >= 2)
   })
@@ -143,6 +146,7 @@ describe('PubSub Peer Discovery', () => {
     discovery = new PubSubPeerDiscovery()
     discovery.init(components)
     await discovery.start()
+    await discovery.afterStart()
 
     const handler = () => {}
     discovery.addEventListener('peer', handler)
@@ -166,6 +170,7 @@ describe('PubSub Peer Discovery', () => {
     })
     discovery.init(components)
     await discovery.start()
+    await discovery.afterStart()
 
     expect(mockPubsub.addEventListener.callCount).to.equal(2)
     topics.forEach((topic, index) => {
@@ -173,6 +178,7 @@ describe('PubSub Peer Discovery', () => {
       expect(mockPubsub.addEventListener.args[index][0]).to.equal(topic)
     })
 
+    await discovery.beforeStop()
     await discovery.stop()
     expect(mockPubsub.removeEventListener.callCount).to.equal(2)
     topics.forEach((topic, index) => {
