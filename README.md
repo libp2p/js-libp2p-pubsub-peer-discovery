@@ -4,12 +4,9 @@
 [![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
 [![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
 [![](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
+[![Build Status](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml/badge.svg?branch=main)](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml)
 
 > A js-libp2p module that uses pubsub for interval broadcast peer discovery
-
-## Lead Maintainer
-
-[Jacob Heun](https://github.com/jacobheun).
 
 ## Design
 
@@ -31,22 +28,29 @@ This module *MUST* be used on a libp2p node that is running [Pubsub](https://git
 See the [js-libp2p configuration docs](https://github.com/libp2p/js-libp2p/blob/master/doc/CONFIGURATION.md#customizing-peer-discovery) for how to include this module as a peer discovery module in js-libp2p.
 
 If you are only interested in listening to the global pubsub topic the minimal configuration for using this with libp2p is:
-```js
-const Libp2p = require('libp2p')
-const Websockets = require('libp2p-websockets')
-const MPLEX = require('libp2p-mplex')
-const { NOISE } = require('libp2p-noise')
-const GossipSub = require('libp2p-gossipsub')
-const PubsubPeerDiscovery = require('libp2p-pubsub-peer-discovery')
 
-const node = await Libp2p.create({
-  modules: {
-    transport: [Websockets], // Any libp2p transport(s) can be used
-    streamMuxer: [MPLEX],
-    connEncryption: [NOISE],
-    pubsub: GossipSub, // Can also be `libp2p-floodsub` if desired
-    peerDiscovery: [PubsubPeerDiscovery]
-  }
+```js
+import { createLibp2p } from 'libp2p'
+import { Websockets } from '@libp2p/websockets'
+import { Mplex } from '@libp2p/mplex'
+import { Noise } from '@libp2p/noise'
+import GossipSub from 'libp2p-gossipsub'
+import { PubSubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
+
+const node = await createLibp2p({
+  transports: [
+    new Websockets()
+  ], // Any libp2p transport(s) can be used
+  streamMuxers: [
+    new Mplex()
+  ],
+  connectionEncryption: [
+    new Noise()
+  ],
+  pubsub: new GossipSub(), // Can also be `libp2p-floodsub` if desired
+  peerDiscovery: [
+    new PubSubPeerDiscovery()
+  ]
 })
 ```
 
@@ -56,7 +60,7 @@ There are a few options you can use to customize `Pubsub Peer Discovery`. You ca
 
 ```js
 // ... Other imports from above
-const PubsubPeerDiscovery = require('libp2p-pubsub-peer-discovery')
+import PubSubPeerDiscovery from '@libp2p/pubsub-peer-discovery'
 
 // Custom topics
 const topics = [
@@ -64,20 +68,17 @@ const topics = [
   '_peer-discovery._p2p._pubsub' // Include if you want to participate in the global space
 ]
 
-const node = await Libp2p.create({
-  modules: { /* See 'Usage in js-libp2p' for this block */ },
-  config: {
-    peerDiscovery: {
-      'PubsubPeerDiscovery': { // 'PubsubPeerDiscovery' is also available from the static property PubsubPeerDiscovery.tag
-        interval: 10000,
-        topics: topics, // defaults to ['_peer-discovery._p2p._pubsub']
-        listenOnly: false
-      }
-    }
-  }
+const node = await createLibp2p({
+  // ...
+  peerDiscovery: [
+    new PubSubPeerDiscovery({
+      interval: 10000,
+      topics: topics, // defaults to ['_peer-discovery._p2p._pubsub']
+      listenOnly: false
+    })
+  ]
 })
 ```
-
 
 #### Options
 
