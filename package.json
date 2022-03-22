@@ -147,7 +147,7 @@
     "protobufjs": "^6.11.2"
   },
   "devDependencies": {
-    "@libp2p/interface-compliance-tests": "^1.1.18",
+    "@libp2p/interface-compliance-tests": "^1.1.19",
     "@libp2p/peer-id-factory": "^1.0.8",
     "aegir": "^36.2.3",
     "p-defer": "^4.0.0",
