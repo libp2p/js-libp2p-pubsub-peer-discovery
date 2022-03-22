@@ -1,3 +1,10 @@
+### [5.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v5.0.0...v5.0.1) (2022-03-22)
+
+
+### Bug Fixes
+
+* do pubsub operations after start ([#13](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/13)) ([ae53cc9](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/ae53cc9a2c129a9958833a074962f6c94b749b02))
+
 ## [5.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v4.0.0...v5.0.0) (2022-03-21)
 
 
