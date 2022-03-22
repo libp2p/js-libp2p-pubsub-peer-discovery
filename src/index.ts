@@ -68,13 +68,29 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     return this.intervalId != null
   }
 
+  start () {
+
+  }
+
   /**
    * Subscribes to the discovery topic on `libp2p.pubsub` and performs a broadcast
    * immediately, and every `this.interval`
    */
-  start () {
+  afterStart () {
     if (this.intervalId != null) {
       return
+    }
+
+    const pubsub = this.components.getPubSub()
+
+    if (pubsub == null) {
+      throw new Error('PubSub not configured')
+    }
+
+    // Subscribe to pubsub
+    for (const topic of this.topics) {
+      pubsub.subscribe(topic)
+      pubsub.addEventListener(topic, this._onMessage)
     }
 
     // Don't broadcast if we are only listening
@@ -89,20 +105,6 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     this.intervalId = setInterval(() => {
       this._broadcast()
     }, this.interval)
-  }
-
-  afterStart () {
-    const pubsub = this.components.getPubSub()
-
-    if (pubsub == null) {
-      throw new Error('PubSub not configured')
-    }
-
-    // Subscribe to pubsub
-    for (const topic of this.topics) {
-      pubsub.subscribe(topic)
-      pubsub.addEventListener(topic, this._onMessage)
-    }
   }
 
   beforeStop () {

@@ -51,6 +51,7 @@ describe('PubSub Peer Discovery', () => {
     discovery = new PubSubPeerDiscovery()
     discovery.init(components)
     await discovery.start()
+    await discovery.afterStart()
 
     expect(mockPubsub.dispatchEvent.callCount).to.equal(1)
     discovery._broadcast()
@@ -87,6 +88,7 @@ describe('PubSub Peer Discovery', () => {
     discovery = new PubSubPeerDiscovery()
     discovery.init(components)
     await discovery.start()
+    await discovery.afterStart()
 
     const peerId = await createEd25519PeerId()
     const expectedPeerData: PeerData = {
