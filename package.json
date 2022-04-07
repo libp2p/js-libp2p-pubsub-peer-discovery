@@ -149,7 +149,7 @@
   "devDependencies": {
     "@libp2p/interface-compliance-tests": "^1.1.19",
     "@libp2p/peer-id-factory": "^1.0.8",
-    "aegir": "^36.2.3",
+    "aegir": "^37.0.0",
     "p-defer": "^4.0.0",
     "p-wait-for": "^4.1.0",
     "sinon": "^13.0.1",
