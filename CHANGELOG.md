@@ -1,3 +1,10 @@
+### [5.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v5.0.1...v5.0.2) (2022-05-04)
+
+
+### Bug Fixes
+
+* update interfaces and aegir ([#20](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/20)) ([d049d99](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/d049d99d9b1db23e2ddb7cce6bc527e0e107a4ea))
+
 ### [5.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v5.0.0...v5.0.1) (2022-03-22)
 
 
