@@ -1,19 +1,21 @@
 /* eslint-env mocha */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import sinon from 'sinon'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { PubSubPeerDiscovery, TOPIC } from '../src/index.js'
-import PB from '../src/peer.js'
+import * as PB from '../src/peer.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { StubbedInstance, stubInterface } from 'ts-sinon'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import { peerIdFromKeys } from '@libp2p/peer-id'
-import type { PeerData } from '@libp2p/interfaces/peer-data'
-import { AddressManager, CustomEvent } from '@libp2p/interfaces'
+import type { PeerInfo } from '@libp2p/interfaces/peer-info'
+import { CustomEvent } from '@libp2p/interfaces/events'
+import type { AddressManager } from '@libp2p/interfaces/address-manager'
+import { start, stop } from '@libp2p/interfaces/startable'
 
 const listeningMultiaddr = new Multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
@@ -40,8 +42,7 @@ describe('PubSub Peer Discovery', () => {
 
   afterEach(async () => {
     if (discovery != null) {
-      await discovery.beforeStop()
-      await discovery.stop()
+      await stop(discovery)
     }
 
     sinon.restore()
@@ -57,7 +58,7 @@ describe('PubSub Peer Discovery', () => {
     discovery._broadcast()
     expect(mockPubsub.dispatchEvent.callCount).to.equal(2)
 
-    const [event] = mockPubsub.dispatchEvent.getCall(0).args
+    const event = mockPubsub.dispatchEvent.getCall(0).args[0] as CustomEvent<Uint8Array>
 
     if (!(event.detail instanceof Uint8Array)) {
       throw new Error('Wrong argument type passed to dispatchEvent')
@@ -70,11 +71,10 @@ describe('PubSub Peer Discovery', () => {
     peer.addrs.forEach((addr) => {
       expect(addr).to.equalBytes(listeningMultiaddr.bytes)
     })
-    expect(event.type).to.equal(TOPIC)
 
     const spy = sinon.spy()
     discovery.addEventListener('peer', spy)
-    await discovery._onMessage(new CustomEvent(TOPIC, {
+    await discovery._onMessage(new CustomEvent('message', {
       detail: {
         from: components.getPeerId(),
         topic: TOPIC,
@@ -87,11 +87,10 @@ describe('PubSub Peer Discovery', () => {
   it('should be able to encode/decode a message', async () => {
     discovery = new PubSubPeerDiscovery()
     discovery.init(components)
-    await discovery.start()
-    await discovery.afterStart()
+    await start(discovery)
 
     const peerId = await createEd25519PeerId()
-    const expectedPeerData: PeerData = {
+    const expectedPeerData: PeerInfo = {
       id: peerId,
       multiaddrs: [
         new Multiaddr('/ip4/0.0.0.0/tcp/8080/ws'),
@@ -104,13 +103,13 @@ describe('PubSub Peer Discovery', () => {
       addrs: expectedPeerData.multiaddrs.map(ma => new Multiaddr(ma).bytes)
     }
 
-    const deferred = defer<PeerData>()
-    const encodedPeer = PB.Peer.encode(peer).finish()
+    const deferred = defer<PeerInfo>()
+    const encodedPeer = PB.Peer.encode(peer)
     discovery.addEventListener('peer', (evt) => {
       deferred.resolve(evt.detail)
     })
 
-    await discovery._onMessage(new CustomEvent(TOPIC, {
+    await discovery._onMessage(new CustomEvent('message', {
       detail: {
         from: components.getPeerId(),
         data: encodedPeer,
@@ -129,8 +128,7 @@ describe('PubSub Peer Discovery', () => {
   it('should not broadcast if only listening', async () => {
     discovery = new PubSubPeerDiscovery({ listenOnly: true })
     discovery.init(components)
-    await discovery.start()
-    await discovery.afterStart()
+    await start(discovery)
 
     expect(mockPubsub.dispatchEvent.callCount).to.equal(0)
   })
@@ -138,8 +136,7 @@ describe('PubSub Peer Discovery', () => {
   it('should broadcast after start and on interval', async () => {
     discovery = new PubSubPeerDiscovery({ interval: 100 })
     discovery.init(components)
-    await discovery.start()
-    await discovery.afterStart()
+    await start(discovery)
 
     await pWaitFor(() => mockPubsub.dispatchEvent.callCount >= 2)
   })
@@ -147,8 +144,7 @@ describe('PubSub Peer Discovery', () => {
   it('should be able to add and remove peer listeners', async () => {
     discovery = new PubSubPeerDiscovery()
     discovery.init(components)
-    await discovery.start()
-    await discovery.afterStart()
+    await start(discovery)
 
     const handler = () => {}
     discovery.addEventListener('peer', handler)
@@ -171,21 +167,19 @@ describe('PubSub Peer Discovery', () => {
       topics
     })
     discovery.init(components)
-    await discovery.start()
-    await discovery.afterStart()
+    await start(discovery)
 
     expect(mockPubsub.addEventListener.callCount).to.equal(2)
     topics.forEach((topic, index) => {
       // The first arg of the matching call number should be the matching topic we sent
-      expect(mockPubsub.addEventListener.args[index][0]).to.equal(topic)
+      expect(mockPubsub.addEventListener.args[index][0]).to.equal('message')
     })
 
-    await discovery.beforeStop()
-    await discovery.stop()
+    await stop(discovery)
     expect(mockPubsub.removeEventListener.callCount).to.equal(2)
     topics.forEach((topic, index) => {
       // The first arg of the matching call number should be the matching topic we sent
-      expect(mockPubsub.removeEventListener.args[index][0]).to.equal(topic)
+      expect(mockPubsub.removeEventListener.args[index][0]).to.equal('message')
     })
   })
 })
