@@ -6,7 +6,8 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { Components } from '@libp2p/interfaces/components'
 import { stubInterface } from 'ts-sinon'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
-import { AddressManager, CustomEvent } from '@libp2p/interfaces'
+import { CustomEvent } from '@libp2p/interfaces/events'
+import type { AddressManager } from '@libp2p/interfaces/address-manager'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from '../src/peer.js'
 
@@ -38,7 +39,7 @@ describe('compliance tests', () => {
           addrs: [
             new Multiaddr('/ip4/166.10.1.2/tcp/80').bytes
           ]
-        }).finish()
+        })
 
         pubsubDiscovery._onMessage(new CustomEvent(TOPIC, {
           detail: {

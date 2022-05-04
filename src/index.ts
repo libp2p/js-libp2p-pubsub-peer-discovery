@@ -1,12 +1,13 @@
 import { logger } from '@libp2p/logger'
-import { CustomEvent, EventEmitter, Startable } from '@libp2p/interfaces'
+import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
+import type { Startable } from '@libp2p/interfaces/startable'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
 import { peerIdFromKeys } from '@libp2p/peer-id'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
 import { Components, Initializable } from '@libp2p/interfaces/components'
 import type { Message } from '@libp2p/interfaces/pubsub'
-import type { PeerData } from '@libp2p/interfaces/peer-data'
+import type { PeerInfo } from '@libp2p/interfaces/peer-info'
 
 const log = logger('libp2p:discovery:pubsub')
 export const TOPIC = '_peer-discovery._p2p._pubsub'
@@ -90,7 +91,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     // Subscribe to pubsub
     for (const topic of this.topics) {
       pubsub.subscribe(topic)
-      pubsub.addEventListener(topic, this._onMessage)
+      pubsub.addEventListener('message', this._onMessage)
     }
 
     // Don't broadcast if we are only listening
@@ -116,7 +117,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
     for (const topic of this.topics) {
       pubsub.unsubscribe(topic)
-      pubsub.removeEventListener(topic, this._onMessage)
+      pubsub.removeEventListener('message', this._onMessage)
     }
   }
 
@@ -145,7 +146,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
       addrs: this.components.getAddressManager().getAddresses().map(ma => ma.bytes)
     }
 
-    const encodedPeer = PBPeer.encode(peer).finish()
+    const encodedPeer = PBPeer.encode(peer)
     const pubsub = this.components.getPubSub()
 
     if (pubsub == null) {
@@ -154,7 +155,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
     for (const topic of this.topics) {
       log('broadcasting our peer data on topic %s', topic)
-      pubsub.dispatchEvent(new CustomEvent(topic, {
+      pubsub.dispatchEvent(new CustomEvent('message', {
         detail: encodedPeer
       }))
     }
@@ -169,6 +170,11 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     }
 
     const message = event.detail
+
+    if (!this.topics.includes(message.topic)) {
+      return
+    }
+
     const peer = PBPeer.decode(message.data)
 
     void peerIdFromKeys(peer.publicKey).then(peerId => {
@@ -179,7 +185,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
       log('discovered peer %p on %s', peerId, message.topic)
 
-      this.dispatchEvent(new CustomEvent<PeerData>('peer', {
+      this.dispatchEvent(new CustomEvent<PeerInfo>('peer', {
         detail: {
           id: peerId,
           multiaddrs: peer.addrs.map(b => new Multiaddr(b)),
