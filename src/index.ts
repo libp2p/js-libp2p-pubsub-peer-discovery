@@ -8,6 +8,7 @@ import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer
 import { Components, Initializable } from '@libp2p/interfaces/components'
 import type { Message } from '@libp2p/interfaces/pubsub'
 import type { PeerInfo } from '@libp2p/interfaces/peer-info'
+import { symbol } from '@libp2p/interfaces/peer-discovery'
 
 const log = logger('libp2p:discovery:pubsub')
 export const TOPIC = '_peer-discovery._p2p._pubsub'
@@ -59,6 +60,14 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     }
 
     this._onMessage = this._onMessage.bind(this)
+  }
+
+  get [symbol] (): true {
+    return true
+  }
+
+  get [Symbol.toStringTag] () {
+    return '@libp2p/pubsub-peer-discovery'
   }
 
   init (components: Components) {
