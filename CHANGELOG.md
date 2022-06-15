@@ -1,3 +1,14 @@
+## [6.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v5.0.4...v6.0.0) (2022-06-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* uses new single-issue libp2p interface modules
+
+### Features
+
+* update libp2p interfaces ([#32](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/32)) ([b60a381](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/b60a381dc288cf23d98a2718937402263f51dcac))
+
 ### [5.0.4](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v5.0.3...v5.0.4) (2022-05-23)
 
 
