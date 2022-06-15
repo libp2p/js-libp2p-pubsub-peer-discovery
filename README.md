@@ -1,20 +1,44 @@
-# js-libp2p Pubsub Peer Discovery
+# @libp2p/pubsub-peer-discovery <!-- omit in toc -->
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
-[![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
-[![](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
-[![Build Status](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml/badge.svg?branch=main)](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml)
+[![libp2p.io](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
+[![IRC](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
+[![Discuss](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg?style=flat-square)](https://discuss.libp2p.io)
+[![codecov](https://img.shields.io/codecov/c/github/libp2p/js-libp2p-pubsub-peer-discovery.svg?style=flat-square)](https://codecov.io/gh/libp2p/js-libp2p-pubsub-peer-discovery)
+[![CI](https://img.shields.io/github/workflow/status/libp2p/js-libp2p-interfaces/test%20&%20maybe%20release/master?style=flat-square)](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml)
 
-> A js-libp2p module that uses pubsub for interval broadcast peer discovery
+> A libp2p module that uses pubsub for mdns like peer discovery
+
+## Table of contents <!-- omit in toc -->
+
+- [Install](#install)
+- [Design](#design)
+  - [Flow](#flow)
+  - [Security Considerations](#security-considerations)
+- [Usage](#usage)
+  - [Requirements](#requirements)
+  - [Usage in js-libp2p](#usage-in-js-libp2p)
+  - [Customizing Pubsub Peer Discovery](#customizing-pubsub-peer-discovery)
+    - [Options](#options)
+    - [Default Topic](#default-topic)
+- [Contribute](#contribute)
+- [License](#license)
+- [Contribution](#contribution)
+
+## Install
+
+```console
+$ npm i @libp2p/pubsub-peer-discovery
+```
 
 ## Design
 
 ### Flow
+
 - When the discovery module is started by libp2p it subscribes to the discovery pubsub topic(s)
 - It will immediately broadcast your peer data via pubsub and repeat the broadcast on the configured `interval`
 
 ### Security Considerations
+
 It is worth noting that this module does not include any message signing for broadcasts. The reason for this is that libp2p-pubsub supports message signing and enables it by default, which means the message you received has been verified to be from the originator, so we can trust that the peer information we have received is indeed from the peer who owns it. This doesn't mean the peer can't falsify its own records, but this module isn't currently concerned with that scenario.
 
 ## Usage
@@ -82,11 +106,11 @@ const node = await createLibp2p({
 
 #### Options
 
-| Name | Type | Description |
-|------|------|-------------|
-| interval | `number` | How often (in `ms`), after initial broadcast, your node should broadcast your peer data. Default (`10000ms`)|
-| topics | `Array<string>` | An Array of topic strings. If set, the default topic will not be used and must be included explicitly here |
-| listenOnly | `boolean` | If true it will not broadcast peer data. Dont set this unless you have a specific reason to. Default (`false`) |
+| Name       | Type            | Description                                                                                                    |
+| ---------- | --------------- | -------------------------------------------------------------------------------------------------------------- |
+| interval   | `number`        | How often (in `ms`), after initial broadcast, your node should broadcast your peer data. Default (`10000ms`)   |
+| topics     | `Array<string>` | An Array of topic strings. If set, the default topic will not be used and must be included explicitly here     |
+| listenOnly | `boolean`       | If true it will not broadcast peer data. Dont set this unless you have a specific reason to. Default (`false`) |
 
 #### Default Topic
 
@@ -102,4 +126,11 @@ This repository falls under the IPFS [Code of Conduct](https://github.com/ipfs/c
 
 ## License
 
-MIT - Protocol Labs 2020
+Licensed under either of
+
+- Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT ([LICENSE-MIT](LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
+
+## Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.

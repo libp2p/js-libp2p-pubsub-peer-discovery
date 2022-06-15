@@ -1,13 +1,13 @@
 /* eslint-env mocha */
 
-import tests from '@libp2p/interface-compliance-tests/peer-discovery'
+import tests from '@libp2p/interface-peer-discovery-compliance-tests'
 import { PubSubPeerDiscovery, TOPIC } from '../src/index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { Components } from '@libp2p/interfaces/components'
+import { Components } from '@libp2p/components'
 import { stubInterface } from 'ts-sinon'
-import type { PubSub } from '@libp2p/interfaces/pubsub'
+import type { PubSub } from '@libp2p/interface-pubsub'
 import { CustomEvent } from '@libp2p/interfaces/events'
-import type { AddressManager } from '@libp2p/interfaces/address-manager'
+import type { AddressManager } from '@libp2p/interface-address-manager'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from '../src/peer.js'
 
