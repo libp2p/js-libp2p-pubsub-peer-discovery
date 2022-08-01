@@ -147,7 +147,7 @@
     "@libp2p/logger": "^2.0.0",
     "@libp2p/peer-id": "^1.1.8",
     "@multiformats/multiaddr": "^10.1.7",
-    "protons-runtime": "^1.0.3"
+    "protons-runtime": "^2.0.2"
   },
   "devDependencies": {
     "@libp2p/interface-address-manager": "^1.0.1",
