@@ -60,7 +60,7 @@ describe('PubSub Peer Discovery', () => {
 
     const event = mockPubsub.dispatchEvent.getCall(0).args[0] as CustomEvent<Uint8Array>
 
-    if (!(event.detail instanceof Uint8Array)) {
+    if (!('byteLength' in event.detail)) {
       throw new Error('Wrong argument type passed to dispatchEvent')
     }
 
@@ -76,7 +76,7 @@ describe('PubSub Peer Discovery', () => {
     discovery.addEventListener('peer', spy)
     await discovery._onMessage(new CustomEvent('message', {
       detail: {
-        from: components.getPeerId(),
+        type: 'unsigned',
         topic: TOPIC,
         data: event.detail
       }
@@ -104,14 +104,14 @@ describe('PubSub Peer Discovery', () => {
     }
 
     const deferred = defer<PeerInfo>()
-    const encodedPeer = PB.Peer.encode(peer)
+    const encodedPeer = PB.Peer.encode(peer).subarray()
     discovery.addEventListener('peer', (evt) => {
       deferred.resolve(evt.detail)
     })
 
     await discovery._onMessage(new CustomEvent('message', {
       detail: {
-        from: components.getPeerId(),
+        type: 'unsigned',
         data: encodedPeer,
         topic: TOPIC
       }
