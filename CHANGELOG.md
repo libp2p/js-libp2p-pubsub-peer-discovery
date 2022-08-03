@@ -1,3 +1,15 @@
+## [6.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v6.0.0...v6.0.1) (2022-08-03)
+
+
+### Trivial Changes
+
+* update project config ([#42](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/42)) ([123099c](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/123099c289cecd21003bcea88c6d91c8499551d4))
+
+
+### Dependencies
+
+* update deps for no-copy operations ([#43](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/43)) ([90f4d38](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/90f4d38667f426c928a94f3ed08e86546c79452c))
+
 ## [6.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v5.0.4...v6.0.0) (2022-06-15)
 
 
