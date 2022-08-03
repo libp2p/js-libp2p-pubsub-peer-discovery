@@ -39,11 +39,11 @@ describe('compliance tests', () => {
           addrs: [
             new Multiaddr('/ip4/166.10.1.2/tcp/80').bytes
           ]
-        })
+        }).subarray()
 
-        pubsubDiscovery._onMessage(new CustomEvent(TOPIC, {
+        pubsubDiscovery._onMessage(new CustomEvent('message', {
           detail: {
-            from: peerId,
+            type: 'unsigned',
             topic: TOPIC,
             data: peer
           }
