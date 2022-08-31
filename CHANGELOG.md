@@ -1,3 +1,10 @@
+## [6.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v6.0.1...v6.0.2) (2022-08-31)
+
+
+### Bug Fixes
+
+* peers were not published on pubsub, updated dependencies ([#49](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/49)) ([a4b9a69](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/a4b9a699dc4920f3b2b0475e24ae2fc4d4db6a40))
+
 ## [6.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v6.0.0...v6.0.1) (2022-08-03)
 
 
