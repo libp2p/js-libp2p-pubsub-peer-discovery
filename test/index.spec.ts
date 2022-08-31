@@ -54,17 +54,17 @@ describe('PubSub Peer Discovery', () => {
     await discovery.start()
     await discovery.afterStart()
 
-    expect(mockPubsub.dispatchEvent.callCount).to.equal(1)
+    expect(mockPubsub.publish.callCount).to.equal(1)
     discovery._broadcast()
-    expect(mockPubsub.dispatchEvent.callCount).to.equal(2)
+    expect(mockPubsub.publish.callCount).to.equal(2)
 
-    const event = mockPubsub.dispatchEvent.getCall(0).args[0] as CustomEvent<Uint8Array>
+    const eventData = mockPubsub.publish.getCall(0).args[1]
 
-    if (!('byteLength' in event.detail)) {
+    if (!('byteLength' in eventData)) {
       throw new Error('Wrong argument type passed to dispatchEvent')
     }
 
-    const peer = PB.Peer.decode(event.detail)
+    const peer = PB.Peer.decode(eventData)
     const peerId = await peerIdFromKeys(peer.publicKey)
     expect(peerId.equals(components.getPeerId())).to.equal(true)
     expect(peer.addrs).to.have.length(1)
@@ -78,7 +78,7 @@ describe('PubSub Peer Discovery', () => {
       detail: {
         type: 'unsigned',
         topic: TOPIC,
-        data: event.detail
+        data: eventData
       }
     }))
     expect(spy.callCount).to.equal(0)
@@ -138,7 +138,7 @@ describe('PubSub Peer Discovery', () => {
     discovery.init(components)
     await start(discovery)
 
-    await pWaitFor(() => mockPubsub.dispatchEvent.callCount >= 2)
+    await pWaitFor(() => mockPubsub.publish.callCount >= 2)
   })
 
   it('should be able to add and remove peer listeners', async () => {
