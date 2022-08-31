@@ -164,9 +164,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
     for (const topic of this.topics) {
       log('broadcasting our peer data on topic %s', topic)
-      pubsub.dispatchEvent(new CustomEvent('message', {
-        detail: encodedPeer
-      }))
+      void pubsub.publish(topic, encodedPeer)
     }
   }
 
