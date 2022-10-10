@@ -154,7 +154,7 @@
     "protons-runtime": "^3.1.0"
   },
   "devDependencies": {
-    "@libp2p/interface-address-manager": "^1.0.2",
+    "@libp2p/interface-address-manager": "^2.0.0",
     "@libp2p/interface-peer-discovery-compliance-tests": "^1.0.1",
     "@libp2p/peer-id-factory": "^1.0.18",
     "aegir": "^37.2.0",
