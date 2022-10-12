@@ -1,3 +1,19 @@
+## [7.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v6.0.2...v7.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* modules no longer implement `Initializable` instead switching to constructor injection
+
+### Bug Fixes
+
+* remove @libp2p/components ([#60](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/60)) ([35336fb](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/35336fb409592f2d5a96b5b2864ba8d27d80b0b7)), closes [libp2p/js-libp2p-components#6](https://github.com/libp2p/js-libp2p-components/issues/6)
+
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([0072812](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0072812dd5a10bac6433c875a5d44082e82408f6))
+
 ## [6.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v6.0.1...v6.0.2) (2022-08-31)
 
 
