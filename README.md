@@ -1,10 +1,9 @@
 # @libp2p/pubsub-peer-discovery <!-- omit in toc -->
 
 [![libp2p.io](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![IRC](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
 [![Discuss](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg?style=flat-square)](https://discuss.libp2p.io)
 [![codecov](https://img.shields.io/codecov/c/github/libp2p/js-libp2p-pubsub-peer-discovery.svg?style=flat-square)](https://codecov.io/gh/libp2p/js-libp2p-pubsub-peer-discovery)
-[![CI](https://img.shields.io/github/workflow/status/libp2p/js-libp2p-interfaces/test%20&%20maybe%20release/master?style=flat-square)](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml)
+[![CI](https://img.shields.io/github/workflow/status/libp2p/js-libp2p-pubsub-peer-discovery/test%20&%20maybe%20release/master?style=flat-square)](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml)
 
 > A libp2p module that uses pubsub for mdns like peer discovery
 
@@ -22,7 +21,7 @@
     - [Default Topic](#default-topic)
 - [Contribute](#contribute)
 - [License](#license)
-- [Contribution](#contribution)
+- [Contribute](#contribute-1)
 
 ## Install
 
@@ -55,25 +54,25 @@ If you are only interested in listening to the global pubsub topic the minimal c
 
 ```js
 import { createLibp2p } from 'libp2p'
-import { Websockets } from '@libp2p/websockets'
-import { Mplex } from '@libp2p/mplex'
-import { Noise } from '@libp2p/noise'
-import GossipSub from 'libp2p-gossipsub'
-import { PubSubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
+import { websockets } from '@libp2p/websockets'
+import { mplex } from '@libp2p/mplex'
+import { noise } from '@chainsafe/libp2p-noise'
+import { gossipsub } from '@chainsafe/libp2p-gossipsub'
+import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
 
 const node = await createLibp2p({
   transports: [
-    new Websockets()
+    websockets()
   ], // Any libp2p transport(s) can be used
   streamMuxers: [
-    new Mplex()
+    mplex()
   ],
   connectionEncryption: [
-    new Noise()
+    noise()
   ],
   pubsub: new GossipSub(), // Can also be `libp2p-floodsub` if desired
   peerDiscovery: [
-    new PubSubPeerDiscovery()
+    pubsubPeerDiscovery()
   ]
 })
 ```
@@ -95,7 +94,7 @@ const topics = [
 const node = await createLibp2p({
   // ...
   peerDiscovery: [
-    new PubSubPeerDiscovery({
+    pubsubPeerDiscovery({
       interval: 10000,
       topics: topics, // defaults to ['_peer-discovery._p2p._pubsub']
       listenOnly: false
@@ -131,6 +130,6 @@ Licensed under either of
 - Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
 - MIT ([LICENSE-MIT](LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
 
-## Contribution
+## Contribute
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.

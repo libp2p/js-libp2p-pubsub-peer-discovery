@@ -1,14 +1,15 @@
 import { logger } from '@libp2p/logger'
 import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
 import { peerIdFromKeys } from '@libp2p/peer-id'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface-peer-discovery'
-import { Components, Initializable } from '@libp2p/components'
-import type { Message } from '@libp2p/interface-pubsub'
+import type { Message, PubSub } from '@libp2p/interface-pubsub'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import { symbol } from '@libp2p/interface-peer-discovery'
+import type { AddressManager } from '@libp2p/interface-address-manager'
+import type { PeerId } from '@libp2p/interface-peer-id'
 
 const log = logger('libp2p:discovery:pubsub')
 export const TOPIC = '_peer-discovery._p2p._pubsub'
@@ -30,17 +31,23 @@ export interface PubsubPeerDiscoveryInit {
   listenOnly?: boolean
 }
 
+export interface PubSubPeerDiscoveryComponents {
+  peerId: PeerId
+  pubsub: PubSub
+  addressManager: AddressManager
+}
+
 /**
  * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
  */
-export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable, Initializable {
+export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
   private readonly interval: number
   private readonly listenOnly: boolean
   private readonly topics: string[]
   private intervalId?: ReturnType<typeof setInterval>
-  private components: Components = new Components()
+  private readonly components: PubSubPeerDiscoveryComponents
 
-  constructor (init: PubsubPeerDiscoveryInit = {}) {
+  constructor (components: PubSubPeerDiscoveryComponents, init: PubsubPeerDiscoveryInit = {}) {
     super()
 
     const {
@@ -49,6 +56,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
       listenOnly
     } = init
 
+    this.components = components
     this.interval = interval ?? 10000
     this.listenOnly = listenOnly ?? false
 
@@ -70,10 +78,6 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     return '@libp2p/pubsub-peer-discovery'
   }
 
-  init (components: Components) {
-    this.components = components
-  }
-
   isStarted () {
     return this.intervalId != null
   }
@@ -91,7 +95,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
       return
     }
 
-    const pubsub = this.components.getPubSub()
+    const pubsub = this.components.pubsub
 
     if (pubsub == null) {
       throw new Error('PubSub not configured')
@@ -118,7 +122,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
   }
 
   beforeStop () {
-    const pubsub = this.components.getPubSub()
+    const pubsub = this.components.pubsub
 
     if (pubsub == null) {
       throw new Error('PubSub not configured')
@@ -144,7 +148,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
    * Performs a broadcast via Pubsub publish
    */
   _broadcast () {
-    const peerId = this.components.getPeerId()
+    const peerId = this.components.peerId
 
     if (peerId.publicKey == null) {
       throw new Error('PeerId was missing public key')
@@ -152,11 +156,11 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
     const peer = {
       publicKey: peerId.publicKey,
-      addrs: this.components.getAddressManager().getAddresses().map(ma => ma.bytes)
+      addrs: this.components.addressManager.getAddresses().map(ma => ma.bytes)
     }
 
     const encodedPeer = PBPeer.encode(peer)
-    const pubsub = this.components.getPubSub()
+    const pubsub = this.components.pubsub
 
     if (pubsub == null) {
       throw new Error('PubSub not configured')
@@ -186,7 +190,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
     void peerIdFromKeys(peer.publicKey).then(peerId => {
       // Ignore if we received our own response
-      if (peerId.equals(this.components.getPeerId())) {
+      if (peerId.equals(this.components.peerId)) {
         return
       }
 
@@ -195,7 +199,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
       this.dispatchEvent(new CustomEvent<PeerInfo>('peer', {
         detail: {
           id: peerId,
-          multiaddrs: peer.addrs.map(b => new Multiaddr(b)),
+          multiaddrs: peer.addrs.map(b => multiaddr(b)),
           protocols: []
         }
       }))
@@ -203,4 +207,8 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
       log.error(err)
     })
   }
+}
+
+export function pubsubPeerDiscovery (init: PubsubPeerDiscoveryInit = {}): (components: PubSubPeerDiscoveryComponents) => PeerDiscovery {
+  return (components: PubSubPeerDiscoveryComponents) => new PubSubPeerDiscovery(components, init)
 }

@@ -4,25 +4,25 @@ import { expect } from 'aegir/chai'
 import sinon from 'sinon'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
-import { Multiaddr } from '@multiformats/multiaddr'
-import { PubSubPeerDiscovery, TOPIC } from '../src/index.js'
+import { multiaddr } from '@multiformats/multiaddr'
+import { pubsubPeerDiscovery, PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { StubbedInstance, stubInterface } from 'ts-sinon'
 import type { PubSub } from '@libp2p/interface-pubsub'
-import { Components } from '@libp2p/components'
 import { peerIdFromKeys } from '@libp2p/peer-id'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import { CustomEvent } from '@libp2p/interfaces/events'
 import type { AddressManager } from '@libp2p/interface-address-manager'
 import { start, stop } from '@libp2p/interfaces/startable'
+import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
 
-const listeningMultiaddr = new Multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
+const listeningMultiaddr = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
 describe('PubSub Peer Discovery', () => {
   let mockPubsub: StubbedInstance<PubSub>
-  let discovery: PubSubPeerDiscovery
-  let components: Components
+  let discovery: PeerDiscovery
+  let components: PubSubPeerDiscoveryComponents
 
   beforeEach(async () => {
     const peerId = await createEd25519PeerId()
@@ -34,10 +34,11 @@ describe('PubSub Peer Discovery', () => {
       listeningMultiaddr
     ])
 
-    components = new Components()
-    components.setPeerId(peerId)
-    components.setPubSub(mockPubsub)
-    components.setAddressManager(addressManager)
+    components = {
+      peerId,
+      pubsub: mockPubsub,
+      addressManager
+    }
   })
 
   afterEach(async () => {
@@ -49,12 +50,12 @@ describe('PubSub Peer Discovery', () => {
   })
 
   it('should not discover self', async () => {
-    discovery = new PubSubPeerDiscovery()
-    discovery.init(components)
-    await discovery.start()
-    await discovery.afterStart()
+    discovery = pubsubPeerDiscovery()(components)
+    await start(discovery)
 
     expect(mockPubsub.publish.callCount).to.equal(1)
+
+    // @ts-expect-error private field
     discovery._broadcast()
     expect(mockPubsub.publish.callCount).to.equal(2)
 
@@ -66,7 +67,7 @@ describe('PubSub Peer Discovery', () => {
 
     const peer = PB.Peer.decode(eventData)
     const peerId = await peerIdFromKeys(peer.publicKey)
-    expect(peerId.equals(components.getPeerId())).to.equal(true)
+    expect(peerId.equals(components.peerId)).to.equal(true)
     expect(peer.addrs).to.have.length(1)
     peer.addrs.forEach((addr) => {
       expect(addr).to.equalBytes(listeningMultiaddr.bytes)
@@ -74,6 +75,8 @@ describe('PubSub Peer Discovery', () => {
 
     const spy = sinon.spy()
     discovery.addEventListener('peer', spy)
+
+    // @ts-expect-error private field
     await discovery._onMessage(new CustomEvent('message', {
       detail: {
         type: 'unsigned',
@@ -85,30 +88,30 @@ describe('PubSub Peer Discovery', () => {
   })
 
   it('should be able to encode/decode a message', async () => {
-    discovery = new PubSubPeerDiscovery()
-    discovery.init(components)
+    discovery = pubsubPeerDiscovery()(components)
     await start(discovery)
 
     const peerId = await createEd25519PeerId()
     const expectedPeerData: PeerInfo = {
       id: peerId,
       multiaddrs: [
-        new Multiaddr('/ip4/0.0.0.0/tcp/8080/ws'),
-        new Multiaddr('/ip4/0.0.0.0/tcp/8081/ws')
+        multiaddr('/ip4/0.0.0.0/tcp/8080/ws'),
+        multiaddr('/ip4/0.0.0.0/tcp/8081/ws')
       ],
       protocols: []
     }
     const peer = {
       publicKey: peerId.publicKey,
-      addrs: expectedPeerData.multiaddrs.map(ma => new Multiaddr(ma).bytes)
+      addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).bytes)
     }
 
     const deferred = defer<PeerInfo>()
     const encodedPeer = PB.Peer.encode(peer).subarray()
-    discovery.addEventListener('peer', (evt) => {
+    discovery.addEventListener('peer', (evt: CustomEvent<PeerInfo>) => {
       deferred.resolve(evt.detail)
     })
 
+    // @ts-expect-error private field
     await discovery._onMessage(new CustomEvent('message', {
       detail: {
         type: 'unsigned',
@@ -126,24 +129,21 @@ describe('PubSub Peer Discovery', () => {
   })
 
   it('should not broadcast if only listening', async () => {
-    discovery = new PubSubPeerDiscovery({ listenOnly: true })
-    discovery.init(components)
+    discovery = pubsubPeerDiscovery({ listenOnly: true })(components)
     await start(discovery)
 
     expect(mockPubsub.dispatchEvent.callCount).to.equal(0)
   })
 
   it('should broadcast after start and on interval', async () => {
-    discovery = new PubSubPeerDiscovery({ interval: 100 })
-    discovery.init(components)
+    discovery = pubsubPeerDiscovery({ interval: 100 })(components)
     await start(discovery)
 
     await pWaitFor(() => mockPubsub.publish.callCount >= 2)
   })
 
   it('should be able to add and remove peer listeners', async () => {
-    discovery = new PubSubPeerDiscovery()
-    discovery.init(components)
+    discovery = pubsubPeerDiscovery()(components)
     await start(discovery)
 
     const handler = () => {}
@@ -163,10 +163,7 @@ describe('PubSub Peer Discovery', () => {
     // Listen to the global topic and the namespace of `myApp`
     const topics = [`myApp.${TOPIC}`, TOPIC]
 
-    discovery = new PubSubPeerDiscovery({
-      topics
-    })
-    discovery.init(components)
+    discovery = pubsubPeerDiscovery({ topics })(components)
     await start(discovery)
 
     expect(mockPubsub.addEventListener.callCount).to.equal(2)
