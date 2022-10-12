@@ -1,14 +1,13 @@
 /* eslint-env mocha */
 
 import tests from '@libp2p/interface-peer-discovery-compliance-tests'
-import { PubSubPeerDiscovery, TOPIC } from '../src/index.js'
+import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { Components } from '@libp2p/components'
 import { stubInterface } from 'ts-sinon'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { CustomEvent } from '@libp2p/interfaces/events'
 import type { AddressManager } from '@libp2p/interface-address-manager'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from '../src/peer.js'
 
 describe('compliance tests', () => {
@@ -21,26 +20,24 @@ describe('compliance tests', () => {
 
       const addressManager = stubInterface<AddressManager>()
       addressManager.getAddresses.returns([
-        new Multiaddr(`/ip4/43.10.1.2/tcp/39832/p2p/${peerId.toString()}`)
+        multiaddr(`/ip4/43.10.1.2/tcp/39832/p2p/${peerId.toString()}`)
       ])
 
-      const pubsubDiscovery = new PubSubPeerDiscovery()
-
-      const components = new Components()
-      components.setPubSub(stubInterface<PubSub>())
-      components.setPeerId(await createEd25519PeerId())
-      components.setAddressManager(addressManager)
-
-      pubsubDiscovery.init(components)
+      const pubsubDiscovery = pubsubPeerDiscovery()({
+        pubsub: stubInterface<PubSub>(),
+        peerId: await createEd25519PeerId(),
+        addressManager
+      })
 
       intervalId = setInterval(() => {
         const peer = PBPeer.encode({
           publicKey: peerId.publicKey,
           addrs: [
-            new Multiaddr('/ip4/166.10.1.2/tcp/80').bytes
+            multiaddr('/ip4/166.10.1.2/tcp/80').bytes
           ]
         }).subarray()
 
+        // @ts-expect-error private field
         pubsubDiscovery._onMessage(new CustomEvent('message', {
           detail: {
             type: 'unsigned',

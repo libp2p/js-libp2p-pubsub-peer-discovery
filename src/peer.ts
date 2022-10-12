@@ -1,5 +1,7 @@
 /* eslint-disable import/export */
+/* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-unnecessary-boolean-literal-compare */
 
 import { encodeMessage, decodeMessage, message } from 'protons-runtime'
 import type { Uint8ArrayList } from 'uint8arraylist'
@@ -15,29 +17,25 @@ export namespace Peer {
 
   export const codec = (): Codec<Peer> => {
     if (_codec == null) {
-      _codec = message<Peer>((obj, writer, opts = {}) => {
+      _codec = message<Peer>((obj, w, opts = {}) => {
         if (opts.lengthDelimited !== false) {
-          writer.fork()
+          w.fork()
         }
 
-        if (obj.publicKey != null) {
-          writer.uint32(2)
-          writer.bytes(obj.publicKey)
-        } else {
-          throw new Error('Protocol error: required field "publicKey" was not found in object')
+        if (opts.writeDefaults === true || (obj.publicKey != null && obj.publicKey.byteLength > 0)) {
+          w.uint32(10)
+          w.bytes(obj.publicKey)
         }
 
         if (obj.addrs != null) {
           for (const value of obj.addrs) {
-            writer.uint32(10)
-            writer.bytes(value)
+            w.uint32(18)
+            w.bytes(value)
           }
-        } else {
-          throw new Error('Protocol error: required field "addrs" was not found in object')
         }
 
         if (opts.lengthDelimited !== false) {
-          writer.ldelim()
+          w.ldelim()
         }
       }, (reader, length) => {
         const obj: any = {
@@ -51,20 +49,16 @@ export namespace Peer {
           const tag = reader.uint32()
 
           switch (tag >>> 3) {
-            case 0:
+            case 1:
               obj.publicKey = reader.bytes()
               break
-            case 1:
+            case 2:
               obj.addrs.push(reader.bytes())
               break
             default:
               reader.skipType(tag & 7)
               break
           }
-        }
-
-        if (obj.publicKey == null) {
-          throw new Error('Protocol error: value for required field "publicKey" was not found in protobuf')
         }
 
         return obj
