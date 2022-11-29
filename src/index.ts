@@ -33,7 +33,7 @@ export interface PubsubPeerDiscoveryInit {
 
 export interface PubSubPeerDiscoveryComponents {
   peerId: PeerId
-  pubsub: PubSub
+  pubsub?: PubSub
   addressManager: AddressManager
 }
 
