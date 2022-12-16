@@ -25,7 +25,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -137,10 +137,11 @@
     "build": "aegir build",
     "generate": "protons ./src/peer.proto",
     "test": "aegir test",
-    "test:node": "aegir test -t node",
-    "test:chrome": "aegir test -t browser",
+    "test:node": "aegir test -t node --cov",
+    "test:chrome": "aegir test -t browser --cov",
     "test:firefox": "aegir test -t browser -- --browser firefox",
-    "release": "semantic-release"
+    "release": "aegir release",
+    "docs": "aegir docs"
   },
   "dependencies": {
     "@libp2p/interface-peer-discovery": "^1.0.1",
@@ -161,7 +162,7 @@
     "p-defer": "^4.0.0",
     "p-wait-for": "^5.0.0",
     "protons": "^6.0.0",
-    "sinon": "^14.0.0",
+    "sinon": "^15.0.1",
     "ts-sinon": "^2.0.2"
   }
 }
