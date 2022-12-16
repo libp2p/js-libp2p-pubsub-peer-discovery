@@ -1,3 +1,15 @@
+## [7.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v7.0.0...v7.0.1) (2022-12-16)
+
+
+### Bug Fixes
+
+* libp2p components type ([#65](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/65)) ([169ec0f](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/169ec0f23e74dcd64ecbad0fc335994db61f484e)), closes [#62](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/62)
+
+
+### Documentation
+
+* publish api docs ([#69](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/69)) ([dd10a1e](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/dd10a1eced365fd4325f5be3ee5660fca36b31a9))
+
 ## [7.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v6.0.2...v7.0.0) (2022-10-12)
 
 
