@@ -1,660 +1,191 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset='utf-8'>
-  <title>libp2p-pubsub-peer-discovery 3.0.0 | Documentation</title>
-  <meta name='description' content='A libp2p module that uses pubsub for mdns like peer discovery'>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' rel='stylesheet'>
-  <link href='assets/style.css' rel='stylesheet'>
-  <link href='assets/github.css' rel='stylesheet'>
-  <link href='assets/split.css' rel='stylesheet'>
-</head>
-<body class='documentation m0'>
-    <div class='flex'>
-      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
-        <div class='py1 px2'>
-          <h3 class='mb0 no-anchor'>libp2p-pubsub-peer-discovery</h3>
-          <div class='mb1'><code>3.0.0</code></div>
-          <input
-            placeholder='Filter'
-            id='filter-input'
-            class='col12 block input'
-            spellcheck='false'
-            autocapitalize='off'
-            autocorrect='off'
-            type='text' />
-          <div id='toc'>
-            <ul class='list-reset h5 py1-ul'>
-              
-                
-                <li><a
-                  href='#pubsubpeerdiscovery'
-                  class=" toggle-sibling">
-                  PubsubPeerDiscovery
-                  <span class='icon'>▸</span>
-                </a>
-                
-                <div class='toggle-target display-none'>
-                  
-                  
-                    <ul class='list-reset py1-ul pl1'>
-                      <li class='h5'><span>Instance members</span></li>
-                      
-                      <li><a
-                        href='#pubsubpeerdiscoverystart'
-                        class='regular pre-open'>
-                        #start
-                      </a></li>
-                      
-                      <li><a
-                        href='#pubsubpeerdiscoverystop'
-                        class='regular pre-open'>
-                        #stop
-                      </a></li>
-                      
-                    </ul>
-                  
-                  
-                  
-                </div>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#pubsubpeerdiscovery'
-                  class=" toggle-sibling">
-                  PubsubPeerDiscovery
-                  <span class='icon'>▸</span>
-                </a>
-                
-                <div class='toggle-target display-none'>
-                  
-                  
-                    <ul class='list-reset py1-ul pl1'>
-                      <li class='h5'><span>Instance members</span></li>
-                      
-                      <li><a
-                        href='#pubsubpeerdiscoverystart'
-                        class='regular pre-open'>
-                        #start
-                      </a></li>
-                      
-                      <li><a
-                        href='#pubsubpeerdiscoverystop'
-                        class='regular pre-open'>
-                        #stop
-                      </a></li>
-                      
-                    </ul>
-                  
-                  
-                  
-                </div>
-                
-                </li>
-              
-            </ul>
-          </div>
-          <div class='mt1 h6 quiet'>
-            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
-          </div>
-        </div>
-      </div>
-      <div id='split-right' class='relative overflow-auto height-viewport-100'>
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@libp2p/pubsub-peer-discovery - v7.0.0</title><meta name="description" content="Documentation for @libp2p/pubsub-peer-discovery - v7.0.0"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@libp2p/pubsub-peer-discovery - v7.0.0</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<h2>@libp2p/pubsub-peer-discovery - v7.0.0</h2></div>
+<div class="tsd-panel tsd-typography">
+<a href="#libp2ppubsub-peer-discovery-" id="libp2ppubsub-peer-discovery-" style="color: inherit; text-decoration: none;">
+  <h1>@libp2p/pubsub-peer-discovery <!-- omit in toc --></h1>
+</a>
+<p><a href="http://libp2p.io/"><img src="https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square" alt="libp2p.io"></a>
+<a href="https://discuss.libp2p.io"><img src="https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg?style=flat-square" alt="Discuss"></a>
+<a href="https://codecov.io/gh/libp2p/js-libp2p-pubsub-peer-discovery"><img src="https://img.shields.io/codecov/c/github/libp2p/js-libp2p-pubsub-peer-discovery.svg?style=flat-square" alt="codecov"></a>
+<a href="https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/actions/workflows/js-test-and-release.yml?query=branch%3Amaster"><img src="https://img.shields.io/github/actions/workflow/status/libp2p/js-libp2p-pubsub-peer-discovery/js-test-and-release.yml?branch=master&style=flat-square" alt="CI"></a></p>
+<blockquote>
+<p>A libp2p module that uses pubsub for mdns like peer discovery</p>
+</blockquote>
 
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='pubsubpeerdiscovery'>
-      PubsubPeerDiscovery
-    </h3>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L28-L150'>
-      <span>src/index.js</span>
-      </a>
-    
-  </div>
-  
+<a href="#table-of-contents-" id="table-of-contents-" style="color: inherit; text-decoration: none;">
+  <h2>Table of contents <!-- omit in toc --></h2>
+</a>
+<ul>
+<li><a href="#install">Install</a><ul>
+<li><a href="#browser-script-tag">Browser <code>&lt;script&gt;</code> tag</a></li>
+</ul>
+</li>
+<li><a href="#design">Design</a><ul>
+<li><a href="#flow">Flow</a></li>
+<li><a href="#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#usage-in-js-libp2p">Usage in js-libp2p</a></li>
+<li><a href="#customizing-pubsub-peer-discovery">Customizing Pubsub Peer Discovery</a><ul>
+<li><a href="#options">Options</a></li>
+<li><a href="#default-topic">Default Topic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#api-docs">API Docs</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#contribution">Contribution</a></li>
+</ul>
 
-  
-    <div class='pre p1 fill-light mt0'>new PubsubPeerDiscovery($0: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
-  
-  
-    <p>
-      Extends
-      
-        Emittery
-      
-    </p>
-  
+<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+  <h2>Install</h2>
+</a>
+<pre><code class="language-console">$ npm i @libp2p/pubsub-peer-discovery
+</code></pre>
 
-  
-  
-  
-  
-  
-  
+<a href="#browser-ltscriptgt-tag" id="browser-ltscriptgt-tag" style="color: inherit; text-decoration: none;">
+  <h3>Browser <code>&lt;script&gt;</code> tag</h3>
+</a>
+<p>Loading this module through a script tag will make it&#39;s exports available as <code>Libp2pPubsubPeerDiscovery</code> in the global namespace.</p>
+<pre><code class="language-html"><span class="hl-0">&lt;</span><span class="hl-1">script</span><span class="hl-2"> </span><span class="hl-3">src</span><span class="hl-2">=</span><span class="hl-4">&quot;https://unpkg.com/@libp2p/pubsub-peer-discovery/dist/index.min.js&quot;</span><span class="hl-0">&gt;&lt;/</span><span class="hl-1">script</span><span class="hl-0">&gt;</span>
+</code></pre>
 
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>$0</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
-	    
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.libp2p</span> <code class='quiet'>any</code>
-  </td>
-  <td class='break-word'><span></span></td>
+<a href="#design" id="design" style="color: inherit; text-decoration: none;">
+  <h2>Design</h2>
+</a>
+
+<a href="#flow" id="flow" style="color: inherit; text-decoration: none;">
+  <h3>Flow</h3>
+</a>
+<ul>
+<li>When the discovery module is started by libp2p it subscribes to the discovery pubsub topic(s)</li>
+<li>It will immediately broadcast your peer data via pubsub and repeat the broadcast on the configured <code>interval</code></li>
+</ul>
+
+<a href="#security-considerations" id="security-considerations" style="color: inherit; text-decoration: none;">
+  <h3>Security Considerations</h3>
+</a>
+<p>It is worth noting that this module does not include any message signing for broadcasts. The reason for this is that libp2p-pubsub supports message signing and enables it by default, which means the message you received has been verified to be from the originator, so we can trust that the peer information we have received is indeed from the peer who owns it. This doesn&#39;t mean the peer can&#39;t falsify its own records, but this module isn&#39;t currently concerned with that scenario.</p>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+
+<a href="#requirements" id="requirements" style="color: inherit; text-decoration: none;">
+  <h3>Requirements</h3>
+</a>
+<p>This module <em>MUST</em> be used on a libp2p node that is running <a href="https://github.com/libp2p/js-libp2p-pubsub">Pubsub</a>. If Pubsub does not exist, or is not running, this module will not work.</p>
+
+<a href="#usage-in-js-libp2p" id="usage-in-js-libp2p" style="color: inherit; text-decoration: none;">
+  <h3>Usage in js-libp2p</h3>
+</a>
+<p>See the <a href="https://github.com/libp2p/js-libp2p/blob/master/doc/CONFIGURATION.md#customizing-peer-discovery">js-libp2p configuration docs</a> for how to include this module as a peer discovery module in js-libp2p.</p>
+<p>If you are only interested in listening to the global pubsub topic the minimal configuration for using this with libp2p is:</p>
+<pre><code class="language-js"><span class="hl-5">import</span><span class="hl-6"> { </span><span class="hl-7">createLibp2p</span><span class="hl-6"> } </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;libp2p&#39;</span><br/><span class="hl-5">import</span><span class="hl-6"> { </span><span class="hl-7">websockets</span><span class="hl-6"> } </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;@libp2p/websockets&#39;</span><br/><span class="hl-5">import</span><span class="hl-6"> { </span><span class="hl-7">mplex</span><span class="hl-6"> } </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;@libp2p/mplex&#39;</span><br/><span class="hl-5">import</span><span class="hl-6"> { </span><span class="hl-7">noise</span><span class="hl-6"> } </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;@chainsafe/libp2p-noise&#39;</span><br/><span class="hl-5">import</span><span class="hl-6"> { </span><span class="hl-7">gossipsub</span><span class="hl-6"> } </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;@chainsafe/libp2p-gossipsub&#39;</span><br/><span class="hl-5">import</span><span class="hl-6"> { </span><span class="hl-7">pubsubPeerDiscovery</span><span class="hl-6"> } </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;@libp2p/pubsub-peer-discovery&#39;</span><br/><br/><span class="hl-9">const</span><span class="hl-6"> </span><span class="hl-10">node</span><span class="hl-6"> = </span><span class="hl-5">await</span><span class="hl-6"> </span><span class="hl-11">createLibp2p</span><span class="hl-6">({</span><br/><span class="hl-6">  </span><span class="hl-7">transports:</span><span class="hl-6"> [</span><br/><span class="hl-6">    </span><span class="hl-11">websockets</span><span class="hl-6">()</span><br/><span class="hl-6">  ], </span><span class="hl-12">// Any libp2p transport(s) can be used</span><br/><span class="hl-6">  </span><span class="hl-7">streamMuxers:</span><span class="hl-6"> [</span><br/><span class="hl-6">    </span><span class="hl-11">mplex</span><span class="hl-6">()</span><br/><span class="hl-6">  ],</span><br/><span class="hl-6">  </span><span class="hl-7">connectionEncryption:</span><span class="hl-6"> [</span><br/><span class="hl-6">    </span><span class="hl-11">noise</span><span class="hl-6">()</span><br/><span class="hl-6">  ],</span><br/><span class="hl-6">  </span><span class="hl-7">pubsub:</span><span class="hl-6"> </span><span class="hl-9">new</span><span class="hl-6"> </span><span class="hl-11">GossipSub</span><span class="hl-6">(), </span><span class="hl-12">// Can also be `libp2p-floodsub` if desired</span><br/><span class="hl-6">  </span><span class="hl-7">peerDiscovery:</span><span class="hl-6"> [</span><br/><span class="hl-6">    </span><span class="hl-11">pubsubPeerDiscovery</span><span class="hl-6">()</span><br/><span class="hl-6">  ]</span><br/><span class="hl-6">})</span>
+</code></pre>
+
+<a href="#customizing-pubsub-peer-discovery" id="customizing-pubsub-peer-discovery" style="color: inherit; text-decoration: none;">
+  <h3>Customizing Pubsub Peer Discovery</h3>
+</a>
+<p>There are a few options you can use to customize <code>Pubsub Peer Discovery</code>. You can see the detailed <a href="#options">options</a> below.</p>
+<pre><code class="language-js"><span class="hl-12">// ... Other imports from above</span><br/><span class="hl-5">import</span><span class="hl-6"> </span><span class="hl-7">PubSubPeerDiscovery</span><span class="hl-6"> </span><span class="hl-5">from</span><span class="hl-6"> </span><span class="hl-8">&#39;@libp2p/pubsub-peer-discovery&#39;</span><br/><br/><span class="hl-12">// Custom topics</span><br/><span class="hl-9">const</span><span class="hl-6"> </span><span class="hl-10">topics</span><span class="hl-6"> = [</span><br/><span class="hl-6">  </span><span class="hl-8">`myApp._peer-discovery._p2p._pubsub`</span><span class="hl-6">, </span><span class="hl-12">// It&#39;s recommended but not required to extend the global space</span><br/><span class="hl-6">  </span><span class="hl-8">&#39;_peer-discovery._p2p._pubsub&#39;</span><span class="hl-6"> </span><span class="hl-12">// Include if you want to participate in the global space</span><br/><span class="hl-6">]</span><br/><br/><span class="hl-9">const</span><span class="hl-6"> </span><span class="hl-10">node</span><span class="hl-6"> = </span><span class="hl-5">await</span><span class="hl-6"> </span><span class="hl-11">createLibp2p</span><span class="hl-6">({</span><br/><span class="hl-6">  </span><span class="hl-12">// ...</span><br/><span class="hl-6">  </span><span class="hl-7">peerDiscovery:</span><span class="hl-6"> [</span><br/><span class="hl-6">    </span><span class="hl-11">pubsubPeerDiscovery</span><span class="hl-6">({</span><br/><span class="hl-6">      </span><span class="hl-7">interval:</span><span class="hl-6"> </span><span class="hl-13">10000</span><span class="hl-6">,</span><br/><span class="hl-6">      </span><span class="hl-7">topics:</span><span class="hl-6"> </span><span class="hl-7">topics</span><span class="hl-6">, </span><span class="hl-12">// defaults to [&#39;_peer-discovery._p2p._pubsub&#39;]</span><br/><span class="hl-6">      </span><span class="hl-7">listenOnly:</span><span class="hl-6"> </span><span class="hl-9">false</span><br/><span class="hl-6">    })</span><br/><span class="hl-6">  ]</span><br/><span class="hl-6">})</span>
+</code></pre>
+
+<a href="#options" id="options" style="color: inherit; text-decoration: none;">
+  <h4>Options</h4>
+</a>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.interval</span> <code class='quiet'>any</code>
-  
-    (default <code>10000</code>)
-  </td>
-  <td class='break-word'><span></span></td>
+</thead>
+<tbody><tr>
+<td>interval</td>
+<td><code>number</code></td>
+<td>How often (in <code>ms</code>), after initial broadcast, your node should broadcast your peer data. Default (<code>10000ms</code>)</td>
 </tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.topics</span> <code class='quiet'>any</code>
-  </td>
-  <td class='break-word'><span></span></td>
+<tr>
+<td>topics</td>
+<td><code>Array&lt;string&gt;</code></td>
+<td>An Array of topic strings. If set, the default topic will not be used and must be included explicitly here</td>
 </tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.listenOnly</span> <code class='quiet'>any</code>
-  
-    (default <code>false</code>)
-  </td>
-  <td class='break-word'><span></span></td>
+<tr>
+<td>listenOnly</td>
+<td><code>boolean</code></td>
+<td>If true it will not broadcast peer data. Dont set this unless you have a specific reason to. Default (<code>false</code>)</td>
 </tr>
-
-
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-    </div>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>from</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>seqno</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>topicIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>signature</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>key</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a>)</code>
-          
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
-    <div class="clearfix">
-  
-    <div class='border-bottom' id='pubsubpeerdiscoverystart'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>start()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L64-L82'>
-      <span>src/index.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>Subscribes to the discovery topic on <code>libp2p.pubsub</code> and performs a broadcast
-immediately, and every <code>this.interval</code></p>
-
-    <div class='pre p1 fill-light mt0'>start()</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='pubsubpeerdiscoverystop'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>stop()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L87-L93'>
-      <span>src/index.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>Unsubscribes from the discovery topic</p>
-
-    <div class='pre p1 fill-light mt0'>stop()</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-</div>
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='pubsubpeerdiscovery'>
-      PubsubPeerDiscovery
-    </h3>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L28-L150'>
-      <span>src/index.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>A Peer Discovery Service that leverages libp2p Pubsub to find peers.</p>
-
-    <div class='pre p1 fill-light mt0'>new PubsubPeerDiscovery($0: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-  
-  
-    <p>
-      Extends
-      
-        Emittery
-      
-    </p>
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>$0</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
-	    
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.libp2p</span> <code class='quiet'>any</code>
-  </td>
-  <td class='break-word'><span></span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.interval</span> <code class='quiet'>any</code>
-  
-    (default <code>10000</code>)
-  </td>
-  <td class='break-word'><span></span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.topics</span> <code class='quiet'>any</code>
-  </td>
-  <td class='break-word'><span></span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>$0.listenOnly</span> <code class='quiet'>any</code>
-  
-    (default <code>false</code>)
-  </td>
-  <td class='break-word'><span></span></td>
-</tr>
-
-
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    Configuration options
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
-    <div class="clearfix">
-  
-    <div class='border-bottom' id='pubsubpeerdiscoverystart'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>start()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L64-L82'>
-      <span>src/index.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>Subscribes to the discovery topic on <code>libp2p.pubsub</code> and performs a broadcast
-immediately, and every <code>this.interval</code></p>
-
-    <div class='pre p1 fill-light mt0'>start()</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='pubsubpeerdiscoverystop'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>stop()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/blob/f75c3890ade3c390f9b02c54a3c4ec85b4ca6438/src/index.js#L87-L93'>
-      <span>src/index.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>Unsubscribes from the discovery topic</p>
-
-    <div class='pre p1 fill-light mt0'>stop()</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-</div>
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-      </div>
-    </div>
-  <script src='assets/anchor.js'></script>
-  <script src='assets/split.js'></script>
-  <script src='assets/site.js'></script>
-</body>
-</html>
+</tbody></table>
+
+<a href="#default-topic" id="default-topic" style="color: inherit; text-decoration: none;">
+  <h4>Default Topic</h4>
+</a>
+<p>The default pubsub topic the module subscribes to is <code>_peer-discovery._p2p._pubsub</code>, which is also set on <code>PubsubPeerDiscovery.TOPIC</code>.</p>
+
+<a href="#api-docs" id="api-docs" style="color: inherit; text-decoration: none;">
+  <h2>API Docs</h2>
+</a>
+<ul>
+<li><a href="https://libp2p.github.io/js-libp2p-pubsub-peer-discovery">https://libp2p.github.io/js-libp2p-pubsub-peer-discovery</a></li>
+</ul>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p>Licensed under either of</p>
+<ul>
+<li>Apache 2.0, (<a href="LICENSE-APACHE">LICENSE-APACHE</a> / <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>)</li>
+<li>MIT (<a href="LICENSE-MIT">LICENSE-MIT</a> / <a href="http://opensource.org/licenses/MIT">http://opensource.org/licenses/MIT</a>)</li>
+</ul>
+
+<a href="#contribution" id="contribution" style="color: inherit; text-decoration: none;">
+  <h2>Contribution</h2>
+</a>
+<p>Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.</p>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current selected"><a href="modules.html">@libp2p/pubsub-<wbr/>peer-<wbr/>discovery -<wbr/> v7.0.0</a>
+<ul></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky">
+<ul>
+<li class="tsd-kind-class"><a href="classes/PubSubPeerDiscovery.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-128-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-128-text"></path></svg>Pub<wbr/>Sub<wbr/>Peer<wbr/>Discovery</a></li>
+<li class="tsd-kind-interface"><a href="interfaces/PubSubPeerDiscoveryComponents.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-256-path"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)" id="icon-256-text"></path></svg>Pub<wbr/>Sub<wbr/>Peer<wbr/>Discovery<wbr/>Components</a></li>
+<li class="tsd-kind-interface"><a href="interfaces/PubsubPeerDiscoveryInit.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Pubsub<wbr/>Peer<wbr/>Discovery<wbr/>Init</a></li>
+<li class="tsd-kind-variable"><a href="variables/TOPIC.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-variable)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-32-path"></rect><path d="M11.106 16L8.85 7.24H9.966L11.454 13.192C11.558 13.608 11.646 13.996 11.718 14.356C11.79 14.708 11.842 14.976 11.874 15.16C11.906 14.976 11.954 14.708 12.018 14.356C12.09 13.996 12.178 13.608 12.282 13.192L13.758 7.24H14.85L12.582 16H11.106Z" fill="var(--color-text)" id="icon-32-text"></path></svg>TOPIC</a></li>
+<li class="tsd-kind-function"><a href="functions/pubsubPeerDiscovery-1.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-64-path"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)" id="icon-64-text"></path></svg>pubsub<wbr/>Peer<wbr/>Discovery</a></li></ul></nav></div></div>
+<div class="overlay"></div><script src="assets/main.js"></script></body></html>
