@@ -1,3 +1,14 @@
+## [8.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v7.0.1...v8.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* update multiformats to v11 (#70)
+
+### Bug Fixes
+
+* update multiformats to v11 ([#70](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/70)) ([c157953](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/c157953b50d926d7ac1cd8c49a95f9507713d8be))
+
 ## [7.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v7.0.0...v7.0.1) (2022-12-16)
 
 
