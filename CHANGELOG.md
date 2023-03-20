@@ -1,3 +1,17 @@
+## [8.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.0...v8.0.1) (2023-03-20)
+
+
+### Trivial Changes
+
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([740b797](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/740b79736fb380bbde531790c05362bc0f2f95d6))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([0d8e5d2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0d8e5d25d5b4fe4555c95ed2c0b9c8ad11007b82))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([1e7f66e](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/1e7f66ef854876db821874936a3402c3bc267dec))
+
+
+### Dependencies
+
+* **dev:** bump protons from 6.1.3 to 7.0.2 ([#77](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/77)) ([4eb7e64](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/4eb7e641d248cfa4c15384b2158b3084efa7446b))
+
 ## [8.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v7.0.1...v8.0.0) (2023-01-06)
 
 
