@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.1...v8.0.2) (2023-03-21)
+
+
+### Dependencies
+
+* bump @multiformats/multiaddr from 11.6.1 to 12.0.0 ([#87](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/87)) ([31ce222](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/31ce2224a6d060517f1b6ce7677a625af6b5eb78))
+
 ## [8.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.0...v8.0.1) (2023-03-20)
 
 
