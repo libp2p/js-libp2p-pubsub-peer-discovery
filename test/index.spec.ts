@@ -146,7 +146,7 @@ describe('PubSub Peer Discovery', () => {
     discovery = pubsubPeerDiscovery()(components)
     await start(discovery)
 
-    const handler = () => {}
+    const handler = (): void => {}
     discovery.addEventListener('peer', handler)
     expect(discovery.listenerCount('peer')).to.equal(1)
     discovery.removeEventListener('peer', handler)

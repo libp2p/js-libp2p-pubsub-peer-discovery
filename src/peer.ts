@@ -2,10 +2,11 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/no-unnecessary-boolean-literal-compare */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import { encodeMessage, decodeMessage, message } from 'protons-runtime'
-import type { Uint8ArrayList } from 'uint8arraylist'
 import type { Codec } from 'protons-runtime'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 export interface Peer {
   publicKey: Uint8Array
@@ -22,7 +23,7 @@ export namespace Peer {
           w.fork()
         }
 
-        if (opts.writeDefaults === true || (obj.publicKey != null && obj.publicKey.byteLength > 0)) {
+        if ((obj.publicKey != null && obj.publicKey.byteLength > 0)) {
           w.uint32(10)
           w.bytes(obj.publicKey)
         }
@@ -68,7 +69,7 @@ export namespace Peer {
     return _codec
   }
 
-  export const encode = (obj: Peer): Uint8Array => {
+  export const encode = (obj: Partial<Peer>): Uint8Array => {
     return encodeMessage(obj, Peer.codec())
   }
 

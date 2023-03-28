@@ -74,15 +74,15 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     return true
   }
 
-  get [Symbol.toStringTag] () {
+  get [Symbol.toStringTag] (): '@libp2p/pubsub-peer-discovery' {
     return '@libp2p/pubsub-peer-discovery'
   }
 
-  isStarted () {
+  isStarted (): boolean {
     return this.intervalId != null
   }
 
-  start () {
+  start (): void {
 
   }
 
@@ -90,7 +90,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
    * Subscribes to the discovery topic on `libp2p.pubsub` and performs a broadcast
    * immediately, and every `this.interval`
    */
-  afterStart () {
+  afterStart (): void {
     if (this.intervalId != null) {
       return
     }
@@ -121,7 +121,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     }, this.interval)
   }
 
-  beforeStop () {
+  beforeStop (): void {
     const pubsub = this.components.pubsub
 
     if (pubsub == null) {
@@ -137,7 +137,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
   /**
    * Unsubscribes from the discovery topic
    */
-  stop () {
+  stop (): void {
     if (this.intervalId != null) {
       clearInterval(this.intervalId)
       this.intervalId = undefined
@@ -147,7 +147,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
   /**
    * Performs a broadcast via Pubsub publish
    */
-  _broadcast () {
+  _broadcast (): void {
     const peerId = this.components.peerId
 
     if (peerId.publicKey == null) {
@@ -175,7 +175,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
   /**
    * Handles incoming pubsub messages for our discovery topic
    */
-  _onMessage (event: CustomEvent<Message>) {
+  _onMessage (event: CustomEvent<Message>): void {
     if (!this.isStarted()) {
       return
     }
