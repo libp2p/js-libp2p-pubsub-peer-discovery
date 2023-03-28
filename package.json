@@ -152,8 +152,12 @@
     "@libp2p/logger": "^2.0.1",
     "@libp2p/peer-id": "^2.0.0",
     "@multiformats/multiaddr": "^12.0.0",
+<<<<<<< HEAD
     "protons-runtime": "^5.0.0",
     "uint8arraylist": "^2.4.3"
+=======
+    "protons-runtime": "^5.0.0"
+>>>>>>> origin/dependabot/npm_and_yarn/protons-runtime-5.0.0
   },
   "devDependencies": {
     "@libp2p/interface-address-manager": "^2.0.0",
