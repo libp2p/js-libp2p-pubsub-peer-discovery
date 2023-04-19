@@ -1,3 +1,11 @@
+## [8.0.3](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.2...v8.0.3) (2023-04-19)
+
+
+### Dependencies
+
+* bump @libp2p/interface-pubsub from 3.0.7 to 4.0.0 ([#90](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/90)) ([412b338](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/412b338eb4ddf3d88c1210f10f918b24bbd490fc))
+* bump protons-runtime from 4.0.2 to 5.0.0 ([#72](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/72)) ([e75d936](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/e75d936c45e6e6e875eddace0b636943c3c87520))
+
 ## [8.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.1...v8.0.2) (2023-03-21)
 
 
