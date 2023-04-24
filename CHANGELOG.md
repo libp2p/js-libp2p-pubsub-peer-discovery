@@ -1,3 +1,10 @@
+## [8.0.4](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.3...v8.0.4) (2023-04-24)
+
+
+### Dependencies
+
+* **dev:** bump @libp2p/interface-address-manager from 2.0.5 to 3.0.0 ([#91](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/91)) ([6c74790](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/6c74790a36727462e1c777cf1b04e25a50042c7a))
+
 ## [8.0.3](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.2...v8.0.3) (2023-04-19)
 
 
