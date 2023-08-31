@@ -16,11 +16,13 @@ import { CustomEvent } from '@libp2p/interfaces/events'
 import type { AddressManager } from '@libp2p/interface-address-manager'
 import { start, stop } from '@libp2p/interfaces/startable'
 import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
+import type { Registrar } from '@libp2p/interface-internal/registrar'
 
 const listeningMultiaddr = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
 describe('PubSub Peer Discovery', () => {
   let mockPubsub: StubbedInstance<PubSub>
+  let mockRegistrar: StubbedInstance<Registrar>
   let discovery: PeerDiscovery
   let components: PubSubPeerDiscoveryComponents
 
@@ -28,6 +30,7 @@ describe('PubSub Peer Discovery', () => {
     const peerId = await createEd25519PeerId()
 
     mockPubsub = stubInterface<PubSub>()
+    mockRegistrar = stubInterface<Registrar>()
 
     const addressManager = stubInterface<AddressManager>()
     addressManager.getAddresses.returns([
@@ -37,6 +40,7 @@ describe('PubSub Peer Discovery', () => {
     components = {
       peerId,
       pubsub: mockPubsub,
+      registrar: mockRegistrar,
       addressManager
     }
   })

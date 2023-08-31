@@ -9,6 +9,7 @@ import { CustomEvent } from '@libp2p/interfaces/events'
 import type { AddressManager } from '@libp2p/interface-address-manager'
 import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from '../src/peer.js'
+import type { Registrar } from '@libp2p/interface-internal/registrar'
 
 describe('compliance tests', () => {
   let intervalId: ReturnType<typeof setInterval>
@@ -25,6 +26,7 @@ describe('compliance tests', () => {
 
       const pubsubDiscovery = pubsubPeerDiscovery()({
         pubsub: stubInterface<PubSub>(),
+        registrar: stubInterface<Registrar>(),
         peerId: await createEd25519PeerId(),
         addressManager
       })

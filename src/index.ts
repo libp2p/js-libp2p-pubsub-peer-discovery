@@ -9,6 +9,7 @@ import type { Message, PubSub } from '@libp2p/interface-pubsub'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import { symbol } from '@libp2p/interface-peer-discovery'
 import type { AddressManager } from '@libp2p/interface-address-manager'
+import type { Registrar } from '@libp2p/interface-internal/registrar'
 import type { PeerId } from '@libp2p/interface-peer-id'
 
 const log = logger('libp2p:discovery:pubsub')
@@ -35,6 +36,7 @@ export interface PubSubPeerDiscoveryComponents {
   peerId: PeerId
   pubsub?: PubSub
   addressManager: AddressManager
+  registrar: Registrar
 }
 
 /**
@@ -156,7 +158,8 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
 
     const peer = {
       publicKey: peerId.publicKey,
-      addrs: this.components.addressManager.getAddresses().map(ma => ma.bytes)
+      addrs: this.components.addressManager.getAddresses().map(ma => ma.bytes),
+      protocols: this.components.registrar.getProtocols()
     }
 
     const encodedPeer = PBPeer.encode(peer)
@@ -200,7 +203,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
         detail: {
           id: peerId,
           multiaddrs: peer.addrs.map(b => multiaddr(b)),
-          protocols: []
+          protocols: peer.protocols
         }
       }))
     }).catch(err => {

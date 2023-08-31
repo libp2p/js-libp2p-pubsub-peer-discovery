@@ -11,6 +11,7 @@ import type { Uint8ArrayList } from 'uint8arraylist'
 export interface Peer {
   publicKey: Uint8Array
   addrs: Uint8Array[]
+  protocols: string[]
 }
 
 export namespace Peer {
@@ -35,13 +36,21 @@ export namespace Peer {
           }
         }
 
+        if (obj.protocols != null) {
+          for (const value of obj.protocols) {
+            w.uint32(26)
+            w.string(value)
+          }
+        }
+
         if (opts.lengthDelimited !== false) {
           w.ldelim()
         }
       }, (reader, length) => {
         const obj: any = {
           publicKey: new Uint8Array(0),
-          addrs: []
+          addrs: [],
+          protocols: []
         }
 
         const end = length == null ? reader.len : reader.pos + length
@@ -55,6 +64,9 @@ export namespace Peer {
               break
             case 2:
               obj.addrs.push(reader.bytes())
+              break
+            case 3:
+              obj.protocols.push(reader.string())
               break
             default:
               reader.skipType(tag & 7)
