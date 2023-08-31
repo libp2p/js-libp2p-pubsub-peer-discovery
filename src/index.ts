@@ -29,6 +29,17 @@ export interface PubsubPeerDiscoveryInit {
    * If true, we will not broadcast our peer data
    */
   listenOnly?: boolean
+
+  /**
+   * If true, we will broadcast our data when we see new peers on the peer discovery topic (default: false).
+   * listenOnly must not be set to false for this capability to be applied.
+   */
+  broadcastOnSubscribe?: boolean
+
+  /**
+   * Randomized backoff in milliseconds to wait before broadcasting on seeing a new subscription (default: 0.1 * interval).
+   */
+  backoffOnSubscribe?: number
 }
 
 export interface PubSubPeerDiscoveryComponents {
@@ -44,6 +55,8 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
   private readonly interval: number
   private readonly listenOnly: boolean
   private readonly topics: string[]
+  private readonly broadcastOnSubscribe: boolean
+  private readonly backoffOnSubscribe: number
   private intervalId?: ReturnType<typeof setInterval>
   private readonly components: PubSubPeerDiscoveryComponents
 
@@ -53,12 +66,16 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     const {
       interval,
       topics,
-      listenOnly
+      listenOnly,
+      broadcastOnSubscribe,
+      backoffOnSubscribe,
     } = init
 
     this.components = components
     this.interval = interval ?? 10000
     this.listenOnly = listenOnly ?? false
+    this.broadcastOnSubscribe = broadcastOnSubscribe ?? false
+    this.backoffOnSubscribe = backoffOnSubscribe ?? this.interval * 0.1;
 
     // Ensure we have topics
     if (Array.isArray(topics) && topics.length > 0) {
@@ -110,6 +127,20 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     // Don't broadcast if we are only listening
     if (this.listenOnly) {
       return
+    }
+
+    // Broadcast on Subscribe from other peers
+    if (this.broadcastOnSubscribe) {
+      pubsub.addEventListener('subscription-change', subChangeEvt => {
+        // Check if the PubSub peer cares about PubSub Peer Discovery
+        const discoverySubs = subChangeEvt.detail.subscriptions.filter(sub => this.topics.includes(sub.topic));
+
+        // The Peer is interested in PubSub Peer Discovery -> broadcast
+        if (discoverySubs.length > 0) {
+          const backoff = this.backoffOnSubscribe * Math.random()
+          setTimeout(() => { this._broadcast() }, backoff)
+        }
+      })
     }
 
     // Broadcast immediately, and then run on interval
