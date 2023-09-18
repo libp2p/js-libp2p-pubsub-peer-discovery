@@ -1,3 +1,20 @@
+## [8.0.5](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.4...v8.0.5) (2023-09-18)
+
+
+### Trivial Changes
+
+* add or force update .github/workflows/js-test-and-release.yml ([#108](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/108)) ([a1b0c2a](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/a1b0c2af7ffbb43f8d182c31b81c321f4735174a))
+* delete templates [skip ci] ([#107](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/107)) ([fef95f6](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/fef95f68bc7b860e26892ce82c8011cbe472d99b))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([719b878](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/719b8782ee2969cef9e1bcf76a26723b844a5a99))
+* Update .github/workflows/stale.yml [skip ci] ([b036800](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/b03680001fc04803c52fdb3217afd302cc5dab03))
+* Update .github/workflows/stale.yml [skip ci] ([29d5e68](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/29d5e68118a5af937d2ae868eee231fec1cffff5))
+* Update CODEOWNERS [skip ci] ([654a2db](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/654a2db8947e5ac6113bbf7306b1b9f8a85b2ffe))
+
+
+### Dependencies
+
+* **dev:** bump aegir from 38.1.8 to 40.0.0 ([#104](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/104)) ([0342dd9](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0342dd99004b8c1b5109caa873f34faebb0e2983))
+
 ## [8.0.4](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.3...v8.0.4) (2023-04-24)
 
 
