@@ -1,4 +1,4 @@
-import { symbol } from '@libp2p/interface-peer-discovery'
+import { peerDiscovery } from '@libp2p/interface-peer-discovery'
 import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
 import { logger } from '@libp2p/logger'
 import { peerIdFromKeys } from '@libp2p/peer-id'
@@ -41,7 +41,7 @@ export interface PubSubPeerDiscoveryComponents {
  * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
  */
 export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
-  public readonly [symbol] = true
+  public readonly [peerDiscovery] = true
   public readonly [Symbol.toStringTag] = '@libp2p/pubsub-peer-discovery'
 
   private readonly interval: number
