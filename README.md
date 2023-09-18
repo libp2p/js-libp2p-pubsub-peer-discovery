@@ -55,6 +55,10 @@ It is worth noting that this module does not include any message signing for bro
 
 This module *MUST* be used on a libp2p node that is running [Pubsub](https://github.com/libp2p/js-libp2p-pubsub). If Pubsub does not exist, or is not running, this module will not work.
 
+To run a PubSub service, include a `pubsub` implementation in your services map such as `@chainsafe/libp2p-gossipsub`.
+
+For more information see the [docs on customizing libp2p](https://github.com/libp2p/js-libp2p/blob/master/doc/CONFIGURATION.md#customizing-libp2p).
+
 ### Usage in js-libp2p
 
 See the [js-libp2p configuration docs](https://github.com/libp2p/js-libp2p/blob/master/doc/CONFIGURATION.md#customizing-peer-discovery) for how to include this module as a peer discovery module in js-libp2p.
@@ -64,10 +68,11 @@ If you are only interested in listening to the global pubsub topic the minimal c
 ```js
 import { createLibp2p } from 'libp2p'
 import { websockets } from '@libp2p/websockets'
-import { mplex } from '@libp2p/mplex'
+import { yamux } from '@chainsafe/libp2p-yamux'
 import { noise } from '@chainsafe/libp2p-noise'
 import { gossipsub } from '@chainsafe/libp2p-gossipsub'
 import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
+import { identify } from 'libp2p/identify'
 
 const node = await createLibp2p({
   transports: [
@@ -77,12 +82,15 @@ const node = await createLibp2p({
     mplex()
   ],
   connectionEncryption: [
-    noise()
+    yamux()
   ],
-  pubsub: new GossipSub(), // Can also be `libp2p-floodsub` if desired
   peerDiscovery: [
     pubsubPeerDiscovery()
-  ]
+  ],
+  services: {
+    pubsub: gossipsub(),
+    identify: identify()
+  }
 })
 ```
 
