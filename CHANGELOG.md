@@ -1,3 +1,10 @@
+## [8.0.6](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.5...v8.0.6) (2023-09-18)
+
+
+### Dependencies
+
+* bump @libp2p/interface-peer-discovery from 1.1.1 to 2.0.0 ([#96](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/96)) ([4e3766a](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/4e3766a37b41a6cd9df8180858fa176455bd08a6))
+
 ## [8.0.5](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.4...v8.0.5) (2023-09-18)
 
 
