@@ -1,21 +1,21 @@
 /* eslint-env mocha */
 
+import { CustomEvent } from '@libp2p/interfaces/events'
+import { start, stop } from '@libp2p/interfaces/startable'
+import { peerIdFromKeys } from '@libp2p/peer-id'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
+import { multiaddr } from '@multiformats/multiaddr'
 import { expect } from 'aegir/chai'
-import sinon from 'sinon'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
-import { multiaddr } from '@multiformats/multiaddr'
-import { pubsubPeerDiscovery, PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
+import sinon from 'sinon'
+import { type StubbedInstance, stubInterface } from 'ts-sinon'
+import { pubsubPeerDiscovery, type PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { StubbedInstance, stubInterface } from 'ts-sinon'
-import type { PubSub } from '@libp2p/interface-pubsub'
-import { peerIdFromKeys } from '@libp2p/peer-id'
-import type { PeerInfo } from '@libp2p/interface-peer-info'
-import { CustomEvent } from '@libp2p/interfaces/events'
 import type { AddressManager } from '@libp2p/interface-address-manager'
-import { start, stop } from '@libp2p/interfaces/startable'
 import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
+import type { PeerInfo } from '@libp2p/interface-peer-info'
+import type { PubSub } from '@libp2p/interface-pubsub'
 
 const listeningMultiaddr = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 

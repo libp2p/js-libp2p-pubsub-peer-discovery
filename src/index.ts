@@ -1,15 +1,15 @@
-import { logger } from '@libp2p/logger'
+import { symbol } from '@libp2p/interface-peer-discovery'
 import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
-import type { Startable } from '@libp2p/interfaces/startable'
+import { logger } from '@libp2p/logger'
+import { peerIdFromKeys } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
-import { peerIdFromKeys } from '@libp2p/peer-id'
-import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface-peer-discovery'
-import type { Message, PubSub } from '@libp2p/interface-pubsub'
-import type { PeerInfo } from '@libp2p/interface-peer-info'
-import { symbol } from '@libp2p/interface-peer-discovery'
 import type { AddressManager } from '@libp2p/interface-address-manager'
+import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface-peer-discovery'
 import type { PeerId } from '@libp2p/interface-peer-id'
+import type { PeerInfo } from '@libp2p/interface-peer-info'
+import type { Message, PubSub } from '@libp2p/interface-pubsub'
+import type { Startable } from '@libp2p/interfaces/startable'
 
 const log = logger('libp2p:discovery:pubsub')
 export const TOPIC = '_peer-discovery._p2p._pubsub'
@@ -41,6 +41,9 @@ export interface PubSubPeerDiscoveryComponents {
  * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
  */
 export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
+  public readonly [symbol] = true
+  public readonly [Symbol.toStringTag] = '@libp2p/pubsub-peer-discovery'
+
   private readonly interval: number
   private readonly listenOnly: boolean
   private readonly topics: string[]
@@ -68,14 +71,6 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     }
 
     this._onMessage = this._onMessage.bind(this)
-  }
-
-  get [symbol] (): true {
-    return true
-  }
-
-  get [Symbol.toStringTag] (): '@libp2p/pubsub-peer-discovery' {
-    return '@libp2p/pubsub-peer-discovery'
   }
 
   isStarted (): boolean {
