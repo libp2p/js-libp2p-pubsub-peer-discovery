@@ -1,3 +1,10 @@
+## [9.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.1...v9.0.2) (2023-10-24)
+
+
+### Dependencies
+
+* **dev:** bump sinon from 16.1.3 to 17.0.0 ([#116](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/116)) ([0f8d53a](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0f8d53ad3b81e35b1433135128b0f752f57e3edb))
+
 ## [9.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.0...v9.0.1) (2023-10-24)
 
 
