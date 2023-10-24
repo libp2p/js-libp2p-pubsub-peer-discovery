@@ -1,3 +1,15 @@
+## [9.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.0...v9.0.1) (2023-10-24)
+
+
+### Trivial Changes
+
+* Update .github/pull_request_template.md [skip ci] ([e177577](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/e1775771e78b17a8b126796301605c0cda1a18f6))
+
+
+### Dependencies
+
+* **dev:** bump aegir from 40.0.13 to 41.0.5 ([#115](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/115)) ([3fa647b](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/3fa647b9dc7289a6d6b69f426e3e5ab07dfe380d))
+
 ## [9.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.6...v9.0.0) (2023-09-18)
 
 
