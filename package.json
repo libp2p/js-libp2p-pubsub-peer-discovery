@@ -141,7 +141,7 @@
     "docs": "aegir docs"
   },
   "dependencies": {
-    "@libp2p/interface": "^0.1.2",
+    "@libp2p/interface": "^1.0.1",
     "@libp2p/interface-internal": "^0.1.5",
     "@libp2p/logger": "^3.0.2",
     "@libp2p/peer-id": "^3.0.2",
