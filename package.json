@@ -143,7 +143,7 @@
   "dependencies": {
     "@libp2p/interface": "^0.1.2",
     "@libp2p/interface-internal": "^0.1.5",
-    "@libp2p/logger": "^3.0.2",
+    "@libp2p/logger": "^4.0.1",
     "@libp2p/peer-id": "^3.0.2",
     "@multiformats/multiaddr": "^12.0.0",
     "protons-runtime": "^5.0.0",
