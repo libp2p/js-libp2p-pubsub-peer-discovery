@@ -1,3 +1,10 @@
+## [10.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.0...v10.0.1) (2023-12-04)
+
+
+### Bug Fixes
+
+* only emit event when there are topic peers ([#129](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/129)) ([dfe4fed](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/dfe4fedfb7a1598e684dae51dbe8446980797765))
+
 ## [10.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.2...v10.0.0) (2023-12-04)
 
 
