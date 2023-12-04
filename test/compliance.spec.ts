@@ -5,7 +5,7 @@ import tests from '@libp2p/interface-compliance-tests/peer-discovery'
 import { defaultLogger } from '@libp2p/logger'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { multiaddr } from '@multiformats/multiaddr'
-import { stubInterface } from 'ts-sinon'
+import { stubInterface } from 'sinon-ts'
 import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import { Peer as PBPeer } from '../src/peer.js'
 import type { PubSub } from '@libp2p/interface'
@@ -17,6 +17,7 @@ describe('compliance tests', () => {
   tests({
     async setup () {
       const peerId = await createEd25519PeerId()
+      const subscriber = await createEd25519PeerId()
       await new Promise(resolve => setTimeout(resolve, 10))
 
       const addressManager = stubInterface<AddressManager>()
@@ -25,15 +26,21 @@ describe('compliance tests', () => {
       ])
 
       const pubsubDiscovery = pubsubPeerDiscovery()({
-        pubsub: stubInterface<PubSub>(),
-        peerId: await createEd25519PeerId(),
+        pubsub: stubInterface<PubSub>({
+          getSubscribers: () => {
+            return [
+              subscriber
+            ]
+          }
+        }),
+        peerId,
         addressManager,
         logger: defaultLogger()
       })
 
       intervalId = setInterval(() => {
         const peer = PBPeer.encode({
-          publicKey: peerId.publicKey,
+          publicKey: subscriber.publicKey,
           addrs: [
             multiaddr('/ip4/166.10.1.2/tcp/80').bytes
           ]
