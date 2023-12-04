@@ -37,10 +37,10 @@
  *     websockets()
  *   ], // Any libp2p transport(s) can be used
  *   streamMuxers: [
- *     mplex()
+ *     yamux()
  *   ],
  *   connectionEncryption: [
- *     yamux()
+ *     noise()
  *   ],
  *   peerDiscovery: [
  *     pubsubPeerDiscovery()
