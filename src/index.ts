@@ -1,17 +1,10 @@
-import { CustomEvent, EventEmitter } from '@libp2p/interface/events'
-import { peerDiscovery } from '@libp2p/interface/peer-discovery'
-import { logger } from '@libp2p/logger'
+import { TypedEventEmitter, peerDiscoverySymbol } from '@libp2p/interface'
 import { peerIdFromKeys } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
-import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface/peer-discovery'
-import type { PeerId } from '@libp2p/interface/peer-id'
-import type { PeerInfo } from '@libp2p/interface/peer-info'
-import type { Message, PubSub } from '@libp2p/interface/pubsub'
-import type { Startable } from '@libp2p/interface/startable'
-import type { AddressManager } from '@libp2p/interface-internal/address-manager'
+import type { PeerDiscovery, PeerDiscoveryEvents, PeerId, PeerInfo, Message, PubSub, Startable, ComponentLogger, Logger } from '@libp2p/interface'
+import type { AddressManager } from '@libp2p/interface-internal'
 
-const log = logger('libp2p:discovery:pubsub')
 export const TOPIC = '_peer-discovery._p2p._pubsub'
 
 export interface PubsubPeerDiscoveryInit {
@@ -35,13 +28,14 @@ export interface PubSubPeerDiscoveryComponents {
   peerId: PeerId
   pubsub?: PubSub
   addressManager: AddressManager
+  logger: ComponentLogger
 }
 
 /**
  * A Peer Discovery Service that leverages libp2p Pubsub to find peers.
  */
-export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
-  public readonly [peerDiscovery] = true
+export class PubSubPeerDiscovery extends TypedEventEmitter<PeerDiscoveryEvents> implements PeerDiscovery, Startable {
+  public readonly [peerDiscoverySymbol] = true
   public readonly [Symbol.toStringTag] = '@libp2p/pubsub-peer-discovery'
 
   private readonly interval: number
@@ -49,6 +43,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
   private readonly topics: string[]
   private intervalId?: ReturnType<typeof setInterval>
   private readonly components: PubSubPeerDiscoveryComponents
+  private readonly log: Logger
 
   constructor (components: PubSubPeerDiscoveryComponents, init: PubsubPeerDiscoveryInit = {}) {
     super()
@@ -62,6 +57,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     this.components = components
     this.interval = interval ?? 10000
     this.listenOnly = listenOnly ?? false
+    this.log = components.logger.forComponent('libp2p:discovery:pubsub')
 
     // Ensure we have topics
     if (Array.isArray(topics) && topics.length > 0) {
@@ -162,7 +158,7 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
     }
 
     for (const topic of this.topics) {
-      log('broadcasting our peer data on topic %s', topic)
+      this.log('broadcasting our peer data on topic %s', topic)
       void pubsub.publish(topic, encodedPeer)
     }
   }
@@ -189,17 +185,16 @@ export class PubSubPeerDiscovery extends EventEmitter<PeerDiscoveryEvents> imple
         return
       }
 
-      log('discovered peer %p on %s', peerId, message.topic)
+      this.log('discovered peer %p on %s', peerId, message.topic)
 
-      this.dispatchEvent(new CustomEvent<PeerInfo>('peer', {
+      this.safeDispatchEvent<PeerInfo>('peer', {
         detail: {
           id: peerId,
-          multiaddrs: peer.addrs.map(b => multiaddr(b)),
-          protocols: []
+          multiaddrs: peer.addrs.map(b => multiaddr(b))
         }
-      }))
+      })
     }).catch(err => {
-      log.error(err)
+      this.log.error(err)
     })
   }
 }

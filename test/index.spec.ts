@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
-import { CustomEvent } from '@libp2p/interface/events'
-import { start, stop } from '@libp2p/interface/startable'
+import { CustomEvent, start, stop } from '@libp2p/interface'
+import { defaultLogger } from '@libp2p/logger'
 import { peerIdFromKeys } from '@libp2p/peer-id'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { multiaddr } from '@multiformats/multiaddr'
@@ -12,10 +12,8 @@ import sinon from 'sinon'
 import { type StubbedInstance, stubInterface } from 'ts-sinon'
 import { pubsubPeerDiscovery, type PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
-import type { PeerDiscovery } from '@libp2p/interface/peer-discovery'
-import type { PeerInfo } from '@libp2p/interface/peer-info'
-import type { PubSub } from '@libp2p/interface/pubsub'
-import type { AddressManager } from '@libp2p/interface-internal/address-manager'
+import type { PeerDiscovery, PeerInfo, PubSub } from '@libp2p/interface'
+import type { AddressManager } from '@libp2p/interface-internal'
 
 const listeningMultiaddr = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
@@ -37,7 +35,8 @@ describe('PubSub Peer Discovery', () => {
     components = {
       peerId,
       pubsub: mockPubsub,
-      addressManager
+      addressManager,
+      logger: defaultLogger()
     }
   })
 
@@ -97,8 +96,7 @@ describe('PubSub Peer Discovery', () => {
       multiaddrs: [
         multiaddr('/ip4/0.0.0.0/tcp/8080/ws'),
         multiaddr('/ip4/0.0.0.0/tcp/8081/ws')
-      ],
-      protocols: []
+      ]
     }
     const peer = {
       publicKey: peerId.publicKey,
