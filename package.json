@@ -11,6 +11,10 @@
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "keywords": [
     "discovery",
     "libp2p",
