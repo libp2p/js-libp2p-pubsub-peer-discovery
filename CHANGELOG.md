@@ -1,3 +1,25 @@
+## [10.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.2...v10.0.0) (2023-12-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* requires libp2p v1 or later
+
+### Trivial Changes
+
+* rename master to main ([c5eed68](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/c5eed68ef9cd29ed4df856f764b6915f10f35c31))
+* update config ([de388ea](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/de388ea8f5f44b5a223a13d6134357470adb3118))
+
+
+### Documentation
+
+* update example ([d04c6a5](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/d04c6a54ead1ac38a51f8555185d22f2bafee5cc))
+
+
+### Dependencies
+
+* update to libp2p v1 deps ([#128](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/128)) ([9d0da56](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/9d0da565f70e9b2403251c9d11dfc0b9b52babfa))
+
 ## [9.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.1...v9.0.2) (2023-10-24)
 
 
