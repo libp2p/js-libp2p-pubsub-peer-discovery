@@ -9,7 +9,7 @@ import { expect } from 'aegir/chai'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import sinon from 'sinon'
-import { type StubbedInstance, stubInterface } from 'ts-sinon'
+import { type StubbedInstance, stubInterface } from 'sinon-ts'
 import { pubsubPeerDiscovery, type PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
 import type { PeerDiscovery, PeerInfo, PubSub } from '@libp2p/interface'
@@ -24,8 +24,15 @@ describe('PubSub Peer Discovery', () => {
 
   beforeEach(async () => {
     const peerId = await createEd25519PeerId()
+    const subscriber = await createEd25519PeerId()
 
-    mockPubsub = stubInterface<PubSub>()
+    mockPubsub = stubInterface<PubSub>({
+      getSubscribers: () => {
+        return [
+          subscriber
+        ]
+      }
+    })
 
     const addressManager = stubInterface<AddressManager>()
     addressManager.getAddresses.returns([
