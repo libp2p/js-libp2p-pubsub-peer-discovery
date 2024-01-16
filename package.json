@@ -158,7 +158,7 @@
     "@libp2p/logger": "^4.0.1",
     "@libp2p/peer-id-factory": "^4.0.0",
     "@types/sinon": "^17.0.2",
-    "aegir": "^41.1.14",
+    "aegir": "^42.2.0",
     "p-defer": "^4.0.0",
     "p-wait-for": "^5.0.2",
     "protons": "^7.3.1",
