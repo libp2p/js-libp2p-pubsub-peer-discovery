@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 
-import { CustomEvent, start, stop } from '@libp2p/interface'
+import { generateKeyPair, publicKeyFromProtobuf, publicKeyToProtobuf } from '@libp2p/crypto/keys'
+import { start, stop } from '@libp2p/interface'
 import { defaultLogger } from '@libp2p/logger'
-import { peerIdFromKeys } from '@libp2p/peer-id'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
+import { peerIdFromPrivateKey, peerIdFromPublicKey } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
 import { expect } from 'aegir/chai'
 import defer from 'p-defer'
@@ -23,8 +23,11 @@ describe('PubSub Peer Discovery', () => {
   let components: PubSubPeerDiscoveryComponents
 
   beforeEach(async () => {
-    const peerId = await createEd25519PeerId()
-    const subscriber = await createEd25519PeerId()
+    const privateKey = await generateKeyPair('Ed25519')
+    const peerId = peerIdFromPrivateKey(privateKey)
+
+    const subscriberPrivateKey = await generateKeyPair('Ed25519')
+    const subscriber = peerIdFromPrivateKey(subscriberPrivateKey)
 
     mockPubsub = stubInterface<PubSub>({
       getSubscribers: () => {
@@ -72,7 +75,7 @@ describe('PubSub Peer Discovery', () => {
     }
 
     const peer = PB.Peer.decode(eventData)
-    const peerId = await peerIdFromKeys(peer.publicKey)
+    const peerId = peerIdFromPublicKey(publicKeyFromProtobuf(peer.publicKey))
     expect(peerId.equals(components.peerId)).to.equal(true)
     expect(peer.addrs).to.have.length(1)
     peer.addrs.forEach((addr) => {
@@ -97,7 +100,8 @@ describe('PubSub Peer Discovery', () => {
     discovery = pubsubPeerDiscovery()(components)
     await start(discovery)
 
-    const peerId = await createEd25519PeerId()
+    const privateKey = await generateKeyPair('Ed25519')
+    const peerId = peerIdFromPrivateKey(privateKey)
     const expectedPeerData: PeerInfo = {
       id: peerId,
       multiaddrs: [
@@ -106,7 +110,7 @@ describe('PubSub Peer Discovery', () => {
       ]
     }
     const peer = {
-      publicKey: peerId.publicKey,
+      publicKey: publicKeyToProtobuf(peerId.publicKey),
       addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).bytes)
     }
 
