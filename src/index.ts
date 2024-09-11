@@ -91,8 +91,9 @@
  * The default pubsub topic the module subscribes to is `_peer-discovery._p2p._pubsub`, which is also set on `PubsubPeerDiscovery.TOPIC`.
  */
 
+import { publicKeyFromProtobuf, publicKeyToProtobuf } from '@libp2p/crypto/keys'
 import { TypedEventEmitter, peerDiscoverySymbol } from '@libp2p/interface'
-import { peerIdFromKeys } from '@libp2p/peer-id'
+import { peerIdFromPublicKey } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
 import type { PeerDiscovery, PeerDiscoveryEvents, PeerId, PeerInfo, Message, PubSub, Startable, ComponentLogger, Logger } from '@libp2p/interface'
@@ -239,7 +240,7 @@ export class PubSubPeerDiscovery extends TypedEventEmitter<PeerDiscoveryEvents> 
     }
 
     const peer = {
-      publicKey: peerId.publicKey,
+      publicKey: publicKeyToProtobuf(peerId.publicKey),
       addrs: this.components.addressManager.getAddresses().map(ma => ma.bytes)
     }
 
@@ -275,9 +276,11 @@ export class PubSubPeerDiscovery extends TypedEventEmitter<PeerDiscoveryEvents> 
       return
     }
 
-    const peer = PBPeer.decode(message.data)
+    try {
+      const peer = PBPeer.decode(message.data)
+      const publicKey = publicKeyFromProtobuf(peer.publicKey)
+      const peerId = peerIdFromPublicKey(publicKey)
 
-    void peerIdFromKeys(peer.publicKey).then(peerId => {
       // Ignore if we received our own response
       if (peerId.equals(this.components.peerId)) {
         return
@@ -291,9 +294,9 @@ export class PubSubPeerDiscovery extends TypedEventEmitter<PeerDiscoveryEvents> 
           multiaddrs: peer.addrs.map(b => multiaddr(b))
         }
       })
-    }).catch(err => {
-      this.log.error(err)
-    })
+    } catch (err) {
+      this.log.error('error handling incoming message', err)
+    }
   }
 }
 
