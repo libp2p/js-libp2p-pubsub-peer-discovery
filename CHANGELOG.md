@@ -1,3 +1,13 @@
+## [11.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.3...v11.0.0) (2024-09-11)
+
+### ⚠ BREAKING CHANGES
+
+* requires libp2p@2.x.x
+
+### Bug Fixes
+
+* update libp2p deps to 2.x.x ([#146](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/146)) ([2579986](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/2579986729653f63ac0587061463919edc77b729))
+
 ## [10.0.3](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.2...v10.0.3) (2024-09-11)
 
 
