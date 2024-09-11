@@ -1,3 +1,21 @@
+## [10.0.3](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.2...v10.0.3) (2024-09-11)
+
+
+### Trivial Changes
+
+* Update .github/pull_request_template.md [skip ci] ([877be59](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/877be59556b8d6ed75cd23eb622f84fe91aa4dc5))
+* Update .github/pull_request_template.md [skip ci] ([8ad191b](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/8ad191be731bd3a468f549c39033661db1b57f45))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([39754ad](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/39754adb09cbec65c5f861b1ce696645caa33def))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([8e49d5d](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/8e49d5dba364c68103ef58c993b9e6dbdc82a2b5))
+* Update .github/workflows/stale.yml [skip ci] ([0effa29](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0effa298447a19666423658fccf414ccb3734636))
+* Update .github/workflows/stale.yml [skip ci] ([3462224](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/3462224da372dd50c6b3ab3318b9f120f90ea3ba))
+
+
+### Dependencies
+
+* bump uint8arrays from 4.0.10 to 5.0.2 ([#142](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/142)) ([ce9e82d](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/ce9e82d95188ddb913d2c3c245e51c4a731b3f11))
+* **dev:** bump aegir from 41.3.5 to 42.2.5 ([#144](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/144)) ([eb5dd7d](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/eb5dd7dcd48f823585df0e9f35755f4ced21995f))
+
 ## [10.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.1...v10.0.2) (2023-12-04)
 
 
