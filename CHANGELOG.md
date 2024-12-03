@@ -1,3 +1,10 @@
+## [11.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v11.0.0...v11.0.1) (2024-12-03)
+
+### Dependencies
+
+* **dev:** bump aegir from 44.1.4 to 45.0.7 ([#152](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/152)) ([c3eeff2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/c3eeff2e0e07bceb681875311335e89bd1ceb415))
+* **dev:** bump sinon from 18.0.1 to 19.0.2 ([#148](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/148)) ([1ff8808](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/1ff88089523ed411bdbaa02fca0b561a81457e44))
+
 ## [11.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.3...v11.0.0) (2024-09-11)
 
 ### ⚠ BREAKING CHANGES
