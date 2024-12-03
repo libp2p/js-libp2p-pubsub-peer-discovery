@@ -158,7 +158,7 @@
     "@libp2p/interface-compliance-tests": "^6.0.0",
     "@libp2p/logger": "^5.0.0",
     "@types/sinon": "^17.0.3",
-    "aegir": "^44.1.1",
+    "aegir": "^45.0.7",
     "p-defer": "^4.0.0",
     "p-wait-for": "^5.0.2",
     "protons": "^7.3.1",
