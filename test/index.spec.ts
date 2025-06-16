@@ -9,11 +9,13 @@ import { expect } from 'aegir/chai'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import sinon from 'sinon'
-import { type StubbedInstance, stubInterface } from 'sinon-ts'
-import { pubsubPeerDiscovery, type PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
+import { stubInterface } from 'sinon-ts'
+import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
+import type { PubSubPeerDiscoveryComponents } from '../src/index.js'
 import type { PeerDiscovery, PeerInfo, PubSub } from '@libp2p/interface'
 import type { AddressManager } from '@libp2p/interface-internal'
+import type { StubbedInstance } from 'sinon-ts'
 
 const listeningMultiaddr = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
