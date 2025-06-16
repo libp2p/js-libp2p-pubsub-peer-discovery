@@ -1,3 +1,128 @@
+## [11.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v11.0.0...v11.0.1) (2024-12-03)
+
+### Dependencies
+
+* **dev:** bump aegir from 44.1.4 to 45.0.7 ([#152](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/152)) ([c3eeff2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/c3eeff2e0e07bceb681875311335e89bd1ceb415))
+* **dev:** bump sinon from 18.0.1 to 19.0.2 ([#148](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/148)) ([1ff8808](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/1ff88089523ed411bdbaa02fca0b561a81457e44))
+
+## [11.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.3...v11.0.0) (2024-09-11)
+
+### ⚠ BREAKING CHANGES
+
+* requires libp2p@2.x.x
+
+### Bug Fixes
+
+* update libp2p deps to 2.x.x ([#146](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/146)) ([2579986](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/2579986729653f63ac0587061463919edc77b729))
+
+## [10.0.3](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.2...v10.0.3) (2024-09-11)
+
+
+### Trivial Changes
+
+* Update .github/pull_request_template.md [skip ci] ([877be59](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/877be59556b8d6ed75cd23eb622f84fe91aa4dc5))
+* Update .github/pull_request_template.md [skip ci] ([8ad191b](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/8ad191be731bd3a468f549c39033661db1b57f45))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([39754ad](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/39754adb09cbec65c5f861b1ce696645caa33def))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([8e49d5d](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/8e49d5dba364c68103ef58c993b9e6dbdc82a2b5))
+* Update .github/workflows/stale.yml [skip ci] ([0effa29](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0effa298447a19666423658fccf414ccb3734636))
+* Update .github/workflows/stale.yml [skip ci] ([3462224](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/3462224da372dd50c6b3ab3318b9f120f90ea3ba))
+
+
+### Dependencies
+
+* bump uint8arrays from 4.0.10 to 5.0.2 ([#142](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/142)) ([ce9e82d](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/ce9e82d95188ddb913d2c3c245e51c4a731b3f11))
+* **dev:** bump aegir from 41.3.5 to 42.2.5 ([#144](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/144)) ([eb5dd7d](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/eb5dd7dcd48f823585df0e9f35755f4ced21995f))
+
+## [10.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.1...v10.0.2) (2023-12-04)
+
+
+### Bug Fixes
+
+* update deps ([#130](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/130)) ([3470fc5](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/3470fc502bf4f5e4572453eb84903e6a833ad811))
+
+## [10.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v10.0.0...v10.0.1) (2023-12-04)
+
+
+### Bug Fixes
+
+* only emit event when there are topic peers ([#129](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/129)) ([dfe4fed](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/dfe4fedfb7a1598e684dae51dbe8446980797765))
+
+## [10.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.2...v10.0.0) (2023-12-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* requires libp2p v1 or later
+
+### Trivial Changes
+
+* rename master to main ([c5eed68](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/c5eed68ef9cd29ed4df856f764b6915f10f35c31))
+* update config ([de388ea](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/de388ea8f5f44b5a223a13d6134357470adb3118))
+
+
+### Documentation
+
+* update example ([d04c6a5](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/d04c6a54ead1ac38a51f8555185d22f2bafee5cc))
+
+
+### Dependencies
+
+* update to libp2p v1 deps ([#128](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/128)) ([9d0da56](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/9d0da565f70e9b2403251c9d11dfc0b9b52babfa))
+
+## [9.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.1...v9.0.2) (2023-10-24)
+
+
+### Dependencies
+
+* **dev:** bump sinon from 16.1.3 to 17.0.0 ([#116](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/116)) ([0f8d53a](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0f8d53ad3b81e35b1433135128b0f752f57e3edb))
+
+## [9.0.1](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v9.0.0...v9.0.1) (2023-10-24)
+
+
+### Trivial Changes
+
+* Update .github/pull_request_template.md [skip ci] ([e177577](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/e1775771e78b17a8b126796301605c0cda1a18f6))
+
+
+### Dependencies
+
+* **dev:** bump aegir from 40.0.13 to 41.0.5 ([#115](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/115)) ([3fa647b](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/3fa647b9dc7289a6d6b69f426e3e5ab07dfe380d))
+
+## [9.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.6...v9.0.0) (2023-09-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to latest libp2p@0.45.x deps (#111)
+
+### Dependencies
+
+* update to latest libp2p@0.45.x deps ([#111](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/111)) ([d54009b](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/d54009ba13632df7f74725daaeabd9f46a88ddb1)), closes [#98](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/98)
+
+## [8.0.6](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.5...v8.0.6) (2023-09-18)
+
+
+### Dependencies
+
+* bump @libp2p/interface-peer-discovery from 1.1.1 to 2.0.0 ([#96](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/96)) ([4e3766a](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/4e3766a37b41a6cd9df8180858fa176455bd08a6))
+
+## [8.0.5](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.4...v8.0.5) (2023-09-18)
+
+
+### Trivial Changes
+
+* add or force update .github/workflows/js-test-and-release.yml ([#108](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/108)) ([a1b0c2a](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/a1b0c2af7ffbb43f8d182c31b81c321f4735174a))
+* delete templates [skip ci] ([#107](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/107)) ([fef95f6](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/fef95f68bc7b860e26892ce82c8011cbe472d99b))
+* Update .github/workflows/semantic-pull-request.yml [skip ci] ([719b878](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/719b8782ee2969cef9e1bcf76a26723b844a5a99))
+* Update .github/workflows/stale.yml [skip ci] ([b036800](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/b03680001fc04803c52fdb3217afd302cc5dab03))
+* Update .github/workflows/stale.yml [skip ci] ([29d5e68](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/29d5e68118a5af937d2ae868eee231fec1cffff5))
+* Update CODEOWNERS [skip ci] ([654a2db](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/654a2db8947e5ac6113bbf7306b1b9f8a85b2ffe))
+
+
+### Dependencies
+
+* **dev:** bump aegir from 38.1.8 to 40.0.0 ([#104](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/104)) ([0342dd9](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/0342dd99004b8c1b5109caa873f34faebb0e2983))
+
 ## [8.0.4](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v8.0.3...v8.0.4) (2023-04-24)
 
 

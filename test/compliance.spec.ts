@@ -1,22 +1,26 @@
 /* eslint-env mocha */
 
-import tests from '@libp2p/interface-peer-discovery-compliance-tests'
-import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { stubInterface } from 'ts-sinon'
-import type { PubSub } from '@libp2p/interface-pubsub'
-import { CustomEvent } from '@libp2p/interfaces/events'
-import type { AddressManager } from '@libp2p/interface-address-manager'
+import { generateKeyPair, publicKeyToProtobuf } from '@libp2p/crypto/keys'
+import tests from '@libp2p/interface-compliance-tests/peer-discovery'
+import { defaultLogger } from '@libp2p/logger'
+import { peerIdFromPrivateKey } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
+import { stubInterface } from 'sinon-ts'
+import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import { Peer as PBPeer } from '../src/peer.js'
+import type { PubSub } from '@libp2p/interface'
+import type { AddressManager } from '@libp2p/interface-internal'
 
 describe('compliance tests', () => {
   let intervalId: ReturnType<typeof setInterval>
 
   tests({
     async setup () {
-      const peerId = await createEd25519PeerId()
-      await new Promise(resolve => setTimeout(resolve, 10))
+      const privateKey = await generateKeyPair('Ed25519')
+      const peerId = peerIdFromPrivateKey(privateKey)
+
+      const subscriberPrivateKey = await generateKeyPair('Ed25519')
+      const subscriber = peerIdFromPrivateKey(subscriberPrivateKey)
 
       const addressManager = stubInterface<AddressManager>()
       addressManager.getAddresses.returns([
@@ -24,14 +28,21 @@ describe('compliance tests', () => {
       ])
 
       const pubsubDiscovery = pubsubPeerDiscovery()({
-        pubsub: stubInterface<PubSub>(),
-        peerId: await createEd25519PeerId(),
-        addressManager
+        pubsub: stubInterface<PubSub>({
+          getSubscribers: () => {
+            return [
+              subscriber
+            ]
+          }
+        }),
+        peerId,
+        addressManager,
+        logger: defaultLogger()
       })
 
       intervalId = setInterval(() => {
         const peer = PBPeer.encode({
-          publicKey: peerId.publicKey,
+          publicKey: publicKeyToProtobuf(subscriber.publicKey),
           addrs: [
             multiaddr('/ip4/166.10.1.2/tcp/80').bytes
           ]

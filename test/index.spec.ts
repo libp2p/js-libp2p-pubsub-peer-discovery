@@ -1,21 +1,21 @@
 /* eslint-env mocha */
 
+import { generateKeyPair, publicKeyFromProtobuf, publicKeyToProtobuf } from '@libp2p/crypto/keys'
+import { start, stop } from '@libp2p/interface'
+import { defaultLogger } from '@libp2p/logger'
+import { peerIdFromPrivateKey, peerIdFromPublicKey } from '@libp2p/peer-id'
+import { multiaddr } from '@multiformats/multiaddr'
 import { expect } from 'aegir/chai'
-import sinon from 'sinon'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
-import { multiaddr } from '@multiformats/multiaddr'
-import { pubsubPeerDiscovery, PubSubPeerDiscoveryComponents, TOPIC } from '../src/index.js'
+import sinon from 'sinon'
+import { stubInterface } from 'sinon-ts'
+import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { StubbedInstance, stubInterface } from 'ts-sinon'
-import type { PubSub } from '@libp2p/interface-pubsub'
-import { peerIdFromKeys } from '@libp2p/peer-id'
-import type { PeerInfo } from '@libp2p/interface-peer-info'
-import { CustomEvent } from '@libp2p/interfaces/events'
-import type { AddressManager } from '@libp2p/interface-address-manager'
-import { start, stop } from '@libp2p/interfaces/startable'
-import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
+import type { PubSubPeerDiscoveryComponents } from '../src/index.js'
+import type { PeerDiscovery, PeerInfo, PubSub } from '@libp2p/interface'
+import type { AddressManager } from '@libp2p/interface-internal'
+import type { StubbedInstance } from 'sinon-ts'
 
 const listeningMultiaddr = multiaddr('/ip4/127.0.0.1/tcp/9000/ws')
 
@@ -25,9 +25,19 @@ describe('PubSub Peer Discovery', () => {
   let components: PubSubPeerDiscoveryComponents
 
   beforeEach(async () => {
-    const peerId = await createEd25519PeerId()
+    const privateKey = await generateKeyPair('Ed25519')
+    const peerId = peerIdFromPrivateKey(privateKey)
 
-    mockPubsub = stubInterface<PubSub>()
+    const subscriberPrivateKey = await generateKeyPair('Ed25519')
+    const subscriber = peerIdFromPrivateKey(subscriberPrivateKey)
+
+    mockPubsub = stubInterface<PubSub>({
+      getSubscribers: () => {
+        return [
+          subscriber
+        ]
+      }
+    })
 
     const addressManager = stubInterface<AddressManager>()
     addressManager.getAddresses.returns([
@@ -37,7 +47,8 @@ describe('PubSub Peer Discovery', () => {
     components = {
       peerId,
       pubsub: mockPubsub,
-      addressManager
+      addressManager,
+      logger: defaultLogger()
     }
   })
 
@@ -66,7 +77,7 @@ describe('PubSub Peer Discovery', () => {
     }
 
     const peer = PB.Peer.decode(eventData)
-    const peerId = await peerIdFromKeys(peer.publicKey)
+    const peerId = peerIdFromPublicKey(publicKeyFromProtobuf(peer.publicKey))
     expect(peerId.equals(components.peerId)).to.equal(true)
     expect(peer.addrs).to.have.length(1)
     peer.addrs.forEach((addr) => {
@@ -91,17 +102,17 @@ describe('PubSub Peer Discovery', () => {
     discovery = pubsubPeerDiscovery()(components)
     await start(discovery)
 
-    const peerId = await createEd25519PeerId()
+    const privateKey = await generateKeyPair('Ed25519')
+    const peerId = peerIdFromPrivateKey(privateKey)
     const expectedPeerData: PeerInfo = {
       id: peerId,
       multiaddrs: [
         multiaddr('/ip4/0.0.0.0/tcp/8080/ws'),
         multiaddr('/ip4/0.0.0.0/tcp/8081/ws')
-      ],
-      protocols: []
+      ]
     }
     const peer = {
-      publicKey: peerId.publicKey,
+      publicKey: publicKeyToProtobuf(peerId.publicKey),
       addrs: expectedPeerData.multiaddrs.map(ma => multiaddr(ma).bytes)
     }
 
