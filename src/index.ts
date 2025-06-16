@@ -23,7 +23,7 @@
  *
  * If you are only interested in listening to the global pubsub topic the minimal configuration for using this with libp2p is:
  *
- * ```js
+ * ```ts
  * import { createLibp2p } from 'libp2p'
  * import { websockets } from '@libp2p/websockets'
  * import { yamux } from '@chainsafe/libp2p-yamux'
@@ -56,7 +56,7 @@
  *
  * There are a few options you can use to customize `Pubsub Peer Discovery`. You can see the detailed [options](#options) below.
  *
- * ```js
+ * ```ts
  * // ... Other imports from above
  * import PubSubPeerDiscovery from '@libp2p/pubsub-peer-discovery'
  *
