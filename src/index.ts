@@ -218,10 +218,10 @@ export class PubSubPeerDiscovery extends TypedEventEmitter<PeerDiscoveryEvents> 
     if (this.broadcastOnSubscribe) {
       pubsub.addEventListener('subscription-change', subChangeEvt => {
         // Check if the PubSub peer cares about PubSub Peer Discovery
-        const discoverySubs = subChangeEvt.detail.subscriptions.filter(sub => this.topics.includes(sub.topic));
+        const subscribedToDiscovery = subChangeEvt.detail.subscriptions.some(sub => this.topics.includes(sub.topic));
 
         // The Peer is interested in PubSub Peer Discovery -> broadcast
-        if (discoverySubs.length > 0) {
+        if (subscribedToDiscovery) {
           const backoff = this.backoffOnSubscribe * Math.random()
           setTimeout(() => { this._broadcast() }, backoff)
         }
