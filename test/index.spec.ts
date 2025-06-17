@@ -6,6 +6,7 @@ import { defaultLogger } from '@libp2p/logger'
 import { peerIdFromPrivateKey, peerIdFromPublicKey } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
 import { expect } from 'aegir/chai'
+import delay from 'delay'
 import defer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import sinon from 'sinon'
@@ -13,7 +14,7 @@ import { stubInterface } from 'sinon-ts'
 import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import * as PB from '../src/peer.js'
 import type { PubSubPeerDiscoveryComponents } from '../src/index.js'
-import type { PeerDiscovery, PeerInfo, PubSub } from '@libp2p/interface'
+import type { PeerDiscovery, PeerId, PeerInfo, PubSub, SubscriptionChangeData } from '@libp2p/interface'
 import type { AddressManager } from '@libp2p/interface-internal'
 import type { StubbedInstance } from 'sinon-ts'
 
@@ -23,13 +24,14 @@ describe('PubSub Peer Discovery', () => {
   let mockPubsub: StubbedInstance<PubSub>
   let discovery: PeerDiscovery
   let components: PubSubPeerDiscoveryComponents
+  let subscriber: PeerId
 
   beforeEach(async () => {
     const privateKey = await generateKeyPair('Ed25519')
     const peerId = peerIdFromPrivateKey(privateKey)
 
     const subscriberPrivateKey = await generateKeyPair('Ed25519')
-    const subscriber = peerIdFromPrivateKey(subscriberPrivateKey)
+    subscriber = peerIdFromPrivateKey(subscriberPrivateKey)
 
     mockPubsub = stubInterface<PubSub>({
       getSubscribers: () => {
@@ -189,5 +191,42 @@ describe('PubSub Peer Discovery', () => {
       // The first arg of the matching call number should be the matching topic we sent
       expect(mockPubsub.removeEventListener.args[index][0]).to.equal('message')
     })
+  })
+
+  it('should broadcast when a new pubsub peer is discovered that is interested in the topic', async () => {
+    discovery = pubsubPeerDiscovery({
+      broadcastOnSubscribe: true,
+      backoffOnSubscribe: 100,
+      topics: [
+        'peer-discovery'
+      ]
+    })(components)
+
+    expect(mockPubsub.addEventListener.callCount).to.equal(0)
+
+    await start(discovery)
+
+    expect(mockPubsub.publish.callCount).to.equal(1, 'did not run immediately')
+
+    expect(mockPubsub.addEventListener.callCount).to.equal(2, 'did not subscribe to any event')
+    expect(mockPubsub.addEventListener.getCall(1).args[0]).to.equal('subscription-change', 'did not subscribe to subscription-change event')
+
+    const handler: any = mockPubsub.addEventListener.getCall(1).args[1]
+
+    const detail: SubscriptionChangeData = {
+      peerId: subscriber,
+      subscriptions: [{
+        topic: 'peer-discovery',
+        subscribe: true
+      }]
+    }
+
+    await delay(1_000)
+
+    handler(new CustomEvent('subscription-change', { detail }))
+
+    await delay(1_000)
+
+    expect(mockPubsub.publish.callCount).to.equal(2, 'did not broadcast after subscription change')
   })
 })
