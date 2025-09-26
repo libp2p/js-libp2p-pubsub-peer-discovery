@@ -121,7 +121,7 @@ export interface PubsubPeerDiscoveryInit {
 
 export interface Message {
   topic: string
-  data: Uint8Array | Uint8ArrayList
+  data: Uint8Array
 }
 
 export interface PubSubEvents {
@@ -132,7 +132,7 @@ export interface PubSub extends TypedEventTarget<PubSubEvents> {
   subscribe(topic: string): void
   unsubscribe(topic: string): void
   getSubscribers(topic: string): PeerId[]
-  publish(topic: string, message: Uint8Array | Uint8ArrayList): void
+  publish(topic: string, message: Uint8Array): void
 }
 
 export interface PubSubPeerDiscoveryComponents {
