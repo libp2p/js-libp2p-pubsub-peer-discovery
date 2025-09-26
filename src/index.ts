@@ -98,7 +98,6 @@ import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
 import type { PeerDiscovery, PeerDiscoveryEvents, PeerId, PeerInfo, Startable, ComponentLogger, Logger, TypedEventTarget } from '@libp2p/interface'
 import type { AddressManager } from '@libp2p/interface-internal'
-import type { Uint8ArrayList } from 'uint8arraylist'
 
 export const TOPIC = '_peer-discovery._p2p._pubsub'
 
