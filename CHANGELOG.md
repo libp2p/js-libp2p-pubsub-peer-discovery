@@ -1,3 +1,17 @@
+## [12.0.0](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v11.0.2...v12.0.0) (2025-09-26)
+
+### ⚠ BREAKING CHANGES
+
+* can only be used with `libp2p@3.x.x`
+
+### Features
+
+* update to v3 libp2p API ([#169](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/169)) ([4ae3586](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/4ae3586471c8411a6776903d62eb2bc636c21994))
+
+### Trivial Changes
+
+* add or force update .github/workflows/stale.yml ([#165](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/issues/165)) ([74a7d19](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/commit/74a7d1963756de1e7fe76bb09dc63b2af7018c16))
+
 ## [11.0.2](https://github.com/libp2p/js-libp2p-pubsub-peer-discovery/compare/v11.0.1...v11.0.2) (2025-06-16)
 
 ### Bug Fixes
