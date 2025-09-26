@@ -8,7 +8,7 @@ import { multiaddr } from '@multiformats/multiaddr'
 import { stubInterface } from 'sinon-ts'
 import { pubsubPeerDiscovery, TOPIC } from '../src/index.js'
 import { Peer as PBPeer } from '../src/peer.js'
-import type { PubSub } from '@libp2p/interface'
+import type { PubSub } from '../src/index.js'
 import type { AddressManager } from '@libp2p/interface-internal'
 
 describe('compliance tests', () => {

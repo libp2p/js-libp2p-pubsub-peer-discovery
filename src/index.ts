@@ -96,8 +96,9 @@ import { TypedEventEmitter, peerDiscoverySymbol } from '@libp2p/interface'
 import { peerIdFromPublicKey } from '@libp2p/peer-id'
 import { multiaddr } from '@multiformats/multiaddr'
 import { Peer as PBPeer } from './peer.js'
-import type { PeerDiscovery, PeerDiscoveryEvents, PeerId, PeerInfo, Message, PubSub, Startable, ComponentLogger, Logger } from '@libp2p/interface'
+import type { PeerDiscovery, PeerDiscoveryEvents, PeerId, PeerInfo, Startable, ComponentLogger, Logger, TypedEventTarget } from '@libp2p/interface'
 import type { AddressManager } from '@libp2p/interface-internal'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 export const TOPIC = '_peer-discovery._p2p._pubsub'
 
@@ -116,6 +117,22 @@ export interface PubsubPeerDiscoveryInit {
    * If true, we will not broadcast our peer data
    */
   listenOnly?: boolean
+}
+
+export interface Message {
+  topic: string
+  data: Uint8Array | Uint8ArrayList
+}
+
+export interface PubSubEvents {
+  message: CustomEvent<Message>
+}
+
+export interface PubSub extends TypedEventTarget<PubSubEvents> {
+  subscribe(topic: string): void
+  unsubscribe(topic: string): void
+  getSubscribers(topic: string): PeerId[]
+  publish(topic: string, message: Uint8Array | Uint8ArrayList): void
 }
 
 export interface PubSubPeerDiscoveryComponents {
